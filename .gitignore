@@ -1,0 +1,36 @@
+# Virtual environments
+venv/
+venv312/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Claude Code / AI prompt files
+.claude/
+cc_instructions_*.md
+
+# Large data files (not suitable for GitHub)
+data/
+
+# Research paper PDF (copyrighted)
+*.pdf
+
+# Generated results (regenerable by running the scripts)
+results/
+
+# Log files
+*.log
+*.txt
+!requirements.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+CLAUDE.md
