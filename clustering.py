@@ -12,7 +12,6 @@ Then classifies the resulting clusters by their poisoned data content:
   - Red: 100% poisoned (exclusively poisoned)
   - Yellow: mixed (contains both poisoned and clean)
   - Pink: predominantly poisoned (>80% poisoned, subset of yellow)
-  - Blue: contains complete clean AND complete poisoned subsets
 """
 import numpy as np
 from sklearn.cluster import DBSCAN, HDBSCAN, OPTICS, MeanShift

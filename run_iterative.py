@@ -12,6 +12,7 @@ from pathlib import Path
 from data_loader import load_unsw
 from poison import poison_dataset
 from iterative_filter import iterative_filter
+from results_io import convert_for_json
 
 
 def run_iterative_experiment(dataset_name, X, y, max_samples=5000,
@@ -123,18 +124,6 @@ def run_iterative_experiment(dataset_name, X, y, max_samples=5000,
     # Save results to JSON for later visualization
     output_dir = Path(r"C:\TDA\results")
     output_dir.mkdir(exist_ok=True)
-
-    # Convert numpy types for JSON serialization
-    def convert_for_json(obj):
-        if isinstance(obj, np.integer):
-            return int(obj)
-        elif isinstance(obj, np.floating):
-            return float(obj)
-        elif isinstance(obj, np.ndarray):
-            return obj.tolist()
-        elif isinstance(obj, np.bool_):
-            return bool(obj)
-        return obj
 
     json_results = {}
     for algo, r in all_results.items():

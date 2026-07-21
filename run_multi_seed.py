@@ -15,6 +15,7 @@ from data_loader import load_unsw, load_cicids
 from poison import poison_dataset
 from iterative_filter import iterative_filter
 from clustering import run_all_clustering, classify_clusters
+from results_io import convert_for_json
 
 
 # ============================================================
@@ -294,13 +295,13 @@ def run_dataset_experiment(dataset_name, X_full, y_full):
     # Save per-seed results
     per_seed_path = RESULTS_DIR / f"multi_seed_per_seed_{safe_name}.json"
     with open(per_seed_path, "w") as f:
-        json.dump(all_seed_results, f, indent=2, default=lambda x: float(x) if isinstance(x, (np.floating, np.integer)) else x)
+        json.dump(all_seed_results, f, indent=2, default=convert_for_json)
     print(f"\n  Per-seed results saved to: {per_seed_path}")
 
     # Save aggregated results
     agg_path = RESULTS_DIR / f"multi_seed_aggregated_{safe_name}.json"
     with open(agg_path, "w") as f:
-        json.dump(agg, f, indent=2)
+        json.dump(agg, f, indent=2, default=convert_for_json)
     print(f"  Aggregated results saved to: {agg_path}")
 
     return all_seed_results, agg

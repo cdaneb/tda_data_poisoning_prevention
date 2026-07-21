@@ -11,7 +11,7 @@ unseparated mixed clusters that their single-pass approach could not resolve.
 """
 import numpy as np
 import time
-from tda_pipeline import extract_tda_features, build_tda_pipeline, reshape_for_tda
+from tda_pipeline import extract_tda_features
 from clustering import run_all_clustering, classify_clusters
 
 

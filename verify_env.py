@@ -12,8 +12,9 @@ print(f"pandas: {pd.__version__}")
 import sklearn
 print(f"scikit-learn: {sklearn.__version__}")
 
-import hdbscan
-print(f"hdbscan: imported OK")
+from sklearn.cluster import HDBSCAN
+HDBSCAN(min_cluster_size=10)
+print(f"sklearn.cluster.HDBSCAN: imported and instantiated OK")
 
 import matplotlib
 print(f"matplotlib: {matplotlib.__version__}")
