@@ -15,66 +15,67 @@ from tda_pipeline import extract_tda_features
 from clustering import run_all_clustering, classify_clusters
 
 
-def compute_persistence_diagrams(X_raw):
+def compute_whole_residual_diagram(X_tda_residual):
     """
-    Compute persistence diagrams for a set of raw payload byte samples.
-    Used for tracking topological changes across iterations via Wasserstein distance.
+    Compute a single persistence diagram over the entire residual, treated
+    as one point cloud in the 60-dimensional TDA feature space already used
+    for clustering, via gtda.homology.VietorisRipsPersistence.
+
+    This is the object Cohen-Steiner stability and Ferrara (2025) Eq 3.1/5.1
+    actually operate on: one persistence diagram per whole dataset
+    (PD_p(X_ref), PD_p(X_test)), not one per individual sample — see
+    wasserstein_distance_between_diagrams() below for the distance itself.
 
     Args:
-        X_raw: np.ndarray (N, 1500) — raw payload bytes
+        X_tda_residual: np.ndarray (n_residual, 60) — TDA feature vectors
+            for every sample currently in the residual (the same vectors
+            extract_tda_features() already produced earlier this iteration;
+            no separate raw-payload computation is needed).
 
     Returns:
-        diagrams: the persistence diagrams from the TDA pipeline (intermediate output)
+        diagram: np.ndarray (1, n_features, 3) — the single persistence
+            diagram for the whole-residual point cloud (homology dims 0, 1).
     """
-    from gtda.images import Binarizer, HeightFiltration
-    from gtda.homology import CubicalPersistence
-    from gtda.diagrams import Scaler
+    from gtda.homology import VietorisRipsPersistence
 
-    X_reshaped = X_raw.reshape(-1, 30, 50)
-
-    # Use the first filtration (HeightFiltration direction [0,1]) as representative
-    pipe = []
-    pipe.append(Binarizer(threshold=0.4, n_jobs=-1))
-    pipe.append(HeightFiltration(direction=np.array([0, 1]), n_jobs=-1))
-    pipe.append(CubicalPersistence(n_jobs=-1))
-    pipe.append(Scaler(n_jobs=-1))
-
-    from sklearn.pipeline import make_pipeline
-    diagram_pipe = make_pipeline(*pipe)
-    diagrams = diagram_pipe.fit_transform(X_reshaped)
-    return diagrams
+    # gtda expects (n_samples, n_points, n_dims); one whole-residual point
+    # cloud = one "sample" in that convention.
+    point_cloud = X_tda_residual[np.newaxis, :, :]
+    vr = VietorisRipsPersistence(homology_dimensions=(0, 1), n_jobs=-1)
+    diagram = vr.fit_transform(point_cloud)
+    return diagram
 
 
 def wasserstein_distance_between_diagrams(diag1, diag2):
     """
-    Compute an approximate Wasserstein distance between two sets of persistence diagrams.
+    Real diagram-to-diagram Wasserstein distance (p=1) between two
+    whole-residual persistence diagrams, via gtda.diagrams.PairwiseDistance.
 
-    Since the diagram sets may have different numbers of points, we compute
-    the distance based on summary statistics (mean birth/death times per homology dimension).
-    For a more rigorous implementation, use gtda.diagrams.PairwiseDistance.
+    Grounded in Cohen-Steiner et al.'s stability theorem for persistence
+    diagrams, and a faithful instantiation of Ferrara (2025) Eq 3.1/5.1
+    (W_p(PD_p(X_ref), PD_p(X_test))): both inputs are one diagram per whole
+    dataset, as that theory assumes, not per-sample diagrams.
 
-    This gives us a scalar measure of how much the topological structure changed
-    between iterations.
+    Lens-3 hook: this value is descriptive-only in this pass — logged and
+    plotted (see iteration_log["wasserstein_distance"] below), but not read
+    by the stopping condition or by classify_clusters()'s thresholds.
+    Making it load-bearing (a stopping check, or a detection threshold tau)
+    is a Lens 3 decision, not made here.
 
     Args:
-        diag1, diag2: persistence diagram arrays from giotto-tda
+        diag1, diag2: np.ndarray (1, n_features, 3) — single persistence
+            diagrams from compute_whole_residual_diagram().
 
     Returns:
-        distance: float — approximate topological distance between iterations
+        distance: float — real Wasserstein distance between the two
+            whole-residual diagrams.
     """
     try:
-        from gtda.diagrams import Amplitude
-        amp = Amplitude(metric="wasserstein", metric_params={"p": 1}, n_jobs=-1)
-
-        # Compute amplitude (distance from trivial diagram) for each set
-        a1 = amp.fit_transform(diag1)
-        a2 = amp.fit_transform(diag2)
-
-        # Use mean absolute difference of amplitudes as proxy for inter-set distance
-        # Pad to same length if needed
-        min_len = min(len(a1), len(a2))
-        distance = np.mean(np.abs(a1[:min_len] - a2[:min_len]))
-        return float(distance)
+        from gtda.diagrams import PairwiseDistance
+        pairwise = PairwiseDistance(metric="wasserstein", metric_params={"p": 1}, n_jobs=-1)
+        pairwise.fit(diag1)
+        dist_matrix = pairwise.transform(diag2)
+        return float(dist_matrix[0, 0])
     except Exception as e:
         print(f"    Warning: Could not compute Wasserstein distance: {e}")
         return float('nan')
@@ -108,7 +109,7 @@ def iterative_filter(X_raw, is_poisoned, algorithm="OPTICS",
     poisoned_pool_indices = []  # Red cluster samples (removed as poisoned)
 
     iteration_log = []
-    prev_diagrams = None
+    prev_diagram = None
 
     if verbose:
         print(f"\n{'='*70}")
@@ -143,19 +144,23 @@ def iterative_filter(X_raw, is_poisoned, algorithm="OPTICS",
         if verbose:
             print(f"  TDA extraction: {tda_time:.1f}s -> shape {X_tda.shape}")
 
-        # Step 1b: Compute persistence diagrams for convergence tracking
+        # Step 1b: Compute whole-residual persistence diagram (one diagram for
+        # the entire residual point cloud in TDA feature space, per Ferrara
+        # 2025 Eq 3.1/5.1) and the real Wasserstein distance from the
+        # previous iteration's whole-residual diagram, for convergence
+        # tracking. Uses X_tda from Step 1 directly — no recomputation.
         try:
-            current_diagrams = compute_persistence_diagrams(X_residual_raw)
-            if prev_diagrams is not None:
-                w_dist = wasserstein_distance_between_diagrams(prev_diagrams, current_diagrams)
+            current_diagram = compute_whole_residual_diagram(X_tda)
+            if prev_diagram is not None:
+                w_dist = wasserstein_distance_between_diagrams(prev_diagram, current_diagram)
             else:
                 w_dist = float('nan')
-            prev_diagrams = current_diagrams
+            prev_diagram = current_diagram
         except Exception as e:
             if verbose:
                 print(f"  Warning: Diagram computation failed: {e}")
             w_dist = float('nan')
-            current_diagrams = None
+            current_diagram = None
 
         # Step 2: Run clustering on TDA features
         t0 = time.time()
@@ -200,6 +205,9 @@ def iterative_filter(X_raw, is_poisoned, algorithm="OPTICS",
             "green_pct": summary["green_pct"],
             "red_pct": summary["red_pct"],
             "red_capture_pct": summary["red_poison_capture_pct"],
+            # Descriptive-only (see wasserstein_distance_between_diagrams
+            # docstring). Future hook for a stopping condition / threshold
+            # tau is Lens 3's decision, not wired in here.
             "wasserstein_distance": w_dist,
             "tda_time_s": tda_time,
             "cluster_time_s": cluster_time,
