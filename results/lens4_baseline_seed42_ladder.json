@@ -1,0 +1,278 @@
+{
+  "L": {
+    "gen_time_s": 0.05457019805908203,
+    "validity_pct": NaN,
+    "n_poison": 500,
+    "tda_time_s": 34.16956639289856,
+    "cluster_time_s": 21.929497241973877,
+    "per_algo": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 3.381818181818181,
+        "red_pct": 0,
+        "n_clusters": 43,
+        "colors": {
+          "Green": 21,
+          "Red": 0,
+          "Yellow": 22,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 9.854545454545455,
+        "red_pct": 0,
+        "n_clusters": 49,
+        "colors": {
+          "Green": 14,
+          "Red": 0,
+          "Yellow": 35,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 6.6000000000000005,
+        "green_pct": 18.236363636363638,
+        "red_pct": 0.6000000000000001,
+        "n_clusters": 137,
+        "colors": {
+          "Green": 81,
+          "Red": 5,
+          "Yellow": 51,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 0.18181818181818182,
+        "red_pct": 0,
+        "n_clusters": 18,
+        "colors": {
+          "Green": 6,
+          "Red": 0,
+          "Yellow": 12,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    }
+  },
+  "R60": {
+    "gen_time_s": 0.07398486137390137,
+    "validity_pct": 100.0,
+    "n_poison": 500,
+    "tda_time_s": 33.673301696777344,
+    "cluster_time_s": 8.962779760360718,
+    "per_algo": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 6.345454545454547,
+        "red_pct": 0,
+        "n_clusters": 42,
+        "colors": {
+          "Green": 27,
+          "Red": 0,
+          "Yellow": 15,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 12.127272727272727,
+        "red_pct": 0,
+        "n_clusters": 54,
+        "colors": {
+          "Green": 24,
+          "Red": 0,
+          "Yellow": 30,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 2.1999999999999997,
+        "green_pct": 15.454545454545467,
+        "red_pct": 0.2,
+        "n_clusters": 127,
+        "colors": {
+          "Green": 96,
+          "Red": 1,
+          "Yellow": 30,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 3.072727272727272,
+        "red_pct": 0,
+        "n_clusters": 23,
+        "colors": {
+          "Green": 12,
+          "Red": 0,
+          "Yellow": 11,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    }
+  },
+  "G60-MLP": {
+    "gen_time_s": 93.5086317062378,
+    "validity_pct": 100.0,
+    "n_poison": 500,
+    "tda_time_s": 33.70968294143677,
+    "cluster_time_s": 8.730762243270874,
+    "per_algo": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 14.254545454545458,
+        "red_pct": 0,
+        "n_clusters": 42,
+        "colors": {
+          "Green": 35,
+          "Red": 0,
+          "Yellow": 7,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 30.89090909090909,
+        "red_pct": 0,
+        "n_clusters": 52,
+        "colors": {
+          "Green": 37,
+          "Red": 0,
+          "Yellow": 15,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 6.2,
+        "green_pct": 33.072727272727285,
+        "red_pct": 0.5636363636363637,
+        "n_clusters": 130,
+        "colors": {
+          "Green": 117,
+          "Red": 4,
+          "Yellow": 9,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 3.018181818181817,
+        "red_pct": 0,
+        "n_clusters": 20,
+        "colors": {
+          "Green": 11,
+          "Red": 0,
+          "Yellow": 9,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    }
+  },
+  "G60-RF": {
+    "gen_time_s": 2365.9182579517365,
+    "validity_pct": 100.0,
+    "n_poison": 500,
+    "tda_time_s": 38.19940257072449,
+    "cluster_time_s": 11.012103080749512,
+    "per_algo": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 38.2727272727273,
+        "red_pct": 0,
+        "n_clusters": 42,
+        "colors": {
+          "Green": 38,
+          "Red": 0,
+          "Yellow": 4,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 2.0,
+        "green_pct": 42.727272727272734,
+        "red_pct": 0.18181818181818182,
+        "n_clusters": 54,
+        "colors": {
+          "Green": 44,
+          "Red": 1,
+          "Yellow": 9,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 11.799999999999999,
+        "green_pct": 39.34545454545457,
+        "red_pct": 1.0727272727272728,
+        "n_clusters": 131,
+        "colors": {
+          "Green": 119,
+          "Red": 7,
+          "Yellow": 5,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 3.018181818181817,
+        "red_pct": 0,
+        "n_clusters": 20,
+        "colors": {
+          "Green": 11,
+          "Red": 0,
+          "Yellow": 9,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    }
+  }
+}

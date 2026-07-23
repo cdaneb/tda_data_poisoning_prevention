@@ -1,0 +1,626 @@
+{
+  "R60": {
+    "42": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 6.345454545454547,
+        "red_pct": 0,
+        "n_clusters": 42,
+        "colors": {
+          "Green": 27,
+          "Red": 0,
+          "Yellow": 15,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 12.127272727272727,
+        "red_pct": 0,
+        "n_clusters": 54,
+        "colors": {
+          "Green": 24,
+          "Red": 0,
+          "Yellow": 30,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 2.1999999999999997,
+        "green_pct": 15.454545454545467,
+        "red_pct": 0.2,
+        "n_clusters": 127,
+        "colors": {
+          "Green": 96,
+          "Red": 1,
+          "Yellow": 30,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 3.072727272727272,
+        "red_pct": 0,
+        "n_clusters": 23,
+        "colors": {
+          "Green": 12,
+          "Red": 0,
+          "Yellow": 11,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    },
+    "123": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 2.4,
+        "green_pct": 9.381818181818186,
+        "red_pct": 0.2181818181818182,
+        "n_clusters": 47,
+        "colors": {
+          "Green": 28,
+          "Red": 2,
+          "Yellow": 17,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 8.181818181818182,
+        "red_pct": 0,
+        "n_clusters": 51,
+        "colors": {
+          "Green": 18,
+          "Red": 0,
+          "Yellow": 33,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 2.1999999999999997,
+        "green_pct": 15.381818181818193,
+        "red_pct": 0.2,
+        "n_clusters": 146,
+        "colors": {
+          "Green": 112,
+          "Red": 1,
+          "Yellow": 33,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 0.32727272727272727,
+        "red_pct": 0,
+        "n_clusters": 20,
+        "colors": {
+          "Green": 8,
+          "Red": 0,
+          "Yellow": 12,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    },
+    "456": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 6.836363636363636,
+        "red_pct": 0,
+        "n_clusters": 45,
+        "colors": {
+          "Green": 27,
+          "Red": 0,
+          "Yellow": 18,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 15.036363636363635,
+        "red_pct": 0,
+        "n_clusters": 55,
+        "colors": {
+          "Green": 24,
+          "Red": 0,
+          "Yellow": 31,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 2.1999999999999997,
+        "green_pct": 15.345454545454551,
+        "red_pct": 0.2,
+        "n_clusters": 137,
+        "colors": {
+          "Green": 107,
+          "Red": 2,
+          "Yellow": 28,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 0.4,
+        "red_pct": 0,
+        "n_clusters": 16,
+        "colors": {
+          "Green": 6,
+          "Red": 0,
+          "Yellow": 10,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    },
+    "789": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 8.327272727272728,
+        "red_pct": 0,
+        "n_clusters": 43,
+        "colors": {
+          "Green": 28,
+          "Red": 0,
+          "Yellow": 15,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 10.70909090909091,
+        "red_pct": 0,
+        "n_clusters": 54,
+        "colors": {
+          "Green": 21,
+          "Red": 0,
+          "Yellow": 33,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 1.0,
+        "green_pct": 15.363636363636363,
+        "red_pct": 0.09090909090909091,
+        "n_clusters": 135,
+        "colors": {
+          "Green": 102,
+          "Red": 1,
+          "Yellow": 32,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 0.2545454545454545,
+        "red_pct": 0,
+        "n_clusters": 13,
+        "colors": {
+          "Green": 3,
+          "Red": 0,
+          "Yellow": 10,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    },
+    "1024": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 7.709090909090909,
+        "red_pct": 0,
+        "n_clusters": 52,
+        "colors": {
+          "Green": 29,
+          "Red": 0,
+          "Yellow": 23,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 11.836363636363632,
+        "red_pct": 0,
+        "n_clusters": 65,
+        "colors": {
+          "Green": 33,
+          "Red": 0,
+          "Yellow": 32,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 1.4000000000000001,
+        "green_pct": 14.945454545454556,
+        "red_pct": 0.1272727272727273,
+        "n_clusters": 141,
+        "colors": {
+          "Green": 102,
+          "Red": 1,
+          "Yellow": 38,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.2,
+        "green_pct": 0.34545454545454546,
+        "red_pct": 0.01818181818181818,
+        "n_clusters": 15,
+        "colors": {
+          "Green": 6,
+          "Red": 1,
+          "Yellow": 8,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      }
+    }
+  },
+  "G60-MLP": {
+    "42": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 14.254545454545458,
+        "red_pct": 0,
+        "n_clusters": 42,
+        "colors": {
+          "Green": 35,
+          "Red": 0,
+          "Yellow": 7,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 30.89090909090909,
+        "red_pct": 0,
+        "n_clusters": 52,
+        "colors": {
+          "Green": 37,
+          "Red": 0,
+          "Yellow": 15,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 6.2,
+        "green_pct": 33.072727272727285,
+        "red_pct": 0.5636363636363637,
+        "n_clusters": 130,
+        "colors": {
+          "Green": 117,
+          "Red": 4,
+          "Yellow": 9,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 3.018181818181817,
+        "red_pct": 0,
+        "n_clusters": 20,
+        "colors": {
+          "Green": 11,
+          "Red": 0,
+          "Yellow": 9,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    },
+    "123": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 23.9090909090909,
+        "red_pct": 0,
+        "n_clusters": 45,
+        "colors": {
+          "Green": 38,
+          "Red": 0,
+          "Yellow": 7,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 34.2,
+        "red_pct": 0,
+        "n_clusters": 52,
+        "colors": {
+          "Green": 36,
+          "Red": 0,
+          "Yellow": 16,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 7.3999999999999995,
+        "green_pct": 37.181818181818194,
+        "red_pct": 0.6727272727272727,
+        "n_clusters": 149,
+        "colors": {
+          "Green": 131,
+          "Red": 4,
+          "Yellow": 12,
+          "Pink": 2,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 0.8181818181818183,
+        "red_pct": 0,
+        "n_clusters": 20,
+        "colors": {
+          "Green": 11,
+          "Red": 0,
+          "Yellow": 9,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    },
+    "456": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 25.018181818181816,
+        "red_pct": 0,
+        "n_clusters": 46,
+        "colors": {
+          "Green": 40,
+          "Red": 0,
+          "Yellow": 6,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 37.72727272727274,
+        "red_pct": 0,
+        "n_clusters": 52,
+        "colors": {
+          "Green": 37,
+          "Red": 0,
+          "Yellow": 15,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 4.6,
+        "green_pct": 38.70909090909095,
+        "red_pct": 0.4181818181818182,
+        "n_clusters": 139,
+        "colors": {
+          "Green": 128,
+          "Red": 3,
+          "Yellow": 8,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 0.9090909090909091,
+        "red_pct": 0,
+        "n_clusters": 15,
+        "colors": {
+          "Green": 6,
+          "Red": 0,
+          "Yellow": 9,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    },
+    "789": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 23.036363636363642,
+        "red_pct": 0,
+        "n_clusters": 44,
+        "colors": {
+          "Green": 37,
+          "Red": 0,
+          "Yellow": 7,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 33.581818181818186,
+        "red_pct": 0,
+        "n_clusters": 52,
+        "colors": {
+          "Green": 36,
+          "Red": 0,
+          "Yellow": 16,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 8.200000000000001,
+        "green_pct": 37.40000000000003,
+        "red_pct": 0.7454545454545455,
+        "n_clusters": 135,
+        "colors": {
+          "Green": 122,
+          "Red": 5,
+          "Yellow": 8,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 0.8363636363636364,
+        "red_pct": 0,
+        "n_clusters": 15,
+        "colors": {
+          "Green": 4,
+          "Red": 0,
+          "Yellow": 11,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      }
+    },
+    "1024": {
+      "DBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 17.818181818181813,
+        "red_pct": 0,
+        "n_clusters": 47,
+        "colors": {
+          "Green": 40,
+          "Red": 0,
+          "Yellow": 7,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "HDBSCAN": {
+        "red_poison_capture_pct": 0.0,
+        "green_pct": 28.309090909090905,
+        "red_pct": 0,
+        "n_clusters": 56,
+        "colors": {
+          "Green": 39,
+          "Red": 0,
+          "Yellow": 17,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": NaN
+      },
+      "OPTICS": {
+        "red_poison_capture_pct": 6.0,
+        "green_pct": 31.94545454545454,
+        "red_pct": 0.5454545454545455,
+        "n_clusters": 144,
+        "colors": {
+          "Green": 126,
+          "Red": 4,
+          "Yellow": 14,
+          "Pink": 0,
+          "Noise": 1
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      },
+      "MeanShift": {
+        "red_poison_capture_pct": 0.2,
+        "green_pct": 0.9272727272727274,
+        "red_pct": 0.01818181818181818,
+        "n_clusters": 14,
+        "colors": {
+          "Green": 7,
+          "Red": 1,
+          "Yellow": 6,
+          "Pink": 0,
+          "Noise": 0
+        },
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0
+      }
+    }
+  }
+}

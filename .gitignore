@@ -18,7 +18,7 @@ data/
 *.pdf
 
 # Generated results (regenerable by running the scripts)
-results/
+#results/
 
 # Log files
 *.log

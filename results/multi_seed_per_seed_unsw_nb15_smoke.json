@@ -1,0 +1,959 @@
+[
+  {
+    "seed": 42,
+    "n_samples": 5000,
+    "n_poisoned": 500,
+    "n_clean": 5000,
+    "baseline": {
+      "DBSCAN": {
+        "green_pct": 3.381818181818181,
+        "red_pct": 0,
+        "red_capture_pct": 0.0,
+        "n_green_clusters": 21,
+        "n_red_clusters": 0,
+        "n_yellow_clusters": 22
+      },
+      "HDBSCAN": {
+        "green_pct": 9.854545454545455,
+        "red_pct": 0,
+        "red_capture_pct": 0.0,
+        "n_green_clusters": 14,
+        "n_red_clusters": 0,
+        "n_yellow_clusters": 35
+      },
+      "OPTICS": {
+        "green_pct": 18.236363636363638,
+        "red_pct": 0.6000000000000001,
+        "red_capture_pct": 6.6000000000000005,
+        "n_green_clusters": 81,
+        "n_red_clusters": 5,
+        "n_yellow_clusters": 51
+      },
+      "MeanShift": {
+        "green_pct": 0.18181818181818182,
+        "red_pct": 0,
+        "red_capture_pct": 0.0,
+        "n_green_clusters": 6,
+        "n_red_clusters": 0,
+        "n_yellow_clusters": 12
+      }
+    },
+    "iterative": {
+      "DBSCAN": {
+        "n_iterations": 2,
+        "n_sanitized": 186,
+        "n_poisoned_pool": 0,
+        "n_residual": 5314,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 0.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          32.453045325736184
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 43,
+            "n_green_clusters": 21,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 22,
+            "green_pct": 3.381818181818181,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 41.17754650115967,
+            "cluster_time_s": 10.504367113113403
+          },
+          {
+            "iteration": 2,
+            "n_residual": 5314,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4814,
+            "n_clusters": 22,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 22,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 32.453045325736184,
+            "tda_time_s": 39.68278622627258,
+            "cluster_time_s": 9.248980522155762
+          }
+        ]
+      },
+      "HDBSCAN": {
+        "n_iterations": 3,
+        "n_sanitized": 552,
+        "n_poisoned_pool": 0,
+        "n_residual": 4948,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 0.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          98.85112495175422,
+          7.6506971321706985
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 49,
+            "n_green_clusters": 14,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 35,
+            "green_pct": 9.854545454545455,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 41.16853737831116,
+            "cluster_time_s": 10.309523820877075
+          },
+          {
+            "iteration": 2,
+            "n_residual": 4958,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4458,
+            "n_clusters": 37,
+            "n_green_clusters": 1,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 36,
+            "green_pct": 0.20169423154497781,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 98.85112495175422,
+            "tda_time_s": 36.955801010131836,
+            "cluster_time_s": 8.880875825881958
+          },
+          {
+            "iteration": 3,
+            "n_residual": 4948,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4448,
+            "n_clusters": 36,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 36,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 7.6506971321706985,
+            "tda_time_s": 37.26241374015808,
+            "cluster_time_s": 8.762325763702393
+          }
+        ]
+      },
+      "OPTICS": {
+        "n_iterations": 4,
+        "n_sanitized": 1151,
+        "n_poisoned_pool": 41,
+        "n_residual": 4308,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 8.200000000000001,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          72.74697627374805,
+          32.73318216367221,
+          3.382326937358517
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 137,
+            "n_green_clusters": 81,
+            "n_red_clusters": 5,
+            "n_yellow_clusters": 51,
+            "green_pct": 18.236363636363638,
+            "red_pct": 0.6000000000000001,
+            "red_capture_pct": 6.6000000000000005,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 41.84176564216614,
+            "cluster_time_s": 10.777281284332275
+          },
+          {
+            "iteration": 2,
+            "n_residual": 4464,
+            "n_poisoned_in_residual": 467,
+            "n_clean_in_residual": 3997,
+            "n_clusters": 78,
+            "n_green_clusters": 15,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 63,
+            "green_pct": 3.3154121863799286,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 72.74697627374805,
+            "tda_time_s": 33.24338340759277,
+            "cluster_time_s": 6.9509687423706055
+          },
+          {
+            "iteration": 3,
+            "n_residual": 4316,
+            "n_poisoned_in_residual": 467,
+            "n_clean_in_residual": 3849,
+            "n_clusters": 66,
+            "n_green_clusters": 0,
+            "n_red_clusters": 1,
+            "n_yellow_clusters": 65,
+            "green_pct": 0,
+            "red_pct": 0.18535681186283595,
+            "red_capture_pct": 1.7130620985010707,
+            "wasserstein_distance": 32.73318216367221,
+            "tda_time_s": 33.05660533905029,
+            "cluster_time_s": 6.935871362686157
+          },
+          {
+            "iteration": 4,
+            "n_residual": 4308,
+            "n_poisoned_in_residual": 459,
+            "n_clean_in_residual": 3849,
+            "n_clusters": 65,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 65,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 3.382326937358517,
+            "tda_time_s": 32.00948715209961,
+            "cluster_time_s": 6.736393928527832
+          }
+        ]
+      },
+      "MeanShift": {
+        "n_iterations": 3,
+        "n_sanitized": 13,
+        "n_poisoned_pool": 0,
+        "n_residual": 5487,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 0.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          554.589129302178,
+          56.45684305148432
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 18,
+            "n_green_clusters": 6,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 12,
+            "green_pct": 0.18181818181818182,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 41.11072063446045,
+            "cluster_time_s": 10.351292133331299
+          },
+          {
+            "iteration": 2,
+            "n_residual": 5490,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4990,
+            "n_clusters": 13,
+            "n_green_clusters": 2,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 11,
+            "green_pct": 0.054644808743169404,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 554.589129302178,
+            "tda_time_s": 37.69460415840149,
+            "cluster_time_s": 10.256491422653198
+          },
+          {
+            "iteration": 3,
+            "n_residual": 5487,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4987,
+            "n_clusters": 11,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 11,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 56.45684305148432,
+            "tda_time_s": 37.97995615005493,
+            "cluster_time_s": 10.347629070281982
+          }
+        ]
+      }
+    }
+  },
+  {
+    "seed": 123,
+    "n_samples": 5000,
+    "n_poisoned": 500,
+    "n_clean": 5000,
+    "baseline": {
+      "DBSCAN": {
+        "green_pct": 3.2545454545454544,
+        "red_pct": 0,
+        "red_capture_pct": 0.0,
+        "n_green_clusters": 22,
+        "n_red_clusters": 0,
+        "n_yellow_clusters": 24
+      },
+      "HDBSCAN": {
+        "green_pct": 12.636363636363637,
+        "red_pct": 0,
+        "red_capture_pct": 0.0,
+        "n_green_clusters": 16,
+        "n_red_clusters": 0,
+        "n_yellow_clusters": 35
+      },
+      "OPTICS": {
+        "green_pct": 19.654545454545467,
+        "red_pct": 0.1272727272727273,
+        "red_capture_pct": 1.4000000000000001,
+        "n_green_clusters": 102,
+        "n_red_clusters": 1,
+        "n_yellow_clusters": 47
+      },
+      "MeanShift": {
+        "green_pct": 2.709090909090908,
+        "red_pct": 0.01818181818181818,
+        "red_capture_pct": 0.2,
+        "n_green_clusters": 10,
+        "n_red_clusters": 1,
+        "n_yellow_clusters": 11
+      }
+    },
+    "iterative": {
+      "DBSCAN": {
+        "n_iterations": 2,
+        "n_sanitized": 179,
+        "n_poisoned_pool": 0,
+        "n_residual": 5321,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 0.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          30.629140935450454
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 46,
+            "n_green_clusters": 22,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 24,
+            "green_pct": 3.2545454545454544,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 39.69610261917114,
+            "cluster_time_s": 10.31845998764038
+          },
+          {
+            "iteration": 2,
+            "n_residual": 5321,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4821,
+            "n_clusters": 24,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 24,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 30.629140935450454,
+            "tda_time_s": 38.67822337150574,
+            "cluster_time_s": 9.882259368896484
+          }
+        ]
+      },
+      "HDBSCAN": {
+        "n_iterations": 3,
+        "n_sanitized": 713,
+        "n_poisoned_pool": 0,
+        "n_residual": 4787,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 0.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          729.2790199271875,
+          11.285378514190166
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 51,
+            "n_green_clusters": 16,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 35,
+            "green_pct": 12.636363636363637,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 39.77320671081543,
+            "cluster_time_s": 10.823779106140137
+          },
+          {
+            "iteration": 2,
+            "n_residual": 4805,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4305,
+            "n_clusters": 37,
+            "n_green_clusters": 1,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 36,
+            "green_pct": 0.37460978147762747,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 729.2790199271875,
+            "tda_time_s": 34.99089312553406,
+            "cluster_time_s": 8.883259534835815
+          },
+          {
+            "iteration": 3,
+            "n_residual": 4787,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4287,
+            "n_clusters": 35,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 35,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 11.285378514190166,
+            "tda_time_s": 34.397526025772095,
+            "cluster_time_s": 8.868488550186157
+          }
+        ]
+      },
+      "OPTICS": {
+        "n_iterations": 6,
+        "n_sanitized": 1274,
+        "n_poisoned_pool": 15,
+        "n_residual": 4211,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 3.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          94.65735971882631,
+          27.7497013324037,
+          7.12351486672121,
+          1.7672436996852774,
+          2.308721894307129
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 150,
+            "n_green_clusters": 102,
+            "n_red_clusters": 1,
+            "n_yellow_clusters": 47,
+            "green_pct": 19.654545454545467,
+            "red_pct": 0.1272727272727273,
+            "red_capture_pct": 1.4000000000000001,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 39.60561227798462,
+            "cluster_time_s": 10.204751014709473
+          },
+          {
+            "iteration": 2,
+            "n_residual": 4412,
+            "n_poisoned_in_residual": 493,
+            "n_clean_in_residual": 3919,
+            "n_clusters": 76,
+            "n_green_clusters": 20,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 56,
+            "green_pct": 3.3318223028105165,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 94.65735971882631,
+            "tda_time_s": 31.990644931793213,
+            "cluster_time_s": 7.882840633392334
+          },
+          {
+            "iteration": 3,
+            "n_residual": 4265,
+            "n_poisoned_in_residual": 493,
+            "n_clean_in_residual": 3772,
+            "n_clusters": 65,
+            "n_green_clusters": 4,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 61,
+            "green_pct": 0.6330597889800703,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 27.7497013324037,
+            "tda_time_s": 31.841543436050415,
+            "cluster_time_s": 8.289100170135498
+          },
+          {
+            "iteration": 4,
+            "n_residual": 4238,
+            "n_poisoned_in_residual": 493,
+            "n_clean_in_residual": 3745,
+            "n_clusters": 63,
+            "n_green_clusters": 2,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 61,
+            "green_pct": 0.4483246814535158,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 7.12351486672121,
+            "tda_time_s": 26098.665239334106,
+            "cluster_time_s": 12.065490484237671
+          },
+          {
+            "iteration": 5,
+            "n_residual": 4219,
+            "n_poisoned_in_residual": 493,
+            "n_clean_in_residual": 3726,
+            "n_clusters": 63,
+            "n_green_clusters": 0,
+            "n_red_clusters": 1,
+            "n_yellow_clusters": 62,
+            "green_pct": 0,
+            "red_pct": 0.18961839298411945,
+            "red_capture_pct": 1.6227180527383367,
+            "wasserstein_distance": 1.7672436996852774,
+            "tda_time_s": 27.300169467926025,
+            "cluster_time_s": 5.837080955505371
+          },
+          {
+            "iteration": 6,
+            "n_residual": 4211,
+            "n_poisoned_in_residual": 485,
+            "n_clean_in_residual": 3726,
+            "n_clusters": 62,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 62,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 2.308721894307129,
+            "tda_time_s": 25.911864757537842,
+            "cluster_time_s": 5.702548980712891
+          }
+        ]
+      },
+      "MeanShift": {
+        "n_iterations": 3,
+        "n_sanitized": 166,
+        "n_poisoned_pool": 2,
+        "n_residual": 5332,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 0.4,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          962.5975944956763,
+          139.44378066335625
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 22,
+            "n_green_clusters": 10,
+            "n_red_clusters": 1,
+            "n_yellow_clusters": 11,
+            "green_pct": 2.709090909090908,
+            "red_pct": 0.01818181818181818,
+            "red_capture_pct": 0.2,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 33.909037828445435,
+            "cluster_time_s": 8.427359580993652
+          },
+          {
+            "iteration": 2,
+            "n_residual": 5350,
+            "n_poisoned_in_residual": 499,
+            "n_clean_in_residual": 4851,
+            "n_clusters": 15,
+            "n_green_clusters": 3,
+            "n_red_clusters": 1,
+            "n_yellow_clusters": 11,
+            "green_pct": 0.3177570093457944,
+            "red_pct": 0.018691588785046728,
+            "red_capture_pct": 0.2004008016032064,
+            "wasserstein_distance": 962.5975944956763,
+            "tda_time_s": 31.199721574783325,
+            "cluster_time_s": 8.400405645370483
+          },
+          {
+            "iteration": 3,
+            "n_residual": 5332,
+            "n_poisoned_in_residual": 498,
+            "n_clean_in_residual": 4834,
+            "n_clusters": 11,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 11,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 139.44378066335625,
+            "tda_time_s": 31.595556497573853,
+            "cluster_time_s": 8.795247077941895
+          }
+        ]
+      }
+    }
+  },
+  {
+    "seed": 456,
+    "n_samples": 5000,
+    "n_poisoned": 500,
+    "n_clean": 5000,
+    "baseline": {
+      "DBSCAN": {
+        "green_pct": 2.6181818181818177,
+        "red_pct": 0,
+        "red_capture_pct": 0.0,
+        "n_green_clusters": 12,
+        "n_red_clusters": 0,
+        "n_yellow_clusters": 29
+      },
+      "HDBSCAN": {
+        "green_pct": 10.690909090909093,
+        "red_pct": 0,
+        "red_capture_pct": 0.0,
+        "n_green_clusters": 17,
+        "n_red_clusters": 0,
+        "n_yellow_clusters": 41
+      },
+      "OPTICS": {
+        "green_pct": 18.636363636363644,
+        "red_pct": 0,
+        "red_capture_pct": 0.0,
+        "n_green_clusters": 93,
+        "n_red_clusters": 0,
+        "n_yellow_clusters": 49
+      },
+      "MeanShift": {
+        "green_pct": 0.5818181818181819,
+        "red_pct": 0,
+        "red_capture_pct": 0.0,
+        "n_green_clusters": 8,
+        "n_red_clusters": 0,
+        "n_yellow_clusters": 9
+      }
+    },
+    "iterative": {
+      "DBSCAN": {
+        "n_iterations": 2,
+        "n_sanitized": 144,
+        "n_poisoned_pool": 0,
+        "n_residual": 5356,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 0.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          16.4709921626986
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 41,
+            "n_green_clusters": 12,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 29,
+            "green_pct": 2.6181818181818177,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 2886.437296152115,
+            "cluster_time_s": 24.17831802368164
+          },
+          {
+            "iteration": 2,
+            "n_residual": 5356,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4856,
+            "n_clusters": 29,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 29,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 16.4709921626986,
+            "tda_time_s": 83.0826358795166,
+            "cluster_time_s": 29.104569911956787
+          }
+        ]
+      },
+      "HDBSCAN": {
+        "n_iterations": 3,
+        "n_sanitized": 603,
+        "n_poisoned_pool": 0,
+        "n_residual": 4897,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 0.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          85.66259925995578,
+          8.581178780281618
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 58,
+            "n_green_clusters": 17,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 41,
+            "green_pct": 10.690909090909093,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 120.31269001960754,
+            "cluster_time_s": 111.5014386177063
+          },
+          {
+            "iteration": 2,
+            "n_residual": 4912,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4412,
+            "n_clusters": 42,
+            "n_green_clusters": 1,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 41,
+            "green_pct": 0.30537459283387625,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 85.66259925995578,
+            "tda_time_s": 152.83307123184204,
+            "cluster_time_s": 99.15799474716187
+          },
+          {
+            "iteration": 3,
+            "n_residual": 4897,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4397,
+            "n_clusters": 41,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 41,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 8.581178780281618,
+            "tda_time_s": 147.4254026412964,
+            "cluster_time_s": 92.06166124343872
+          }
+        ]
+      },
+      "OPTICS": {
+        "n_iterations": 5,
+        "n_sanitized": 1217,
+        "n_poisoned_pool": 5,
+        "n_residual": 4278,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 1.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          71.75391810203229,
+          32.08174490870391,
+          6.316532955811882,
+          0.5897962521472259
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 142,
+            "n_green_clusters": 93,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 49,
+            "green_pct": 18.636363636363644,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 178.12283396720886,
+            "cluster_time_s": 103.49023032188416
+          },
+          {
+            "iteration": 2,
+            "n_residual": 4475,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 3975,
+            "n_clusters": 79,
+            "n_green_clusters": 21,
+            "n_red_clusters": 1,
+            "n_yellow_clusters": 57,
+            "green_pct": 3.70949720670391,
+            "red_pct": 0.11173184357541899,
+            "red_capture_pct": 1.0,
+            "wasserstein_distance": 71.75391810203229,
+            "tda_time_s": 183.5649185180664,
+            "cluster_time_s": 117.72396802902222
+          },
+          {
+            "iteration": 3,
+            "n_residual": 4304,
+            "n_poisoned_in_residual": 495,
+            "n_clean_in_residual": 3809,
+            "n_clusters": 62,
+            "n_green_clusters": 3,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 59,
+            "green_pct": 0.4646840148698885,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 32.08174490870391,
+            "tda_time_s": 139.50210309028625,
+            "cluster_time_s": 69.41375732421875
+          },
+          {
+            "iteration": 4,
+            "n_residual": 4284,
+            "n_poisoned_in_residual": 495,
+            "n_clean_in_residual": 3789,
+            "n_clusters": 60,
+            "n_green_clusters": 1,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 59,
+            "green_pct": 0.1400560224089636,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 6.316532955811882,
+            "tda_time_s": 125.98966217041016,
+            "cluster_time_s": 65.82307744026184
+          },
+          {
+            "iteration": 5,
+            "n_residual": 4278,
+            "n_poisoned_in_residual": 495,
+            "n_clean_in_residual": 3783,
+            "n_clusters": 59,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 59,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 0.5897962521472259,
+            "tda_time_s": 85.55398631095886,
+            "cluster_time_s": 10.508089303970337
+          }
+        ]
+      },
+      "MeanShift": {
+        "n_iterations": 3,
+        "n_sanitized": 36,
+        "n_poisoned_pool": 0,
+        "n_residual": 5464,
+        "sanitized_purity": 100.0,
+        "poisoned_pool_precision": 100.0,
+        "poison_capture_pct": 0.0,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "wasserstein_distances": [
+          367.99199720575785,
+          34.42494583874941
+        ],
+        "iteration_log": [
+          {
+            "iteration": 1,
+            "n_residual": 5500,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 5000,
+            "n_clusters": 17,
+            "n_green_clusters": 8,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 9,
+            "green_pct": 0.5818181818181819,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": NaN,
+            "tda_time_s": 46.499566316604614,
+            "cluster_time_s": 16.43257236480713
+          },
+          {
+            "iteration": 2,
+            "n_residual": 5468,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4968,
+            "n_clusters": 10,
+            "n_green_clusters": 1,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 9,
+            "green_pct": 0.0731528895391368,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 367.99199720575785,
+            "tda_time_s": 43.55249571800232,
+            "cluster_time_s": 16.459964752197266
+          },
+          {
+            "iteration": 3,
+            "n_residual": 5464,
+            "n_poisoned_in_residual": 500,
+            "n_clean_in_residual": 4964,
+            "n_clusters": 10,
+            "n_green_clusters": 0,
+            "n_red_clusters": 0,
+            "n_yellow_clusters": 10,
+            "green_pct": 0,
+            "red_pct": 0,
+            "red_capture_pct": 0.0,
+            "wasserstein_distance": 34.42494583874941,
+            "tda_time_s": 43.360074043273926,
+            "cluster_time_s": 15.968096017837524
+          }
+        ]
+      }
+    }
+  }
+]
