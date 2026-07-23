@@ -4,6 +4,8 @@
 
 *Updated after the **Lens 2** pass (real Wasserstein distance rebuild in `iterative_filter.py`, per `LENS2_WASSERSTEIN_INSTRUCTIONS.md`): Sections 4, 7, 8, 9, and 11 were re-verified against the current source and re-run results; Sections 1–3, 5, 6, and 10 were unaffected by this lens and are carried over unchanged.*
 
+*Updated again after the **Lens 4** pass (Chale-approximation adversarial attack substrate + attributed Monkam-style baseline, per `LENS4_ADVERSARIAL_SUBSTRATE_PHASE1/2/3_*.md`): new Section 12 covers this lens in full; Section 11's file manifest gained the new files; Sections 1–10 are otherwise unaffected and carried over unchanged. **This lens is a faithful-as-possible Monkam-style substrate and an attributed baseline capture rate under it — it explicitly does not reproduce Monkam et al.'s results; see Section 12 for the gap and its documented divergences.***
+
 ---
 
 ## 1. Project Overview
@@ -509,7 +511,13 @@ OPTICS iteration counts: UNSW-NB15 mean 4.2 ± 1.17 iterations (range 3–6); CI
 | `C:\TDA\cc_instructions_1.md` / `_2.md` / `_3.md` | Original phase-by-phase build-out instructions (history) | 995 / 1085 / 838 |
 | `C:\TDA\cc_summary_generator.md` | Instructions used to generate this summary (archived to `archive\`) | — |
 | `C:\TDA\LENS2_WASSERSTEIN_INSTRUCTIONS.md` | Instructions for the Lens 2 pass (real Wasserstein distance rebuild, documented throughout this file) | — |
+| `C:\TDA\LENS3_MINIMAX_PHASE1_INSTRUCTIONS.md` | Instructions for the Lens 3 Phase 1 feasibility investigation (game-theoretic minimax defense; no code written) | — |
+| `C:\TDA\LENS4_ADVERSARIAL_SUBSTRATE_PHASE1_INSTRUCTIONS.md` / `_PHASE2_BUILD_...md` / `_PHASE3_RUN_...md` | Instructions for the Lens 4 arc (adversarial substrate; documented in Section 12) | — |
+| `C:\TDA\adversarial_attack.py` | [Lens 4] Chale-approximation attack substrate: `random_swap`, `malicious_random_attack` ("R60"), `chale_ga_attack` ("G60") modes + surrogate training. `poison.py` untouched. | — |
+| `C:\TDA\run_lens4_baseline.py` | [Lens 4] Single-pass Monkam-style baseline driver against the attack variants above | — |
+| `C:\TDA\models\surrogate_mlp.joblib` / `surrogate_rf.joblib` | [Lens 4] Trained surrogate NIDS classifiers (seed 42, reused not retrained across seeds) | — |
 | `C:\TDA\Monkam_DeLucia_Bastian.pdf` | Seed paper PDF | — |
+| `C:\TDA\ferrara_paper.pdf` | Ferrara (2025) paper PDF — primary source for Lens 1's Eq 3.3 and Lens 3's Eq 4.3/Algorithm 3 | — |
 | `C:\TDA\run_baseline_test1.txt` | Saved console log from an early baseline test run | 1024 |
 | `C:\TDA\data\Payload_data_UNSW.csv` | UNSW-NB15 Payload-Byte dataset | ~258 MB |
 | `C:\TDA\data\Payload_data_CICIDS2017.csv` | CICIDS2017 Payload-Byte dataset | ~4.58 GB |
@@ -522,6 +530,9 @@ OPTICS iteration counts: UNSW-NB15 mean 4.2 ± 1.17 iterations (range 3–6); CI
 | `C:\TDA\results\multi_seed_per_seed_unsw_nb15_smoke.json` | Lens 2 verification artifact: reduced 3-seed (42, 123, 456) smoke test on UNSW-NB15, confirms schema/behavior match the standard sweep — not a replacement for the 5-seed results above | 31,231 bytes |
 | `C:\TDA\results\multi_seed_aggregated_unsw_nb15_smoke.json` | Aggregated version of the above 3-seed smoke test | 10,077 bytes |
 | `C:\TDA\results\multi_seed_log.txt` | Full console log of the original 5-seed multi-seed run | 207,154 bytes |
+| `C:\TDA\results\lens4_baseline_seed42_ladder.json` | [Lens 4] Seed-42 attribution ladder (L, R60, G60-MLP, G60-RF), all 4 algorithms | 7,132 bytes |
+| `C:\TDA\results\lens4_baseline_multiseed.json` | [Lens 4] R60 and G60-MLP across all 5 seeds | 15,901 bytes |
+| `C:\TDA\results\lens4_baseline_full.json` | [Lens 4] Combined output of both files above | 24,881 bytes |
 | `C:\TDA\figures\convergence_curves.png` | Per-iteration convergence, 4 algorithms (UNSW, single run) | 441,895 bytes |
 | `C:\TDA\figures\algorithm_comparison.png` | Final pool sizes per algorithm (UNSW, single run) | 148,258 bytes |
 | `C:\TDA\figures\wasserstein_convergence.png` | Wasserstein distance per iteration (UNSW, single run) — regenerated post-Lens-2 with the new real distance values; `visualize.py` needed no code changes since the JSON schema was preserved | 183,312 bytes |
@@ -531,6 +542,50 @@ OPTICS iteration counts: UNSW-NB15 mean 4.2 ± 1.17 iterations (range 3–6); CI
 | `C:\TDA\figures\purity_and_precision.png` | Sanitized purity vs. poisoned-pool precision, both datasets | 133,582 bytes |
 | `C:\TDA\figures\per_seed_spread.png` | Per-seed robustness scatter, both datasets | 149,393 bytes |
 | `C:\TDA\figures\summary_table.png` | Poster-ready results table | 146,926 bytes |
+
+---
+
+## 12. Lens 4 — Adversarial Substrate (Chale-Approximation Attack + Attributed Baseline)
+
+**What this lens is:** Ferrara's TVI/game-theory work (Lenses 1/3) needs a realistic attack to be meaningful against — `poison.py`'s Gaussian-noise + random-byte-swap poisoning is a crude stand-in the codebase itself has always flagged as a simplification. Lens 4 builds a more realistic (but still approximated) version of the attack Monkam's own paper cites — Chale et al. (2023)'s surrogate-loss-guided functionally-equivalent byte substitution — and re-runs Monkam's single-pass static-threshold baseline under it, so later lenses have a better foundation than the original random-noise poisoning. **It does not attempt to reproduce Monkam's reported capture numbers**; the framing throughout is a relative, internal comparison (baseline vs. later extensions, on the same substrate), with Monkam's ~40–70% used only as a sanity-check neighborhood.
+
+### 12.1 What was built
+
+- **`adversarial_attack.py`** (new module, `poison.py` left untouched as the reference). Three modes, all sharing `poison_dataset`'s `(X_combined, y_combined, is_poisoned)` contract:
+  - `random_swap` — delegates to `poison.poison_dataset` verbatim (bit-for-bit equivalence confirmed by direct array comparison, not just re-implemented and hoped-to-match).
+  - `malicious_random_attack` ("R60") — draws `n_poison` targets from the malicious class only (a documented divergence from `poison.py`'s label-agnostic draw), applies one random 60-byte-swap set per sample, no guidance. Isolates perturbation magnitude + targeting from adversarial sophistication.
+  - `chale_ga_attack` ("G60") — same malicious-only targeting, but a generational search (population 50, generations 100, early-stops at surrogate benign-probability ≥ 0.5) over 60-byte-swap sets, each scored by a surrogate classifier's benign-class probability. Byte-swap moves preserve value range and multiset by construction, so validity is structural — confirmed at 100% across every run, not assumed.
+- **Two surrogate NIDS classifiers** (`train_surrogates`, saved to `models/`): primary `MLPClassifier(128,32)` (chosen over a torch CNN — a `pip install torch --dry-run` showed no dependency conflicts in this env, but adding a ~122MB deep-learning dependency to a pinned giotto-tda/Python-3.12 research env was judged not worth it for a component whose fidelity "cancels out" of the relative comparison per the lens's own framing), secondary `RandomForestClassifier` for a surrogate-sensitivity check (a separate instance from `classifier_eval.py`'s evaluator — never shared, so the attack is never evaluated against the same model it was optimized against). Held-out accuracy: MLP 96.9%, RF 98.5% (majority-class baseline 73.8%).
+- **`run_lens4_baseline.py`** (new driver, does not modify or import from `run_baseline.py`/`run_iterative.py`/`run_multi_seed.py`) — single-pass `run_all_clustering` + `classify_clusters` (unmodified 100%-purity rule, no iteration) against each attack variant.
+
+### 12.2 A real performance bug found and fixed mid-build
+
+The GA search's population-scoring originally called the surrogate's `predict_proba` once per candidate. This was fine for MLP (0.215 ms/call) but RF turned out to be **~72× slower per call** (15.5 ms/call — 100-tree ensemble dispatch overhead dominates at batch size 1), which would have made the RF-guided attack take hours. Fixed by batching each generation's population into a single `predict_proba` call (`ga_search_one_sample`'s `score_population` helper) — a ~27× speedup for RF, and a smaller speedup for MLP too. This is documented because it reveals a real gap in the build discipline: Phase 2's "measure, don't assume" convergence-probe gate was only ever run against the MLP surrogate, not RF, and the grid it produced wasn't automatically safe to reuse for a different surrogate.
+
+### 12.3 Attribution results (seed 42, single-pass OPTICS capture — DBSCAN/HDBSCAN/MeanShift stay ~0 across every variant)
+
+| Variant | Capture % | Notes |
+|---|---|---|
+| L (legacy `poison.py`) | 6.60 | reference point |
+| R60 (magnitude/targeting control) | 2.20 | **lower** than L — more perturbation + malicious-only targeting made poison *less* detectable; mechanism not confirmed |
+| G60-MLP (guided) | 6.20 | recovers to roughly the L baseline; ≈2.8× R60 |
+| G60-RF (guided, RF surrogate) | 11.80 | nearly 2× G60-MLP, despite RF succeeding at evasion far less often (17.6% vs. 83.8% flip rate) |
+
+**Multi-seed confirmation (R60 vs. G60-MLP, OPTICS, seeds 42/123/456/789/1024):** R60 = 1.80% ± 0.51%, G60-MLP = 6.48% ± 1.24%. Per-seed delta is positive in all 5 seeds (+4.68 ± 1.57 pts, range +2.40 to +7.20) — **the sign is stable**, so "guided evasion is more topologically detectable than magnitude-matched random noise" is the one number from this lens ready to enter a writeup.
+
+**Two caveats that any lens built on this substrate must carry forward:**
+1. Capture is **not stable across which surrogate guided the attack** (6.2% MLP vs. 11.8% RF) — a real substrate fragility, not yet explained.
+2. **No variant reaches Monkam's reported ~40–70% capture neighborhood** (best case 11.8%) — reported as a genuine, unresolved gap rather than minimized. Candidate contributors (none confirmed as the explanation): the 60-vs-72 feature gap, the append/in-place poisoning divergence, and the fact that Monkam's own paper never specifies what classifier arrangement their cited attacks assume (confirmed absent from the text in Phase 1 — not an assumption on this project's part).
+
+### 12.4 Full divergence list from Monkam (for the limitations record)
+
+60 vs. 72 extracted features; Monkam's own Algorithm-1-pseudocode-vs-prose inconsistency on the binarizer threshold (0.4 vs. 0.3 — this project matches the pseudocode); append + `is_poisoned` ground truth vs. Monkam's in-place poisoning; malicious-only target selection vs. Monkam's entirely unspecified targeting scheme; an approximated (swap-based GA), not original, Chale et al. attack; a surrogate classifier Monkam's paper never specifies or builds; and the RF-batching fix needed to make the MLP-tuned GA grid tractable at all for a second surrogate.
+
+**Explicitly not claimed:** that this substrate reproduces Monkam's setup or results. It is a faithful-as-possible Monkam-style substrate and an attributed baseline capture rate under a documented, approximated attack — useful as the new relative-comparison reference point for Lens 1/3, not as a validation of the original paper's numbers.
+
+### 12.5 Deferred
+
+Hore et al.'s deep-RL attack was evaluated in Phase 1 and deliberately deferred (representation gap — raw PCAP vs. this project's Payload-Byte vectors; no public code found; full DRL framework build judged low-confidence relative to cost). This substrate covers Chale-style byte-swap evasion only.
 
 ---
 
