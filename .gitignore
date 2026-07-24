@@ -16,6 +16,9 @@ data/
 
 # Research paper PDF (copyrighted)
 *.pdf
+# ...but generated poster/paper figures are project artifacts, not sources.
+# Must stay after *.pdf: git applies the last matching pattern.
+!figures/*.pdf
 
 # Generated results (regenerable by running the scripts)
 results/
@@ -38,5 +41,10 @@ Thumbs.db
 .idea/
 
 # CC instruction files
-docs/
+# Exclude the directory's *contents*, not the directory itself: git does not
+# descend into an excluded directory, so a negation under `docs/` would be
+# silently inert (gitignore(5)). This shape lets the .md negation take effect.
+docs/*
+!docs/*.md
 CLAUDE.md
+PHASE_V_INSTRUCTIONS.md

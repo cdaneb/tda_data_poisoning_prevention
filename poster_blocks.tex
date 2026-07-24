@@ -1,0 +1,123 @@
+% =====================================================================
+% POSTER BLOCKS -- CONDENSED. 3-4 bullets per section.
+% tikzposter, pure LaTeX math (safe under latin9 inputenc).
+% Layout: LEFT = Motivation/Related Work/RQ | CENTER = Methods I+II | RIGHT = Results/Conclusions
+% Delete the SIR/ODE "Model Block" -- template filler.
+% =====================================================================
+
+
+\block[titleleft,roundedcorners=16]{Motivation}{
+	\raggedright
+	\begin{itemize}
+		\item ML-based intrusion detection systems train on network traffic that adversaries partly control.
+		\item \textbf{Data poisoning} injects corrupted samples into that training data to degrade accuracy.
+		\item Defense must act \textbf{before training} --- no trained model, no trustworthy labels.
+		\item Monkam et al.\ (2024) apply \textbf{topological data analysis} here. \textbf{What can that lens see?}
+	\end{itemize}
+}
+
+
+\block[titleleft,roundedcorners=16]{Related Work}{
+	\raggedright
+	\begin{itemize}
+		\item \textbf{Cohen-Steiner et al.\ (2007).} Stability: small data perturbations give small topological change --- this licenses topology as a detector.
+		\item \textbf{Monkam, De Lucia \& Bastian (2024).} Payload bytes $\to$ images $\to$ cubical persistence $\to$ clustering removes poisoned packets pre-training.
+		\item \textbf{Ferrara (2025).} Topological vulnerability index and minimax defense. \emph{Thm.\ 2}: optimal attacks raise classification error and topological distortion \emph{together}.
+	\end{itemize}
+}
+
+
+\block[titleleft,roundedcorners=16]{Research Question}{
+	\raggedright
+	\begin{itemize}
+		\item \textbf{Hypothesis:} our low detection rate was caused by unrealistically weak synthetic poison.
+		\item \textbf{Test:} a realistic attack --- surrogate NIDS classifier $+$ genetic search over functionality-preserving byte swaps.
+		\item \textbf{Result:} detectability is \emph{not} ordered by realism.
+	\end{itemize}
+
+	\begin{center}
+	\begin{tabular}{l|c}
+		\textbf{Attack} & \textbf{Poison captured}\\
+		\hline
+		Random swaps        & $1.80\% \pm 0.51$\\
+		Noise $+$ swaps     & $3.52\% \pm 1.79$\\
+		Gaussian noise      & $4.96\% \pm 1.64$\\
+		\textbf{Guided swaps} & $\mathbf{6.48\% \pm 1.24}$\\
+	\end{tabular}
+	\end{center}
+
+	\innerblock{}{
+		\centering
+		\textbf{What determines whether poisoning is topologically detectable --- the attack's invariance structure, or the filtration's sensitivities?}
+	}
+}
+
+
+\block[titleleft,roundedcorners=16]{Methods I: An Invariance Argument}{
+	\raggedright
+	A swap attack permutes byte positions: $\sigma \in S_{1500}$ acting on $x \in \{0,\dots,255\}^{1500}$. Binarization $b$ is \emph{pointwise}, so it commutes with $\sigma$:
+
+	\innerblock[bodywidth=0.8\linewidth]{}{
+	\[
+		b(x \circ \sigma) = b(x) \circ \sigma
+		\quad\Longrightarrow\quad
+		\sum_{i} b(x_i) \ \text{is invariant.}
+	\]
+	}
+
+	\begin{itemize}
+		\item Swaps \textbf{rearrange} foreground pixels --- never change how many.
+		\item Count-based features are blind; only \textbf{position-dependent} filtrations (Height, Radial) can respond.
+		\item Noise changes byte \emph{values}, crosses the threshold, and registers in \textbf{every} channel.
+		\item \textbf{Confirmed:} swaps changed the count in $0$ of $200$ samples; noise shifted it by $|\Delta| = 15.8$.
+	\end{itemize}
+
+	\innerblock{}{
+		\centering
+		\textbf{Attenuated, not invisible.} The count channel is closed by algebra; the position channel stays open.
+	}
+}
+
+
+\block[titleleft,roundedcorners=16]{Methods II: Design}{
+	\raggedright
+	\begin{itemize}
+		\item UNSW-NB15, $5{,}000$ samples, $10\%$ poison, \textbf{5 seeds}; $60$ topological features; OPTICS reported (other algorithms $\approx 0$).
+		\item A \textbf{surrogate classifier} was required --- the cited attacks are model-relative, but the source paper specifies none. MLP ($0.969$), RF cross-check ($0.985$).
+		\item \textbf{Validity is structural:} permutation preserves byte range and multiset, so $100\%$ of samples stay well-formed.
+	\end{itemize}
+
+	\begin{center}
+	\begin{tabular}{l|c|c|l}
+		\textbf{Cell} & \textbf{Noise} & \textbf{Swaps} & \textbf{Isolates}\\
+		\hline
+		N   & on  & ---    & noise\\
+		S   & off & random & swaps\\
+		SG  & off & guided & guidance\\
+		NS  & on  & random & noise $+$ swaps\\
+		NSG & on  & guided & guidance under noise
+	\end{tabular}
+	\end{center}
+}
+
+
+\block[titleleft,roundedcorners=16]{Results}{
+	\raggedright
+	\begin{center}
+	\begin{tabular}{l|c|c|l}
+		\textbf{Effect} & $\Delta$ & \textbf{Seeds} & \textbf{Verdict}\\
+		\hline
+		Guidance (no noise)   & $+4.68$ & 5/5 & \textbf{robust}\\
+		Noise (no guidance)   & $+1.72$ & 4/5 & modest\\
+		Noise (with guidance) & $-1.60$ & 4/5 & \emph{sign flip}\\
+		Guidance (w/ noise)   & $+1.36$ & 3/5 & inconclusive\\
+		Surrogate (MLP/RF)    & $+1.44$ & 3/5 & inconclusive\\
+	\end{tabular}
+	\end{center}
+
+	\begin{itemize}
+		\item \textbf{One robust effect:} guidance raises capture $+4.68$ points, positive in all 5 seeds --- optimizing for \emph{classification} error made the attack \emph{more} topologically detectable.
+		\item \textbf{Interaction:} noise helps detection when unguided, hurts it when guided. Guidance creates a coherent signature that noise scrambles.
+		\item \textbf{No configuration} approached the $40$--$70\%$ reported by the source paper.
+	\end{itemize}
+}

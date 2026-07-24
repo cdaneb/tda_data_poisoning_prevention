@@ -89,8 +89,8 @@ direction $d$. Pixels enter in order of "height" along $d$. **Depends only on po
 Filtering function $f(p) = \lVert p - c \rVert$ — distance from a chosen center $c$. Pixels enter outward
 from $c$. **Also depends only on position.**
 
-Your pipeline uses five: two Height (directions $[0,1]$, $[1,0]$) and three Radial (centers $[0,1500]$,
-$[0,750]$, $[1500,0]$). All five are position-dependent, which is exactly why swap attacks register at all.
+Your pipeline uses five: two Height (directions $[0,1]$, $[1,0]$) and three Radial (centers $[0,50]$,
+$[0,25]$, $[30,0]$). All five are position-dependent, which is exactly why swap attacks register at all.
 
 ### Cubical persistence
 Persistent homology computed on a **cubical complex** — a grid of pixels — rather than on a simplicial
@@ -198,7 +198,7 @@ $\mathbb{F}_2$) and `homology_dimensions=(0,1)`.
 3. **Filtration** (converts binary back to grayscale). `HeightFiltration` assigns each *activated* pixel its
    distance from the hyperplane defined by a direction vector; `RadialFiltration` assigns distance from a
    chosen center. Deactivated pixels receive the maximum value. Five are used: directions $[0,1]$, $[1,0]$;
-   centers $[0,1500]$, $[0,750]$, $[1500,0]$.
+   centers $[0,50]$, $[0,25]$, $[30,0]$.
 4. **Persistence.** GUDHI builds the sublevel-set filtration: as $t$ increases, cells with filtration value
    $\leq t$ enter the complex. Components appear and merge ($H_0$); loops open and close ($H_1$). Each
    feature's $(\text{birth}, \text{death})$ is recorded. The computation is the standard persistence

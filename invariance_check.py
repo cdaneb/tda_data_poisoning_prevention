@@ -25,12 +25,33 @@ def _as_images(X):
     return X if X.ndim == 3 else reshape_for_tda(X)
 
 
+def binarize(X, threshold=0.4):
+    """
+    Binarized images plus the fitted max_value_, using the pipeline's own
+    Binarizer, fit across the whole collection X (matching how
+    build_tda_pipeline() fits it — one max_value_ per batch, not per sample).
+
+    Callers that need the images themselves (e.g. rendering the binarized
+    triptych) use this so the threshold rule lives in exactly one place;
+    foreground_count() is a thin count on top of it.
+
+    Args:
+        X: (N, 1500) raw payload bytes, or (N, 30, 50) reshaped images.
+        threshold: Binarizer threshold (fraction of fitted max_value_).
+
+    Returns:
+        binarized: (N, 30, 50) bool array.
+        max_value_: float — the fitted max_value_.
+    """
+    images = _as_images(X)
+    binarizer = Binarizer(threshold=threshold, n_jobs=-1)
+    binarized = binarizer.fit_transform(images)
+    return binarized, binarizer.max_value_
+
+
 def foreground_count(X, threshold=0.4):
     """
-    Per-sample count of activated (foreground) pixels after binarization,
-    using the pipeline's own Binarizer, fit across the whole collection X
-    (matching how build_tda_pipeline() fits it — one max_value_ per batch,
-    not per sample).
+    Per-sample count of activated (foreground) pixels after binarization.
 
     Args:
         X: (N, 1500) raw payload bytes, or (N, 30, 50) reshaped images.
@@ -41,11 +62,9 @@ def foreground_count(X, threshold=0.4):
         max_value_: float — the fitted max_value_, for max_value_check /
             crossed_threshold.
     """
-    images = _as_images(X)
-    binarizer = Binarizer(threshold=threshold, n_jobs=-1)
-    binarized = binarizer.fit_transform(images)
+    binarized, max_value_ = binarize(X, threshold=threshold)
     counts = binarized.reshape(len(binarized), -1).sum(axis=1)
-    return counts, binarizer.max_value_
+    return counts, max_value_
 
 
 def positions_changed(x_clean, x_perm):
