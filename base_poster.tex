@@ -1,0 +1,239 @@
+% =====================================================================
+%  MathFest 2026 Poster -- 36 in x 36 in  [CONDENSED, 2-COLUMN FOOTER]
+%  "What Can a Persistence Diagram See?"
+%  Christian Dane Beels, advised by Dr. Joseph Dorta
+%  Template base: Sofia Jijon (https://sjijon.github.io)
+%
+%  LAYOUT: outer columns are 0.67 / 0.33.
+%    - The 0.67 column holds a subcolumns environment (Motivation etc.
+%      | Methods I+II), then the References block BELOW the subcolumns,
+%      so References spans two columns only.
+%    - The 0.33 column runs uninterrupted to the bottom of the poster.
+%  If \usepackage[colalign]{aligncolsatbottom} conflicts with subcolumns,
+%  drop the [colalign] option -- it is the one untested interaction here.
+% =====================================================================
+
+\documentclass[a0paper,portrait,margin=0mm, colspace=24pt,subcolspace=24pt,blockverticalspace=22pt,innermargin=-40pt]{tikzposter}
+\geometry{paperwidth=36in,paperheight=36in,margin=0mm}
+
+\usepackage[latin9]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+% \usepackage[colalign]{aligncolsatbottom}
+% ^ DISABLED (Phase V6): aligncolsatbottom is not on CTAN and is not in the
+% MiKTeX package database, so this line is a hard build failure, not the
+% "untested interaction" the header anticipated. Its only effect was cosmetic
+% bottom-alignment of columns. Restore only if you obtain the .sty locally.
+
+\setlist[itemize]{leftmargin=*,itemsep=5pt,topsep=3pt,parsep=0pt,partopsep=0pt}
+
+%......................................................................
+\tikzposterlatexaffectionproofoff
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning}
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\definecolor{MyFadedNavy}{rgb}{0.224, 0.259, 0.310}
+\definecolor{MyTerracotta}{rgb}{0.914, 0.310, 0.216}
+\definecolor{MyIvory}{rgb}{0.965, 0.969, 0.922}
+
+\usetheme{Default}
+\definecolorstyle{MyStyle2016}{
+	\definecolor{ColorOne}{named}{MyFadedNavy}
+	\definecolor{ColorTwo}{named}{MyTerracotta}
+	\definecolor{ColorThree}{named}{MyIvory}
+}{
+    \colorlet{titlebgcolor}{ColorOne}
+    \colorlet{titlefgcolor}{white}
+    \colorlet{backgroundcolor}{ColorOne!15}
+    \colorlet{framecolor}{ColorOne}
+    \colorlet{blocktitlebgcolor}{white}
+    \colorlet{blocktitlefgcolor}{ColorTwo}
+    \colorlet{blockbodybgcolor}{white}
+    \colorlet{blockbodyfgcolor}{black}
+    \colorlet{innerblocktitlebgcolor}{ColorOne!15}
+    \colorlet{innerblocktitlefgcolor}{black}
+    \colorlet{innerblockbodybgcolor}{ColorOne!15}
+    \colorlet{innerblockbodyfgcolor}{black}
+    \colorlet{notebgcolor}{ColorTwo!20}
+    \colorlet{notefgcolor}{ColorTwo}
+    \colorlet{notefrcolor}{ColorTwo}
+ }
+
+\usecolorstyle{MyStyle2016}
+%......................................................................
+\title{\parbox{0.92\linewidth}{\centering What Can a Persistence Diagram See?\\[0.3cm]
+{\Large Invariance Structure and the Detectability of Data Poisoning}}}
+
+\author{\underline{Christian Dane Beels}, Dr.\ Joseph Dorta}
+
+\institute{Department of Mathematical Sciences\\United States Military Academy, West Point, NY.}
+
+%......................................................................
+\begin{document}
+
+\maketitle[width=0.96\linewidth,titletoblockverticalspace=24pt,linewidth=0,roundedcorners=10]
+
+\begin{columns}
+%======================================================================
+%  WIDE LEFT COLUMN (0.67) -- two subcolumns, then the References strip
+%======================================================================
+\column{0.67}
+
+\begin{subcolumns}
+%----------------------------------------------------------------------
+\subcolumn{0.49}
+
+\block[titleleft,roundedcorners=16]{Motivation}{
+	\raggedright
+	\begin{itemize}
+		\item Network Intrusion Detection Systems (NIDS) are necessary to protect computers from malicious network traffic. \textbf{Data poisoning} has the potential to corrupt the model by altering its training dataset.
+		\item The defense must run \textbf{before training}: unsupervised, with no trustworthy labels.
+		\item Monkam et al.\ [1] filter poison topologically --- bytes $\to$ image $\to$ cubical persistence $\to$ clustering. \textbf{What can that lens see?}
+	\end{itemize}
+}
+
+\block[titleleft,roundedcorners=16]{Related Work}{
+	\raggedright
+	\begin{itemize}
+		\item \textbf{Cohen-Steiner et al.\ (2005) [3].} Diagrams are stable: small perturbations give small bottleneck change. The warrant for topology as a detector.
+		\item \textbf{Monkam, De Lucia \& Bastian (2024) [1].} The pipeline reconstructed here; reports $40$--$70\%$ of poison removed.
+		\item \textbf{Ferrara (2025) [2].} Thm.\ 2 couples classification error and topological distortion --- under hypotheses (linear classifiers, Vietoris--Rips, Frobenius balls) that all fail here. A complementary axis: \emph{which points} to attack, where we ask \emph{which algebra} registers.
+	\end{itemize}
+}
+
+\block[titleleft,roundedcorners=16]{Research Question}{
+	\raggedright
+	\begin{itemize}
+		\item \textbf{Hypothesis:} our low capture rate came from unrealistically weak synthetic poison. \textbf{Test:} a surrogate-guided, validity-preserving swap attack.
+		\item \textbf{Refuted.} Nothing approached $40$--$70\%$; the highest capture under any committed configuration was $6.48\%$. The gap is structural, not a matter of realism.
+	\end{itemize}
+
+	\innerblock{}{
+		\centering
+		\textbf{What determines topological detectability --- the attack's invariance structure, or the filtration's sensitivities?}
+	}
+}
+
+%----------------------------------------------------------------------
+\subcolumn{0.51}
+
+\block[titleleft,roundedcorners=16]{Methods I: An Invariance Argument}{
+	\raggedright
+	A swap attack applies $\sigma \in S_{1500}$ to the payload $x \in \{0,\dots,255\}^{1500}$. Binarization $b$ is pointwise, so it commutes with $\sigma$:
+
+	\innerblock[bodywidth=0.86\linewidth]{}{
+	\[
+		\underbrace{b(x \circ \sigma) = b(x) \circ \sigma}_{\text{equivariance}}
+		\ \ \Longrightarrow\ \
+		\underbrace{\sum_{i} b\big((x \circ \sigma)_i\big) = \sum_{i} b(x_i)}_{\text{count is invariant}}
+	\]
+	}
+
+	\begin{itemize}
+		\item \textbf{Equivariance is not invariance.} Binarization commutes; the \emph{count} is what is fixed. Both steps are needed, and the result holds for every $\sigma$, not just the ${\sim}60$ transpositions applied.
+		\item Every count-derived feature is therefore blind to permutation. Detection must flow through the \textbf{position-dependent} filtrations (Height, Radial). Invariance that is too coarse is a known hazard --- the motivation for group-equivariant operators [4].
+		\item The threshold is a fraction of the batch maximum --- data-dependent, but a maximum is itself permutation-invariant.
+	\end{itemize}
+
+	\begin{center}
+	\includegraphics[width=0.98\linewidth]{figures/figure_v2_binarized_triptych}
+	\end{center}
+
+	\innerblock{}{
+		\centering
+		\textbf{The count channel is provably insensitive to permutation; the position channel stays open.}\\
+		Attenuated on the foreground-count channel --- not absent.
+	}
+}
+
+\block[titleleft,roundedcorners=16]{Methods II: Design}{
+	\raggedright
+	\begin{itemize}
+		\item UNSW-NB15, $5{,}000$ packets, $10\%$ poison, $5$ seeds. Each $1500$-byte payload $\to$ $30 \times 50$ image; $5$ filtrations $\times$ $6$ vectorizations $\times$ $2$ homology dimensions $= 60$ features --- the binarize--filtration--cubical pattern of Garin \& Tauzin [5]. OPTICS reported; other clusterers $\approx 0$.
+		\item \textbf{Capture} $=$ poison landing in \emph{$100\%$-pure} clusters. Zero-tolerance: a $99\%$-poison cluster counts for nothing.
+		\item Four multiset-preserving families, so every poisoned packet stays well-formed. Invariance measured directly: $1{,}600$ count checks ($200$ packets $\times$ $4$ families $\times$ $2$ thresholds), Gaussian noise as positive control.
+	\end{itemize}
+}
+
+\end{subcolumns}
+%----------------------------------------------------------------------
+%  REFERENCES -- spans the two subcolumns above, not the right column
+%----------------------------------------------------------------------
+\block[titleleft,roundedcorners=16]{References}{
+\small
+\begin{itemize}[itemsep=2pt]
+	\item[{[1]}] G. F. Monkam, M. J. De Lucia, and N. D. Bastian, ``A topological data analysis approach for detecting data poisoning attacks against machine learning based network intrusion detection systems,'' \emph{Computers \& Security}, vol.\ 144, art.\ no.\ 103929, Sep.\ 2024.
+	\item[{[2]}] M. Ferrara, ``Modeling by topological data analysis and game theory for analyzing data poisoning phenomena,'' \emph{AIMS Mathematics}, vol.\ 10, no.\ 7, pp.\ 15457--15475, Jul.\ 2025.
+	\item[{[3]}] D. Cohen-Steiner, H. Edelsbrunner, and J. Harer, ``Stability of persistence diagrams,'' in \emph{Proc.\ 21st Annu.\ Symp.\ Computational Geometry (SCG '05)}, Pisa, Italy, Jun.\ 2005, pp.\ 263--271.
+	\item[{[4]}] M. G. Bergomi, P. Frosini, D. Giorgi, and N. Quercioli, ``Towards a topological--geometrical theory of group equivariant non-expansive operators for data analysis and machine learning,'' \emph{Nature Machine Intelligence}, vol.\ 1, pp.\ 423--433, 2019.
+	\item[{[5]}] A. Garin and G. Tauzin, ``A topological reading lesson: Classification of MNIST using TDA,'' arXiv:1910.08345, 2019.
+\end{itemize}
+}
+
+%======================================================================
+%  RIGHT COLUMN (0.33) -- runs to the bottom of the poster
+%======================================================================
+\column{0.33}
+
+\block[titleleft,roundedcorners=16]{Results: Four Families, One Proof}{
+	\raggedright
+	\begin{center}
+	\begin{tabular}{l|c|c|c}
+		\textbf{Family} & \textbf{Count} & \textbf{Median} & \textbf{Capture}\\
+		 & \textbf{change} & \textbf{bytes moved} & \textbf{(\%)}\\
+		\hline
+		Block reversal ($k{=}120$) & $0/200$ & $0$ & $\mathbf{0.00 \pm 0.00}$\\
+		Block swap ($2 \times 60$) & $0/200$ & $0$ & $\mathbf{0.00 \pm 0.00}$\\
+		Transpositions ($60$) & $0/200$ & $8$ & $1.80 \pm 0.51$\\
+		Cyclic shift & $0/200$ & $89$ & $6.28 \pm 1.31$\\
+	\end{tabular}
+	\end{center}
+
+	\begin{center}
+	\includegraphics[width=0.98\linewidth]{figures/figure_v3_four_families}
+	\end{center}
+
+	\begin{itemize}
+		\item \textbf{Identical invariance, a six-point spread in capture.} The invariance class alone does not determine detectability.
+		\item \textbf{The silent families barely move anything:} median $0$ bytes changed; after binarization $88\%$ and $83\%$ of packets are \emph{bit-identical} to their originals, giving identical feature vectors.
+		\item \textbf{Random swaps are quiet for a computable reason:} foreground fraction $p \approx 0.042$, so only $2p(1-p) \approx 8\%$ of transpositions change the image. Control: noise shifts the count by $|\Delta| = 14.02$.
+	\end{itemize}
+}
+
+\block[titleleft,roundedcorners=16]{Discussion}{
+	\raggedright
+	\begin{itemize}
+		\item \textbf{Capture tracks spatial disruption, not sophistication:} unguided cyclic shift ($6.28\%$) matches surrogate-guided swaps ($6.48\%$).
+		\item \textbf{A reported negative result.} Guidance gave $+4.68 \pm 1.57$ ($5/5$ seeds) on UNSW-NB15 but \textbf{does not replicate} on CICIDS2017: $-0.60 \pm 3.03$, $2/5$ seeds, per-seed $[-0.4, -2.2, +0.4, +4.2, -5.0]$ --- the sign flips and the mean crosses zero. Pre-committed; not rescued.
+		\item The invariance is elementary folklore; we find no prior statement of it for this pipeline. Scope: \emph{multiset-preserving} perturbations. Whether \emph{functional} reorderings in the same group --- header order, padding placement --- inherit the attenuation is a conjecture this motivates, \textbf{not a result}.
+	\end{itemize}
+}
+
+\block[titleleft,roundedcorners=16]{Conclusions}{
+	\raggedright
+	\begin{itemize}
+		\item One channel of the detector is \textbf{provably insensitive} to permutation attacks. No amount of data can change that.
+		\item \textbf{Insensitive is not undetectable:} four identically invariant families span $0\%$--$6.3\%$.
+		\item Detectability is a property of the \textbf{(attack, detector) pair} --- a detector's blind spots can be read off the algebra of its feature map before any experiment.
+	\end{itemize}
+
+	\innerblock{}{
+		\small
+		\textbf{Limitations.} Proof: any fixed-threshold pipeline. Empirics: one reconstruction, one primary dataset, two thresholds, $5$ seeds; cross-dataset replication attempted and failed.
+	}
+}
+
+\block[titleleft,roundedcorners=16]{Contact}{
+	\small
+	\raggedright
+	\textbf{Christian Dane Beels}\\
+	christian.beels@westpoint.edu\\
+	github.com/cdaneb/\\
+	linkedin.com/in/christiandanebeels/\\[0.2cm]
+	Dept.\ of Mathematical Sciences, USMA West Point
+}
+
+\end{columns}
+\end{document}
