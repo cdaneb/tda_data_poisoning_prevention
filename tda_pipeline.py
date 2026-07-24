@@ -20,9 +20,13 @@ from gtda.homology import CubicalPersistence
 from gtda.diagrams import Scaler, PersistenceEntropy, Amplitude
 
 
-def build_tda_pipeline():
+def build_tda_pipeline(threshold=0.4):
     """
     Build the TDA feature extraction pipeline as specified in Algorithm 1.
+
+    Args:
+        threshold: float — Binarizer threshold, as a fraction of the fitted
+            max_value_ (default 0.4, matching Algorithm 1's pseudocode).
 
     Returns:
         tda_union: sklearn Pipeline that transforms (N, 30, 50) -> (N, 72)
@@ -44,7 +48,7 @@ def build_tda_pipeline():
     # Each pipeline: Binarizer -> Filtration -> CubicalPersistence -> Scaler
     diagram_steps = [
         [
-            Binarizer(threshold=0.4, n_jobs=-1),
+            Binarizer(threshold=threshold, n_jobs=-1),
             filtration,
             CubicalPersistence(n_jobs=-1),
             Scaler(n_jobs=-1),
@@ -91,20 +95,22 @@ def reshape_for_tda(X):
     return X.reshape(N, 30, 50)
 
 
-def extract_tda_features(X, pipeline=None):
+def extract_tda_features(X, pipeline=None, threshold=0.4):
     """
     Full TDA feature extraction: reshape + transform.
 
     Args:
         X: np.ndarray of shape (N, 1500) — payload bytes
         pipeline: optional pre-built pipeline (will build one if None)
+        threshold: float — Binarizer threshold, passed to build_tda_pipeline()
+            if pipeline is None. Ignored if pipeline is provided.
 
     Returns:
         X_tda: np.ndarray of shape (N, F) — topological features
         pipeline: the fitted pipeline (for reuse)
     """
     if pipeline is None:
-        pipeline = build_tda_pipeline()
+        pipeline = build_tda_pipeline(threshold=threshold)
 
     X_reshaped = reshape_for_tda(X)
     print(f"  Reshaped: {X.shape} -> {X_reshaped.shape}")

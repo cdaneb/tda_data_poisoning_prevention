@@ -74,6 +74,151 @@ def malicious_random_attack(X, y, poison_rate=0.10, random_state=42, n_swaps=60)
 
 
 # ---------------------------------------------------------------------------
+# Test B — other multiset-preserving permutation families (Phase P). Each
+# mirrors malicious_random_attack's shape exactly (malicious-only targeting,
+# one random draw per sample, no guidance) so the only variable between
+# families is the permutation itself. Original definitions from the prior
+# Test B run are not recoverable from this repo, so each convention below is
+# stated explicitly; a reproduction gap should be checked against these
+# conventions before being treated as a substantive discrepancy.
+# ---------------------------------------------------------------------------
+
+def block_reversal_attack(X, y, poison_rate=0.10, random_state=42, k=120):
+    """
+    Reverse one contiguous k-byte block at a random offset.
+
+    Convention: offset ~ Uniform{0, ..., n_bytes - k} (no wraparound — the
+    block never wraps past position n_bytes-1). Bytes outside the block are
+    untouched. A reversal is its own inverse and trivially preserves the
+    byte multiset (it's a permutation of positions within the block).
+    """
+    rng = np.random.default_rng(random_state)
+    y_bin = label_to_binary(y)
+    malicious_idx = np.where(y_bin == 1)[0]
+
+    N = len(X)
+    n_bytes = X.shape[1]
+    n_poison = int(N * poison_rate)
+    if n_poison > len(malicious_idx):
+        raise ValueError(f"poison_rate implies {n_poison} targets but only "
+                          f"{len(malicious_idx)} malicious samples exist")
+    if k > n_bytes:
+        raise ValueError(f"k={k} exceeds n_bytes={n_bytes}")
+
+    target_indices = rng.choice(malicious_idx, size=n_poison, replace=False)
+
+    X_poison = np.zeros((n_poison, n_bytes), dtype=np.uint8)
+    y_poison = y[target_indices].copy()
+    attack_log = []
+    for i, idx in enumerate(target_indices):
+        sample = X[idx]
+        offset = int(rng.integers(0, n_bytes - k + 1))
+        perturbed = sample.copy()
+        perturbed[offset:offset + k] = perturbed[offset:offset + k][::-1]
+        X_poison[i] = perturbed
+        valid = (perturbed.min() >= 0 and perturbed.max() <= 255 and
+                 sorted(perturbed.tolist()) == sorted(sample.tolist()))
+        attack_log.append({"target_index": int(idx), "offset": offset, "valid": bool(valid)})
+
+    X_combined = np.vstack([X, X_poison])
+    y_combined = np.concatenate([y, y_poison])
+    is_poisoned = np.concatenate([np.zeros(N, dtype=bool), np.ones(n_poison, dtype=bool)])
+    return X_combined, y_combined, is_poisoned, attack_log
+
+
+def block_swap_attack(X, y, poison_rate=0.10, random_state=42, k=60):
+    """
+    Exchange two disjoint contiguous k-byte blocks.
+
+    Convention: two offsets are drawn i.i.d. Uniform{0, ..., n_bytes - k}
+    and resampled (rejection sampling) until the two k-byte blocks don't
+    overlap (|offset_a - offset_b| >= k). The two blocks are exchanged
+    whole — order within each block is preserved, only their positions swap
+    ("2 x k" bytes moved total, k per block). Rejection sampling is cheap
+    here: n_bytes=1500 is large relative to k=60, so collisions are rare.
+    """
+    rng = np.random.default_rng(random_state)
+    y_bin = label_to_binary(y)
+    malicious_idx = np.where(y_bin == 1)[0]
+
+    N = len(X)
+    n_bytes = X.shape[1]
+    n_poison = int(N * poison_rate)
+    if n_poison > len(malicious_idx):
+        raise ValueError(f"poison_rate implies {n_poison} targets but only "
+                          f"{len(malicious_idx)} malicious samples exist")
+    if 2 * k > n_bytes:
+        raise ValueError(f"2*k={2*k} exceeds n_bytes={n_bytes}; blocks cannot be disjoint")
+
+    target_indices = rng.choice(malicious_idx, size=n_poison, replace=False)
+
+    X_poison = np.zeros((n_poison, n_bytes), dtype=np.uint8)
+    y_poison = y[target_indices].copy()
+    attack_log = []
+    for i, idx in enumerate(target_indices):
+        sample = X[idx]
+        while True:
+            offset_a = int(rng.integers(0, n_bytes - k + 1))
+            offset_b = int(rng.integers(0, n_bytes - k + 1))
+            if abs(offset_a - offset_b) >= k:
+                break
+        perturbed = sample.copy()
+        block_a = sample[offset_a:offset_a + k].copy()
+        block_b = sample[offset_b:offset_b + k].copy()
+        perturbed[offset_a:offset_a + k] = block_b
+        perturbed[offset_b:offset_b + k] = block_a
+        X_poison[i] = perturbed
+        valid = (perturbed.min() >= 0 and perturbed.max() <= 255 and
+                 sorted(perturbed.tolist()) == sorted(sample.tolist()))
+        attack_log.append({"target_index": int(idx), "offset_a": offset_a,
+                            "offset_b": offset_b, "valid": bool(valid)})
+
+    X_combined = np.vstack([X, X_poison])
+    y_combined = np.concatenate([y, y_poison])
+    is_poisoned = np.concatenate([np.zeros(N, dtype=bool), np.ones(n_poison, dtype=bool)])
+    return X_combined, y_combined, is_poisoned, attack_log
+
+
+def cyclic_shift_attack(X, y, poison_rate=0.10, random_state=42):
+    """
+    Rotate the full byte vector by a random offset.
+
+    Convention: shift ~ Uniform{1, ..., n_bytes - 1} (excludes 0 and
+    n_bytes, both of which are the identity permutation under rotation).
+    Implemented via np.roll, which wraps rather than truncating.
+    """
+    rng = np.random.default_rng(random_state)
+    y_bin = label_to_binary(y)
+    malicious_idx = np.where(y_bin == 1)[0]
+
+    N = len(X)
+    n_bytes = X.shape[1]
+    n_poison = int(N * poison_rate)
+    if n_poison > len(malicious_idx):
+        raise ValueError(f"poison_rate implies {n_poison} targets but only "
+                          f"{len(malicious_idx)} malicious samples exist")
+
+    target_indices = rng.choice(malicious_idx, size=n_poison, replace=False)
+
+    X_poison = np.zeros((n_poison, n_bytes), dtype=np.uint8)
+    y_poison = y[target_indices].copy()
+    attack_log = []
+    for i, idx in enumerate(target_indices):
+        sample = X[idx]
+        shift = int(rng.integers(1, n_bytes))
+        perturbed = np.roll(sample, shift)
+        X_poison[i] = perturbed
+        valid = (perturbed.min() >= 0 and perturbed.max() <= 255 and
+                 sorted(perturbed.tolist()) == sorted(sample.tolist()))
+        attack_log.append({"target_index": int(idx), "shift": shift, "valid": bool(valid)})
+
+    X_combined = np.vstack([X, X_poison])
+    y_combined = np.concatenate([y, y_poison])
+    is_poisoned = np.concatenate([np.zeros(N, dtype=bool), np.ones(n_poison, dtype=bool)])
+    return X_combined, y_combined, is_poisoned, attack_log
+
+
+# ---------------------------------------------------------------------------
 # Surrogate labeling / training
 # ---------------------------------------------------------------------------
 

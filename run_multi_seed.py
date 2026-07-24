@@ -10,12 +10,12 @@ Runs on BOTH datasets: UNSW-NB15 and CICIDS2017.
 import numpy as np
 import json
 import time
-from pathlib import Path
 from data_loader import load_unsw, load_cicids
 from poison import poison_dataset
 from iterative_filter import iterative_filter
 from clustering import run_all_clustering, classify_clusters
 from results_io import convert_for_json
+from paths import RESULTS_DIR
 
 
 # ============================================================
@@ -26,7 +26,6 @@ MAX_SAMPLES = 5000                  # samples per run
 POISON_RATE = 0.10
 MAX_ITERATIONS = 10
 ALGORITHMS = ["DBSCAN", "HDBSCAN", "OPTICS", "MeanShift"]
-RESULTS_DIR = Path(r"C:\TDA\results")
 # ============================================================
 
 

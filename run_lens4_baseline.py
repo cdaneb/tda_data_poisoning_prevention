@@ -15,7 +15,6 @@ import time
 import json
 import joblib
 import numpy as np
-from pathlib import Path
 
 from data_loader import load_unsw
 from tda_pipeline import extract_tda_features
@@ -24,9 +23,8 @@ from results_io import convert_for_json
 from adversarial_attack import (
     random_swap_attack, malicious_random_attack, chale_ga_attack, train_surrogates,
 )
+from paths import RESULTS_DIR, MODELS_DIR
 
-RESULTS_DIR = Path(r"C:\TDA\results")
-MODELS_DIR = Path(r"C:\TDA\models")
 SEEDS = [42, 123, 456, 789, 1024]
 MAX_SAMPLES = 5000
 POISON_RATE = 0.10

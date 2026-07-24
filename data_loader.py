@@ -11,9 +11,8 @@ Column structure (1505 columns total):
 """
 import numpy as np
 import pandas as pd
-from pathlib import Path
 
-DATA_DIR = Path(r"C:\TDA\data")
+from paths import DATA_DIR
 
 PAYLOAD_COLUMNS = [f"payload_byte_{i}" for i in range(1, 1501)]
 LABEL_COLUMN = "label"

@@ -24,6 +24,10 @@ data/
 *.log
 *.txt
 !requirements.txt
+!requirements.lock.txt
+
+# WIRE-specific path overrides (machine-local; see .env.example)
+.env.wire
 
 # OS files
 .DS_Store

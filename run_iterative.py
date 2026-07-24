@@ -8,11 +8,11 @@ comprehensive results for analysis and visualization.
 import numpy as np
 import json
 import time
-from pathlib import Path
 from data_loader import load_unsw
 from poison import poison_dataset
 from iterative_filter import iterative_filter
 from results_io import convert_for_json
+from paths import RESULTS_DIR
 
 
 def run_iterative_experiment(dataset_name, X, y, max_samples=5000,
@@ -122,7 +122,7 @@ def run_iterative_experiment(dataset_name, X, y, max_samples=5000,
                   f"{w_str:>10}")
 
     # Save results to JSON for later visualization
-    output_dir = Path(r"C:\TDA\results")
+    output_dir = RESULTS_DIR
     output_dir.mkdir(exist_ok=True)
 
     json_results = {}

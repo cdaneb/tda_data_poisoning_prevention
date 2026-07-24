@@ -49,6 +49,8 @@ source venv/bin/activate        # Linux/Mac
 pip install -r requirements.txt
 ```
 
+`requirements.txt` documents intent (loose `>=` version bounds); `requirements.lock.txt` documents the exact resolution known to reproduce this project's recorded results (see its header comment). New environments should install from `requirements.lock.txt`, not `requirements.txt`, unless intentionally testing against newer dependency versions.
+
 ## Datasets
 
 This project uses the following publicly available datasets in Payload-Byte format:
