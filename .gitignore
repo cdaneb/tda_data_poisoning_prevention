@@ -18,7 +18,7 @@ data/
 *.pdf
 
 # Generated results (regenerable by running the scripts)
-#results/
+results/
 
 # Log files
 *.log
@@ -36,3 +36,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# CC instruction files
+docs/
+CLAUDE.md
