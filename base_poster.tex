@@ -13,19 +13,20 @@
 %  drop the [colalign] option -- it is the one untested interaction here.
 % =====================================================================
 
-\documentclass[a0paper,portrait,margin=0mm, colspace=24pt,subcolspace=24pt,blockverticalspace=22pt,innermargin=-40pt]{tikzposter}
+\documentclass[a0paper,portrait,margin=0mm, colspace=24pt,subcolspace=24pt,blockverticalspace=11pt,innermargin=-40pt]{tikzposter}
 \geometry{paperwidth=36in,paperheight=36in,margin=0mm}
 
 \usepackage[latin9]{inputenc}
 \usepackage{amsmath,amssymb}
 \usepackage{enumitem}
+\usepackage{multicol}
 % \usepackage[colalign]{aligncolsatbottom}
 % ^ DISABLED (Phase V6): aligncolsatbottom is not on CTAN and is not in the
 % MiKTeX package database, so this line is a hard build failure, not the
 % "untested interaction" the header anticipated. Its only effect was cosmetic
 % bottom-alignment of columns. Restore only if you obtain the .sty locally.
 
-\setlist[itemize]{leftmargin=*,itemsep=5pt,topsep=3pt,parsep=0pt,partopsep=0pt}
+\setlist[itemize]{leftmargin=*,itemsep=3pt,topsep=2pt,parsep=0pt,partopsep=0pt}
 
 %......................................................................
 \tikzposterlatexaffectionproofoff
@@ -151,7 +152,7 @@
 	\end{itemize}
 
 	\begin{center}
-	\includegraphics[width=0.60\linewidth]{figures/figure_v2_binarized_triptych}
+	\includegraphics[width=0.55\linewidth]{figures/figure_v2_binarized_triptych}
 	\end{center}
 
 	\innerblock{}{
@@ -175,14 +176,16 @@
 %  REFERENCES -- spans the two subcolumns above, not the right column
 %----------------------------------------------------------------------
 \block[titleleft,roundedcorners=16]{References}{
-\small
-\begin{itemize}[itemsep=2pt]
+\footnotesize
+\begin{multicols}{2}
+\begin{itemize}[itemsep=2pt,leftmargin=*]
 	\item[{[1]}] G. F. Monkam, M. J. De Lucia, and N. D. Bastian, ``A topological data analysis approach for detecting data poisoning attacks against machine learning based network intrusion detection systems,'' \emph{Computers \& Security}, vol.\ 144, art.\ no.\ 103929, Sep.\ 2024.
 	\item[{[2]}] M. Ferrara, ``Modeling by topological data analysis and game theory for analyzing data poisoning phenomena,'' \emph{AIMS Mathematics}, vol.\ 10, no.\ 7, pp.\ 15457--15475, Jul.\ 2025.
 	\item[{[3]}] D. Cohen-Steiner, H. Edelsbrunner, and J. Harer, ``Stability of persistence diagrams,'' in \emph{Proc.\ 21st Annu.\ Symp.\ Computational Geometry (SCG '05)}, Pisa, Italy, Jun.\ 2005, pp.\ 263--271.
 	\item[{[4]}] M. G. Bergomi, P. Frosini, D. Giorgi, and N. Quercioli, ``Towards a topological--geometrical theory of group equivariant non-expansive operators for data analysis and machine learning,'' \emph{Nature Machine Intelligence}, vol.\ 1, pp.\ 423--433, 2019.
 	\item[{[5]}] A. Garin and G. Tauzin, ``A topological reading lesson: Classification of MNIST using TDA,'' arXiv:1910.08345, 2019.
 \end{itemize}
+\end{multicols}
 }
 
 %======================================================================
@@ -193,13 +196,12 @@
 \block[titleleft,roundedcorners=16]{Results: Four Families, One Proof}{
 	\raggedright
 	\begin{center}
-	\includegraphics[width=0.98\linewidth]{figures/figure_v3_four_families}
+	\includegraphics[width=0.88\linewidth]{figures/figure_v3_four_families}
 	\end{center}
 
 	\begin{itemize}
 		\item \textbf{The count never moved:} $0/200$ for all four families, across $1{,}600$ checks at two thresholds --- zero exceptions.
 		\item \textbf{Identical invariance, a six-point spread in capture.} The invariance class alone does not determine detectability.
-		\item \textbf{The silent families barely move anything:} median $0$ bytes changed; after binarization $88\%$ and $83\%$ of packets are \emph{bit-identical} to their originals, giving identical feature vectors.
 		\item \textbf{Random swaps are quiet for a computable reason:} foreground fraction $p \approx 0.042$, so only $2p(1-p) \approx 8\%$ of transpositions change the image. Control: noise shifts the count by $|\Delta| = 14.02$.
 	\end{itemize}
 }
