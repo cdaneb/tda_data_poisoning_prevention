@@ -165,9 +165,14 @@ def render(rows, sg_row, out_path=None):
         "axes.linewidth": 0.8,
     })
 
-    fig = plt.figure(figsize=(7.5, 6.0))
-    gs = GridSpec(3, 1, height_ratios=[3.0, 1.55, 0.62], hspace=0.28,
-                  left=0.235, right=0.975, top=0.875, bottom=0.035)
+    # Poster aspect (V7.2). The figure sits in the 0.33 column at 0.98\linewidth,
+    # so its rendered height on the board is set entirely by this ratio. Dropping
+    # 6.0 -> 3.6 in is what pays down the right column's overflow. The annotation
+    # offsets below are in *points* and do not scale with the canvas, so the
+    # margins and hspace are retuned here rather than left at their 6.0in values.
+    fig = plt.figure(figsize=(7.5, 3.6))
+    gs = GridSpec(3, 1, height_ratios=[3.0, 1.30, 1.05], hspace=0.30,
+                  left=0.250, right=0.975, top=0.830, bottom=0.020)
     ax = fig.add_subplot(gs[0])
     ax2 = fig.add_subplot(gs[1], sharex=ax)
     ax3 = fig.add_subplot(gs[2], sharex=ax)
@@ -219,7 +224,13 @@ def render(rows, sg_row, out_path=None):
                         fontsize=11.5, fontweight="bold", color=INK, zorder=6)
 
     ax.set_ylim(0, 9.2)
-    ax.set_ylabel("Poison captured (%)", fontsize=11, color=INK)
+    ax.set_ylabel("Poison captured (%)", fontsize=9.6, color=INK)
+    # Both ylabels are pinned to the same axes-x so they form one left rail;
+    # left to themselves they track their own tick-label widths and, at the
+    # compressed poster aspect, drift into each other. They are also nudged
+    # apart along y: Panel B's label is longer than Panel B is tall at this
+    # aspect, so it overhangs its panel and would meet Panel A's label.
+    ax.yaxis.set_label_coords(-0.062, 0.60)
     ax.yaxis.grid(True, color=GRID, lw=0.8)
     ax.set_axisbelow(True)
     ax.tick_params(axis="y", labelsize=9.5, colors=INK_SECONDARY, length=0)
@@ -241,7 +252,10 @@ def render(rows, sg_row, out_path=None):
                      color=INK_SECONDARY, zorder=6)
     ax2.set_ylim(0, 118)
     ax2.set_yticks([0, 50, 100])
-    ax2.set_ylabel("Samples with zero\nbyte-level footprint (%)", fontsize=9.8, color=INK)
+    # One line, not two: the two-line form is taller than this panel at the
+    # poster aspect and rides up into Panel A's ylabel.
+    ax2.set_ylabel("Zero footprint (%)", fontsize=8.6, color=INK)
+    ax2.yaxis.set_label_coords(-0.062, 0.36)
     ax2.yaxis.grid(True, color=GRID, lw=0.8)
     ax2.set_axisbelow(True)
     ax2.tick_params(axis="y", labelsize=9.5, colors=INK_SECONDARY, length=0)
@@ -251,31 +265,33 @@ def render(rows, sg_row, out_path=None):
     ax2.spines["left"].set_color(BASELINE)
     plt.setp(ax2.get_xticklabels(), visible=False)
 
-    # ---- Panel C: numeric strip --------------------------------------------
+    # ---- Panel C: category labels + numeric strip ---------------------------
+    # The category labels live in this panel rather than hanging off ax2 on a
+    # point offset. At 6.0in the offsets cleared panel C; at the poster aspect
+    # the gap shrinks but the offsets do not, and the labels landed on top of
+    # the numbers. Stacking all four rows in one axes' coordinates keeps them
+    # separated at any canvas height.
     ax3.axis("off")
     ax3.set_ylim(0, 1)
+    ROWS = [("", 0.88, 10.5, "bold", INK),          # family label
+            ("", 0.63, 8.4, "normal", INK_MUTED),   # sublabel
+            ("mean positions changed", 0.37, 9.2, "normal", INK_SECONDARY),
+            ("median positions changed", 0.11, 9.2, "normal", INK_SECONDARY)]
     # Row labels live in the left margin, in axes coords, so they can never be
     # clipped by the shared data x-limits.
-    for label, y in [("mean positions changed", 0.62), ("median positions changed", 0.20)]:
-        ax3.text(-0.022, y, label, ha="right", va="center", fontsize=8.6,
-                 color=INK_MUTED, transform=ax3.transAxes)
+    for label, y, fs, _w, _c in ROWS:
+        if label:
+            ax3.text(-0.022, y, label, ha="right", va="center", fontsize=8.2,
+                     color=INK_MUTED, transform=ax3.transAxes)
     for xi, r in enumerate(rows):
-        ax3.text(xi, 0.62, f"{r['pos_mean']:.2f}", ha="center", va="center",
-                 fontsize=9.6, color=INK_SECONDARY)
-        ax3.text(xi, 0.20, f"{r['pos_median']:.0f}", ha="center", va="center",
-                 fontsize=9.6, color=INK_SECONDARY)
+        vals = [r["label"], r["sublabel"], f"{r['pos_mean']:.2f}", f"{r['pos_median']:.0f}"]
+        for v, (_lab, y, fs, w, c) in zip(vals, ROWS):
+            ax3.text(xi, y, v, ha="center", va="center",
+                     fontsize=fs, fontweight=w, color=c)
 
-    # ---- Shared category labels --------------------------------------------
     ax.set_xlim(-0.68, len(rows) - 0.32)
     ax2.set_xticks(x)
     ax2.set_xticklabels([])
-    for xi, r in enumerate(rows):
-        ax2.annotate(r["label"], xy=(xi, 0), xycoords=("data", "axes fraction"),
-                     xytext=(0, -13), textcoords="offset points",
-                     ha="center", va="top", fontsize=10.5, fontweight="bold", color=INK)
-        ax2.annotate(r["sublabel"], xy=(xi, 0), xycoords=("data", "axes fraction"),
-                     xytext=(0, -25), textcoords="offset points",
-                     ha="center", va="top", fontsize=8.8, color=INK_MUTED)
 
     fig.text(0.030, 0.968,
              "Detectability tracks spatial disruption, not attack sophistication",

@@ -19,6 +19,9 @@ data/
 # ...but generated poster/paper figures are project artifacts, not sources.
 # Must stay after *.pdf: git applies the last matching pattern.
 !figures/*.pdf
+# The built poster is a deliverable, not a source PDF. Same rule: must stay
+# after *.pdf. Narrow by name so the two source-paper PDFs stay excluded.
+!base_poster.pdf
 
 # Generated results (regenerable by running the scripts)
 results/

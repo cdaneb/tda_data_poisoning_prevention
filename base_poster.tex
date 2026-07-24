@@ -116,6 +116,19 @@
 	}
 }
 
+% Contact lives here, not in the right column: it has no place in the
+% left-to-right reading order, it is conventionally placed low-left, and this
+% subcolumn's dead space is what pays for the right column's overflow (V7.2).
+\block[titleleft,roundedcorners=16]{Contact}{
+	\small
+	\raggedright
+	\textbf{Christian Dane Beels}\\
+	christian.beels@westpoint.edu\\
+	github.com/cdaneb/\\
+	linkedin.com/in/christiandanebeels/\\[0.2cm]
+	Dept.\ of Mathematical Sciences, USMA West Point
+}
+
 %----------------------------------------------------------------------
 \subcolumn{0.51}
 
@@ -138,7 +151,7 @@
 	\end{itemize}
 
 	\begin{center}
-	\includegraphics[width=0.98\linewidth]{figures/figure_v2_binarized_triptych}
+	\includegraphics[width=0.60\linewidth]{figures/figure_v2_binarized_triptych}
 	\end{center}
 
 	\innerblock{}{
@@ -180,22 +193,11 @@
 \block[titleleft,roundedcorners=16]{Results: Four Families, One Proof}{
 	\raggedright
 	\begin{center}
-	\begin{tabular}{l|c|c|c}
-		\textbf{Family} & \textbf{Count} & \textbf{Median} & \textbf{Capture}\\
-		 & \textbf{change} & \textbf{bytes moved} & \textbf{(\%)}\\
-		\hline
-		Block reversal ($k{=}120$) & $0/200$ & $0$ & $\mathbf{0.00 \pm 0.00}$\\
-		Block swap ($2 \times 60$) & $0/200$ & $0$ & $\mathbf{0.00 \pm 0.00}$\\
-		Transpositions ($60$) & $0/200$ & $8$ & $1.80 \pm 0.51$\\
-		Cyclic shift & $0/200$ & $89$ & $6.28 \pm 1.31$\\
-	\end{tabular}
-	\end{center}
-
-	\begin{center}
 	\includegraphics[width=0.98\linewidth]{figures/figure_v3_four_families}
 	\end{center}
 
 	\begin{itemize}
+		\item \textbf{The count never moved:} $0/200$ for all four families, across $1{,}600$ checks at two thresholds --- zero exceptions.
 		\item \textbf{Identical invariance, a six-point spread in capture.} The invariance class alone does not determine detectability.
 		\item \textbf{The silent families barely move anything:} median $0$ bytes changed; after binarization $88\%$ and $83\%$ of packets are \emph{bit-identical} to their originals, giving identical feature vectors.
 		\item \textbf{Random swaps are quiet for a computable reason:} foreground fraction $p \approx 0.042$, so only $2p(1-p) \approx 8\%$ of transpositions change the image. Control: noise shifts the count by $|\Delta| = 14.02$.
@@ -223,16 +225,6 @@
 		\small
 		\textbf{Limitations.} Proof: any fixed-threshold pipeline. Empirics: one reconstruction, one primary dataset, two thresholds, $5$ seeds; cross-dataset replication attempted and failed.
 	}
-}
-
-\block[titleleft,roundedcorners=16]{Contact}{
-	\small
-	\raggedright
-	\textbf{Christian Dane Beels}\\
-	christian.beels@westpoint.edu\\
-	github.com/cdaneb/\\
-	linkedin.com/in/christiandanebeels/\\[0.2cm]
-	Dept.\ of Mathematical Sciences, USMA West Point
 }
 
 \end{columns}
