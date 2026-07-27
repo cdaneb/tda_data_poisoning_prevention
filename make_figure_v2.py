@@ -275,6 +275,10 @@ def render(res, max_value_, idx, out_path=None):
     fig.text(0.035, 0.965,
              "Permutation rearranges foreground pixels; it never changes how many",
              fontsize=12.0, fontweight="bold", color=INK, ha="left", va="top")
+    fig.text(0.035, 0.905,
+             f"One representative packet, binarized at threshold {THRESHOLD} "
+             f"(fitted max_value_ = {max_value_:g}); foreground pixel count beneath",
+             fontsize=8.5, color=INK_MUTED, ha="left", va="top")
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     out = out_path or (FIGURES_DIR / "figure_v2_binarized_triptych.pdf")
     fig.savefig(out, dpi=200, transparent=(out.suffix == ".pdf"),
