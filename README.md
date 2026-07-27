@@ -48,6 +48,21 @@ shift (6.28%) is statistically indistinguishable from surrogate-guided search (6
 invariance is confirmed at 1,600 checks (200 packets × 4 families × 2 thresholds) with zero
 exceptions.
 
+### Phase M8: relaxed-purity diagnostic
+
+Phase M8 rescored the saved five-seed OPTICS cluster records at exact 100%, then
+strict >95%, >90%, >80%, and >50% poison purity. It is a read-only analysis:
+no attack, feature, or clustering computation was rerun. OPTICS label `-1`
+(unclustered) is excluded at every threshold; that assertion passes for every
+family and seed. Duplicate and union ceilings apply only at exact 100% purity,
+while the unclustered ceiling applies at every threshold.
+
+Relaxing purity does not close the reconstruction gap: block reversal and block
+swap remain 0%; cyclic shift reaches 12.36% at >50%; and orphaned noise Cell N
+reaches 7.52%. The full per-seed record is
+`results/phase_m_m8_purity_sweep.json`. This result does not identify the source
+study's clustering configuration or recover the original sampling frame for N.
+
 See `CLAUDE.md` §2 for full claim status, §6 for results of record, and §7 for the language
 conventions used when describing all of this. In particular: never "invisible," "evades," or
 "defeats" — the phrasing is *attenuated on the foreground-count channel*, because the highest capture
@@ -85,18 +100,19 @@ run_multi_seed.py               # multi-seed statistical validation, both datase
 run_lens4_baseline.py            # attribution-ladder runner (L / R60 / G60-MLP / G60-RF variants)
 run_test_b_capture.py            # Test B: 4 permutation families x 5 seeds x 4 clustering algorithms
 test_b_diagnostics.py             # Step 0 count-invariance gate + bit-identity/effective-swap diagnostics
+run_m8_purity_sweep.py            # read-only M7 OPTICS rescore across purity thresholds
 tools/repro_check.py               # tracked regression test -- see "Reproduction gate" below
 
 make_figure_v2.py              # poster figure V2: binarized clean/permuted/noised triptych.
                                #   Single combined Binarizer fit -- see "Combined-fit rule" below
 make_figure_v3.py              # poster figure V3: four-family comparison (poster centerpiece)
-poster_blocks.tex              # MathFest poster \block{} fragment. NOT a standalone document --
-                               #   see "Poster" below
+make_figure_m8_purity_sweep.py # M8 diagnostic curve; not poster evidence
+base_poster.tex                # standalone MathFest tikzposter source
+poster_blocks.tex              # historical MathFest poster \block{} fragment; not standalone
 
 models/                        # trained surrogate classifiers (surrogate_mlp*.joblib, surrogate_rf*.joblib)
-results/                       # experiment output JSON (seed-namespaced). GITIGNORED -- see
-                               #   "Version-control hazards" below. CLAUDE.md §6 lists which result
-                               #   sets are committed-and-backed vs. orphaned/unreproducible
+results/                       # experiment output JSON; phase_m_*.json is intentionally tracked
+                               #   as reproducibility evidence
 figures/                       # generated plots and poster figures (*.pdf re-included via .gitignore
                                #   negation; see below)
 data/                          # Payload-Byte CSVs (gitignored -- see Datasets below)
@@ -162,15 +178,42 @@ payload bytes, so they are unusable for this pipeline.
 
 ## Reproduction gate
 
+The final control passed on 2026-07-27 in the pinned Windows `venv312`
+environment: OPTICS capture was exactly **2.2000%** and
+`X_tda.shape == (5500, 60)`.
+
 Run before and after any pipeline change:
 
 ```bash
+# Windows
+venv312\Scripts\python.exe tools\repro_check.py --expect 2.2000
+
+# WIRE / POSIX
 python tools/repro_check.py --expect 2.2000
 ```
 
 Must return **2.2000% exact**, `X_tda.shape == (5500, 60)` -- seed 42, threshold 0.4, UNSW-NB15,
 OPTICS, `malicious_random_attack` with `n_swaps=60`. This is the project's standing regression test
 for "does this environment/these path changes still reproduce the recorded number."
+
+## M8 reproducibility unit
+
+Keep these files together in version control:
+
+```text
+run_m8_purity_sweep.py
+results/phase_m_m8_purity_sweep.json
+make_figure_m8_purity_sweep.py
+figures/figure_m8_purity_sweep.pdf
+docs/PHASE_M_A19_A23_REPORT.md
+```
+
+To regenerate the saved-cluster rescore and diagnostic figure:
+
+```bash
+python run_m8_purity_sweep.py
+python make_figure_m8_purity_sweep.py
+```
 
 ## Combined-fit rule
 
@@ -186,12 +229,11 @@ That protection would not survive normalized floats or any non-saturating encodi
 
 ## Version-control hazards
 
-Two `.gitignore` rules are broader than intended and have silently swallowed files:
+Two `.gitignore` rules require attention when adding artifacts:
 
-- **`results/` is active.** Existing result JSONs are tracked only because they predate the rule.
-  **Anything new saves cleanly and stays invisible to git.** This must be resolved before any work
-  that writes new results (see `CLAUDE.md` §8 items 5–8). Run `git check-ignore <path>` — with no
-  `-v`, since `-v` reports negation matches and exits 0 regardless — on any new artifact.
+- **`results/*` is active, with a deliberate exception for `results/phase_m_*.json`.** New result
+  files outside that pattern are ignored. Check each planned artifact with
+  `git check-ignore <path>` before relying on it being committed.
 - **`*.pdf`** was intended to exclude the copyrighted source papers but also caught generated
   figures. A `!figures/*.pdf` negation now re-includes them. A built poster PDF outside `figures/`
   would still be swallowed.
@@ -201,19 +243,10 @@ Two `.gitignore` rules are broader than intended and have silently swallowed fil
 
 ## Poster
 
-`poster_blocks.tex` is a fragment of tikzposter `\block{}` calls — **not a standalone document.** It
-must be `\input` by a parent that supplies `\documentclass{tikzposter}`, the title block, layout, and
-a References block. **No such parent is currently in the repo**, so the poster copy has never been
-compiled and the layout is unvalidated.
-
-The file is pure ASCII and must stay that way (`latin9` inputenc): every symbol is a LaTeX macro,
-never a literal glyph. Verify with:
-
-```bash
-LC_ALL=C grep -n '[^ -~[:space:]]' poster_blocks.tex   # must return nothing
-```
-
-Figures V2 and V3 are built and live in `figures/`.
+`base_poster.tex` is the standalone MathFest tikzposter source and references
+the generated PDFs in `figures/`. `poster_blocks.tex` remains only as a
+historical block fragment. Figures V2 and V3 are poster evidence; the M8 curve
+is a diagnostic artifact and is not poster evidence.
 
 ## Running experiments
 
@@ -235,6 +268,10 @@ python run_multi_seed.py            # long-running (~hours), both datasets
 # Poster figures
 python make_figure_v2.py
 python make_figure_v3.py
+
+# Saved-cluster M8 diagnostic (not a new experiment)
+python run_m8_purity_sweep.py
+python make_figure_m8_purity_sweep.py
 
 # Downstream classifier evaluation + figures
 python classifier_eval.py
