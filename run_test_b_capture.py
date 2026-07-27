@@ -75,6 +75,14 @@ def run_single_pass(X_combined, is_poisoned, threshold=THRESHOLD):
         per_algo[algo_name] = {
             "red_poison_capture_pct": summary["red_poison_capture_pct"],
             "colors": summary["colors"],
+            # M3 (Phase M): persist the full per-cluster purity records that
+            # classify_clusters already computes and the driver previously
+            # discarded (CLAUDE.md §8 item 5). Additive only — no existing key
+            # changes. Each record carries cluster_id (-1 = OPTICS noise bucket,
+            # already emitted as color "Noise"), size, n_poisoned, n_clean,
+            # poison_fraction, color, size_pct, dpdc. Serialized via the file's
+            # json.dump(default=convert_for_json), which handles the numpy leaves.
+            "clusters": cluster_info,
         }
     return {"tda_time_s": tda_time, "cluster_time_s": cluster_time, "per_algo": per_algo}
 

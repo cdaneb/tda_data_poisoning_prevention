@@ -36,6 +36,11 @@ ALGO = "OPTICS"
 
 # Display order == ascending mean positions value-changed. Set from the data
 # below, not asserted here; this list only fixes the labels.
+# DELIBERATELY DECOUPLED (Phase M, A13): these four names are the Test B families
+# and must NOT be regenerated from either driver's FAMILIES dict. Both drivers now
+# carry a fifth "noise" entry, which is a count-channel positive control, not a
+# Test B family; sourcing this list from them would silently add a fifth bar to
+# the poster's centerpiece figure.
 FAMILIES = [
     ("block_reversal", "Block reversal", r"$k=120$"),
     ("block_swap",     "Block swap",     r"$2\times k=60$"),

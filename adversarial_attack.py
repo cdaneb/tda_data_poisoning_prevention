@@ -219,6 +219,70 @@ def cyclic_shift_attack(X, y, poison_rate=0.10, random_state=42):
 
 
 # ---------------------------------------------------------------------------
+# Phase M — Gaussian noise as a fifth "family" (M4). Unlike the four
+# permutation families above, this one is NOT multiset-preserving: it is the
+# count-channel positive control (CLAUDE.md Claim 1 / §6 Step 0), the one
+# perturbation expected to move the foreground count. It deliberately mirrors
+# the families' shape — malicious-only targeting, target draw as the FIRST rng
+# use — so at any given seed it selects the SAME target_indices they do
+# (A2 acceptance check), keeping every cross-family comparison apples-to-apples.
+# Replicates only poison.py's noise semantics (sigma=30, clip [0,255], uint8);
+# imports nothing from it and applies NO swaps.
+# ---------------------------------------------------------------------------
+
+def gaussian_noise_attack(X, y, poison_rate=0.10, random_state=42, sigma=30):
+    """
+    Add i.i.d. Gaussian noise (mean 0, std `sigma`) to all n_bytes payload
+    bytes of each targeted sample, clip to [0, 255], cast back to uint8.
+
+    Convention: target selection (rng.choice over the malicious class) is the
+    first rng operation, identical to the four permutation families, so
+    identical `random_state` draws identical targets across all five families.
+    Noise is drawn per sample AFTER target selection. Not multiset-preserving
+    by design; `valid` therefore checks dtype/range only, never the multiset.
+    Per-sample clipping incidence is logged so M4's clipping report is
+    reconstructable from the artifact, not just the console.
+    """
+    rng = np.random.default_rng(random_state)
+    y_bin = label_to_binary(y)
+    malicious_idx = np.where(y_bin == 1)[0]
+
+    N = len(X)
+    n_bytes = X.shape[1]
+    n_poison = int(N * poison_rate)
+    if n_poison > len(malicious_idx):
+        raise ValueError(f"poison_rate implies {n_poison} targets but only "
+                          f"{len(malicious_idx)} malicious samples exist")
+
+    target_indices = rng.choice(malicious_idx, size=n_poison, replace=False)
+
+    X_poison = np.zeros((n_poison, n_bytes), dtype=np.uint8)
+    y_poison = y[target_indices].copy()
+    attack_log = []
+    for i, idx in enumerate(target_indices):
+        sample = X[idx]
+        noise = rng.normal(0, sigma, size=n_bytes)
+        noisy = sample.astype(np.float64) + noise
+        perturbed = np.clip(noisy, 0, 255).astype(np.uint8)
+        X_poison[i] = perturbed
+        # Clipping incidence: bytes whose pre-clip value fell outside [0, 255],
+        # i.e. where the clip was actually active (not mere float->uint8
+        # truncation). At sigma=30 most of the payload is zero padding, so a
+        # large share clip at 0 — a one-sided lift, not a symmetric Gaussian.
+        n_clipped = int(((noisy < 0) | (noisy > 255)).sum())
+        # NOT multiset-preserving: validity is dtype + range only.
+        valid = (perturbed.dtype == np.uint8 and
+                 perturbed.min() >= 0 and perturbed.max() <= 255)
+        attack_log.append({"target_index": int(idx), "n_clipped": n_clipped,
+                            "clip_frac": n_clipped / n_bytes, "valid": bool(valid)})
+
+    X_combined = np.vstack([X, X_poison])
+    y_combined = np.concatenate([y, y_poison])
+    is_poisoned = np.concatenate([np.zeros(N, dtype=bool), np.ones(n_poison, dtype=bool)])
+    return X_combined, y_combined, is_poisoned, attack_log
+
+
+# ---------------------------------------------------------------------------
 # Surrogate labeling / training
 # ---------------------------------------------------------------------------
 

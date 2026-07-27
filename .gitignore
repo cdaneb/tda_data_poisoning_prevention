@@ -24,7 +24,12 @@ data/
 !base_poster.pdf
 
 # Generated results (regenerable by running the scripts)
-results/
+results/*
+# Phase M outputs are tracked deliverables (per-cluster purity instrumentation +
+# noise capture), not regenerable throwaways. Same shape as the docs/*.md rule
+# above: a bare `results/` marks the directory excluded and git won't descend,
+# making any negation inert — so exclude the *contents* and re-include by name.
+!results/phase_m_*.json
 
 # Log files
 *.log

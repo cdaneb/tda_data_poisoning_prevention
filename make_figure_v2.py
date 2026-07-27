@@ -45,6 +45,17 @@ from test_b_diagnostics import (
 THRESHOLD = 0.4
 NOISE_SCALE = 30
 
+# Phase M added a declared non-invariant "noise" entry to FAMILIES (M6). This
+# script's noise branch comes from noise_only() instead — deliberately, so V2's
+# positive control stays the same code path it was validated against — and its
+# count-invariance and max_value_ gates apply only to the multiset-preserving
+# families, whose gate direction is "no change". Selecting on the
+# invariant_expected flag rather than on a hardcoded name list means a future
+# permutation family joins these gates automatically while a future noise-like
+# family cannot silently break them.
+PERMUTATION_FAMILIES = [name for name, (_, _, invariant_expected) in FAMILIES.items()
+                        if invariant_expected]
+
 # The permuted panel. Cyclic shift is a permutation in S_1500 exactly as the
 # other three are, and it is the one whose rearrangement is legible at poster
 # distance -- 60 transpositions move a median of 8 byte positions out of 1500
@@ -76,8 +87,9 @@ def binarize_all_branches(X, y):
     order = []
 
     clean_ref = None
-    for family, (fn, kwargs) in FAMILIES.items():
-        X_clean, X_perm, _ = get_clean_and_perturbed(fn, kwargs, X, y)
+    for family in PERMUTATION_FAMILIES:
+        fn, kwargs, _ = FAMILIES[family]
+        X_clean, X_perm, _, _ = get_clean_and_perturbed(fn, kwargs, X, y)
         if clean_ref is None:
             clean_ref = X_clean
             branches["clean"] = X_clean
@@ -148,14 +160,14 @@ def check(res, max_value_, per_branch_max, branches, order):
         failures.append(f"clean mean foreground count {clean_mean!r} != {EXPECTED_CLEAN_MEAN}")
 
     # --- Gate 2: count invariance, all four families ------------------------
-    for family in FAMILIES:
+    for family in PERMUTATION_FAMILIES:
         n_changed = int((res[family][1] != clean_counts).sum())
         print(f"Gate 2  {family:<16} count change: {n_changed}/{len(clean_counts)} (expected 0)")
         if n_changed != 0:
             failures.append(f"{family} changed the count in {n_changed} samples")
 
     # --- Gate 3: max_value_ identical clean vs each permuted ---------------
-    for family in FAMILIES:
+    for family in PERMUTATION_FAMILIES:
         mc, mp, eq = max_value_check(branches["clean"], branches[family])
         print(f"Gate 3  {family:<16} max_value_ clean={mc} perm={mp} equal={eq}")
         if not eq:
