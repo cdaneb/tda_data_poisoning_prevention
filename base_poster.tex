@@ -1,19 +1,26 @@
 % =====================================================================
-%  MathFest 2026 Poster -- 36 in x 36 in  [CONDENSED, 2-COLUMN FOOTER]
+%  MathFest 2026 Poster -- 36 in x 36 in
 %  "What Can a Persistence Diagram See?"
 %  Christian Dane Beels, advised by Dr. Joseph Dorta
 %  Template base: Sofia Jijon (https://sjijon.github.io)
 %
-%  LAYOUT: outer columns are 0.67 / 0.33.
-%    - The 0.67 column holds a subcolumns environment (Motivation etc.
-%      | Methods I+II), then the References block BELOW the subcolumns,
-%      so References spans two columns only.
-%    - The 0.33 column runs uninterrupted to the bottom of the poster.
-%  If \usepackage[colalign]{aligncolsatbottom} conflicts with subcolumns,
-%  drop the [colalign] option -- it is the one untested interaction here.
+%  LAYOUT (revised): outer columns 0.66 / 0.34.
+%    - 0.66 column = subcolumns (Motivation etc. | Methods I+II), with the
+%      References block BELOW them so it spans two subcolumns only.
+%    - 0.34 column runs to the bottom and ends with Contact, so Contact and
+%      References sit side by side along the bottom edge.
+%
+%  SPACING -- measured, not guessed.  colspace and subcolspace have DIFFERENT
+%  offsets in tikzposter: the subcolumn gutter is roughly subcolspace + 0.61in,
+%  while the outer gutter is roughly colspace - 24pt.  Hence the asymmetric
+%  values below, which were tuned by compiling and measuring block edges:
+%      subcolspace=12pt -> 0.78 in gutter   (left | middle)
+%      colspace=84pt    -> 0.75 in gutter   (middle | right)
+%  innermargin has NO measurable effect on either gutter -- it was the previous
+%  suspect and is not the cause.  Do not "fix" it.
 % =====================================================================
 
-\documentclass[a0paper,portrait,margin=0mm, colspace=24pt,subcolspace=24pt,blockverticalspace=11pt,innermargin=-40pt]{tikzposter}
+\documentclass[a0paper,portrait,margin=0mm,colspace=84pt,subcolspace=12pt,blockverticalspace=40pt,innermargin=0pt]{tikzposter}
 \geometry{paperwidth=36in,paperheight=36in,margin=0mm}
 
 \usepackage[latin9]{inputenc}
@@ -23,10 +30,17 @@
 % \usepackage[colalign]{aligncolsatbottom}
 % ^ DISABLED (Phase V6): aligncolsatbottom is not on CTAN and is not in the
 % MiKTeX package database, so this line is a hard build failure, not the
-% "untested interaction" the header anticipated. Its only effect was cosmetic
-% bottom-alignment of columns. Restore only if you obtain the .sty locally.
+% "untested interaction" the original header anticipated. Its only effect was
+% cosmetic bottom-alignment of columns. Restore only if you obtain the .sty.
 
-\setlist[itemize]{leftmargin=*,itemsep=3pt,topsep=2pt,parsep=0pt,partopsep=0pt}
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=1pt,parsep=0pt,partopsep=0pt}
+
+% Body font for block text. tikzposter's a0 \normalsize is 24.88pt/30pt, which
+% overflowed the bottom margin in the right column (measured: content reached
+% 35.60 in against a 35.20 in limit). 22.8pt/27.4pt was found by compiling and
+% measuring: it fills the page and leaves References and Contact bottoms within
+% 0.15 in of each other. Change in ONE place to trade text against figure size.
+\newcommand{\bodyfont}{\fontsize{22.8}{27.4}\selectfont}
 
 %......................................................................
 \tikzposterlatexaffectionproofoff
@@ -78,63 +92,45 @@
 
 \begin{columns}
 %======================================================================
-%  WIDE LEFT COLUMN (0.67) -- two subcolumns, then the References strip
+%  WIDE LEFT COLUMN (0.66) -- two subcolumns, then the References strip
 %======================================================================
-\column{0.67}
+\column{0.66}
 
 \begin{subcolumns}
 %----------------------------------------------------------------------
 \subcolumn{0.49}
 
 \block[titleleft,roundedcorners=16]{Motivation}{
-	\raggedright
+	\bodyfont\raggedright
 	\begin{itemize}
-		\item Network Intrusion Detection Systems (NIDS) are necessary to protect computers from malicious network traffic. \textbf{Data poisoning} has the potential to corrupt the model by altering its training dataset.
-		\item The defense must run \textbf{before training}: unsupervised, with no trustworthy labels.
-		\item Monkam et al.\ [1] filter poison topologically --- bytes $\to$ image $\to$ cubical persistence $\to$ clustering. \textbf{What can that lens see?}
+		\item \textbf{Data poisoning} corrupts ML-based Network Intrusion Detection Systems (NIDS) by altering their training data.
+		\item The defense must run \textbf{before training}, so clustering is unsupervised --- there are no labels to use.
+		\item Monkam et al.\ [1] use TDA as that filter: bytes $\to$ image $\to$ cubical persistence $\to$ clustering. \textbf{What can that lens see?}
 	\end{itemize}
 }
 
 \block[titleleft,roundedcorners=16]{Related Work}{
-	\raggedright
+	\bodyfont\raggedright
 	\begin{itemize}
 		\item \textbf{Cohen-Steiner et al.\ (2005) [3].} Diagrams are stable: small perturbations give small bottleneck change. The warrant for topology as a detector.
 		\item \textbf{Monkam, De Lucia \& Bastian (2024) [1].} The pipeline reconstructed here; reports $40$--$70\%$ of poison removed.
-		\item \textbf{Ferrara (2025) [2].} Thm.\ 2 couples classification error and topological distortion --- under hypotheses (linear classifiers, Vietoris--Rips, Frobenius balls) that all fail here. A complementary axis: \emph{which points} to attack, where we ask \emph{which algebra} registers.
+		\item \textbf{Ferrara (2025) [2].} Thm.\ 2 couples classification error to topological distortion --- under hypotheses (linear classifiers, Vietoris--Rips, Frobenius balls) that all fail here. A complementary axis: \emph{which points} to attack, where we ask \emph{which algebra} registers.
 	\end{itemize}
 }
 
 \block[titleleft,roundedcorners=16]{Research Question}{
 	\raggedright
-	\begin{itemize}
-		\item \textbf{Hypothesis:} our low capture rate came from unrealistically weak synthetic poison. \textbf{Test:} a surrogate-guided, validity-preserving swap attack.
-		\item \textbf{Refuted.} Nothing approached $40$--$70\%$; the highest capture under any committed configuration was $6.48\%$. The gap is structural, not a matter of realism.
-	\end{itemize}
-
 	\innerblock{}{
 		\centering
-		\textbf{What determines topological detectability --- the attack's invariance structure, or the filtration's sensitivities?}
+		\textbf{What determines a data poisoning attack's topological detectability --- and can a more sophisticated attack lead to less detectable topological signatures?}
 	}
-}
-
-% Contact lives here, not in the right column: it has no place in the
-% left-to-right reading order, it is conventionally placed low-left, and this
-% subcolumn's dead space is what pays for the right column's overflow (V7.2).
-\block[titleleft,roundedcorners=16]{Contact}{
-	\small
-	\raggedright
-	\textbf{Christian Dane Beels}\\
-	christian.beels@westpoint.edu\\
-	github.com/cdaneb/\\
-	linkedin.com/in/christiandanebeels/\\[0.2cm]
-	Dept.\ of Mathematical Sciences, USMA West Point
 }
 
 %----------------------------------------------------------------------
 \subcolumn{0.51}
 
 \block[titleleft,roundedcorners=16]{Methods I: An Invariance Argument}{
-	\raggedright
+	\bodyfont\raggedright
 	A swap attack applies $\sigma \in S_{1500}$ to the payload $x \in \{0,\dots,255\}^{1500}$. Binarization $b$ is pointwise, so it commutes with $\sigma$:
 
 	\innerblock[bodywidth=0.86\linewidth]{}{
@@ -146,13 +142,13 @@
 	}
 
 	\begin{itemize}
-		\item \textbf{Equivariance is not invariance.} Binarization commutes; the \emph{count} is what is fixed. Both steps are needed, and the result holds for every $\sigma$, not just the ${\sim}60$ transpositions applied.
+		\item \textbf{Equivariance is not invariance.} Binarization commutes; the \emph{count} is what is fixed. Both steps are needed, and the result holds for every $\sigma$ --- not just the ${\sim}60$ transpositions applied.
 		\item Every count-derived feature is therefore blind to permutation. Detection must flow through the \textbf{position-dependent} filtrations (Height, Radial). Invariance that is too coarse is a known hazard --- the motivation for group-equivariant operators [4].
-		\item The threshold is a fraction of the batch maximum --- data-dependent, but a maximum is itself permutation-invariant.
+		\item The threshold is a fraction of the batch maximum --- data-dependent, but a maximum is itself permutation-invariant. \textbf{Verified in code}, not assumed.
 	\end{itemize}
 
 	\begin{center}
-	\includegraphics[width=0.55\linewidth]{figures/figure_v2_binarized_triptych}
+	\includegraphics[width=\linewidth]{Figures/figure_v2_binarized_triptych}
 	\end{center}
 
 	\innerblock{}{
@@ -163,20 +159,22 @@
 }
 
 \block[titleleft,roundedcorners=16]{Methods II: Design}{
-	\raggedright
+	\bodyfont\raggedright
 	\begin{itemize}
-		\item UNSW-NB15, $5{,}000$ packets, $10\%$ poison, $5$ seeds. Each $1500$-byte payload $\to$ $30 \times 50$ image; $5$ filtrations $\times$ $6$ vectorizations $\times$ $2$ homology dimensions $= 60$ features --- the binarize--filtration--cubical pattern of Garin \& Tauzin [5]. OPTICS reported; other clusterers $\approx 0$.
+		\item UNSW-NB15, $5{,}000$ packets, $10\%$ poison, $5$ seeds. Each $1500$-byte payload $\to$ $30 \times 50$ image; $5$ filtrations $\times$ $6$ vectorizations $\times$ $2$ homology dimensions $= 60$ features (reduced homology) --- the binarize--filtration--cubical pattern of Garin \& Tauzin [5].
 		\item \textbf{Capture} $=$ poison landing in \emph{$100\%$-pure} clusters. Zero-tolerance: a $99\%$-poison cluster counts for nothing.
-		\item Four multiset-preserving families, so every poisoned packet stays well-formed. Invariance measured directly: $1{,}600$ count checks ($200$ packets $\times$ $4$ families $\times$ $2$ thresholds), Gaussian noise as positive control.
+		\item OPTICS reported throughout. DBSCAN and MeanShift $\approx 0$; HDBSCAN is nonzero only on cyclic shift, at $3/5$ seeds.
+		\item Four multiset-preserving families, so every poisoned packet stays well-formed, with Gaussian noise as positive control.
 	\end{itemize}
 }
 
 \end{subcolumns}
 %----------------------------------------------------------------------
-%  REFERENCES -- spans the two subcolumns above, not the right column
+%  REFERENCES -- spans the two subcolumns above, not the right column.
+%  Sits at bottom-left, opposite the Contact block at bottom-right.
 %----------------------------------------------------------------------
 \block[titleleft,roundedcorners=16]{References}{
-\footnotesize
+\small
 \begin{multicols}{2}
 \begin{itemize}[itemsep=2pt,leftmargin=*]
 	\item[{[1]}] G. F. Monkam, M. J. De Lucia, and N. D. Bastian, ``A topological data analysis approach for detecting data poisoning attacks against machine learning based network intrusion detection systems,'' \emph{Computers \& Security}, vol.\ 144, art.\ no.\ 103929, Sep.\ 2024.
@@ -189,14 +187,14 @@
 }
 
 %======================================================================
-%  RIGHT COLUMN (0.33) -- runs to the bottom of the poster
+%  RIGHT COLUMN (0.34) -- runs to the bottom, ending with Contact
 %======================================================================
-\column{0.33}
+\column{0.34}
 
 \block[titleleft,roundedcorners=16]{Results: Four Families, One Proof}{
-	\raggedright
+	\bodyfont\raggedright
 	\begin{center}
-	\includegraphics[width=0.88\linewidth]{figures/figure_v3_four_families}
+	\includegraphics[width=\linewidth]{Figures/figure_v3_four_families}
 	\end{center}
 
 	\begin{itemize}
@@ -207,26 +205,36 @@
 }
 
 \block[titleleft,roundedcorners=16]{Discussion}{
-	\raggedright
+	\bodyfont\raggedright
 	\begin{itemize}
-		\item \textbf{Capture tracks spatial disruption, not sophistication:} unguided cyclic shift ($6.28\%$) matches surrogate-guided swaps ($6.48\%$).
+		\item \textbf{Capture tracks spatial disruption, not sophistication:} unguided cyclic shift matches surrogate-guided search.
 		\item \textbf{A reported negative result.} Guidance gave $+4.68 \pm 1.57$ ($5/5$ seeds) on UNSW-NB15 but \textbf{does not replicate} on CICIDS2017: $-0.60 \pm 3.03$, $2/5$ seeds, per-seed $[-0.4, -2.2, +0.4, +4.2, -5.0]$ --- the sign flips and the mean crosses zero. Pre-committed; not rescued.
 		\item The invariance is elementary folklore; we find no prior statement of it for this pipeline. Scope: \emph{multiset-preserving} perturbations. Whether \emph{functional} reorderings in the same group --- header order, padding placement --- inherit the attenuation is a conjecture this motivates, \textbf{not a result}.
 	\end{itemize}
 }
 
 \block[titleleft,roundedcorners=16]{Conclusions}{
-	\raggedright
+	\bodyfont\raggedright
 	\begin{itemize}
-		\item One channel of the detector is \textbf{provably insensitive} to permutation attacks. No amount of data can change that.
+		\item One channel of the detector is \textbf{provably insensitive} to permutation attacks. Stability [3] bounds how far a diagram can move; it gives no lower bound --- a large attack can move it \emph{not at all}.
 		\item \textbf{Insensitive is not undetectable:} four identically invariant families span $0\%$--$6.3\%$.
-		\item Detectability is a property of the \textbf{(attack, detector) pair} --- a detector's blind spots can be read off the algebra of its feature map before any experiment.
+		\item Detectability is a property of the \textbf{(attack, detector) pair} --- blind spots \emph{arising from feature-map invariances} can be read off the algebra before any experiment. The algebra does not characterise every failure mode.
 	\end{itemize}
 
 	\innerblock{}{
 		\small
 		\textbf{Limitations.} Proof: any fixed-threshold pipeline. Empirics: one reconstruction, one primary dataset, two thresholds, $5$ seeds; cross-dataset replication attempted and failed.
 	}
+}
+
+% Contact moved here (was bottom of the left subcolumn) so that it sits at
+% bottom-right, opposite the References strip at bottom-left.
+\block[titleleft,roundedcorners=16]{Contact}{
+	\small
+	\raggedright
+	\textbf{Christian Dane Beels} \quad christian.beels@westpoint.edu\\
+	github.com/cdaneb/ \quad linkedin.com/in/christiandanebeels/\\
+	Dept.\ of Mathematical Sciences, USMA West Point
 }
 
 \end{columns}
