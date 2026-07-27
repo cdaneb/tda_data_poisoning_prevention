@@ -6,10 +6,10 @@ ordered by attack realism, it tracks *spatial disruption*. Families are
 ordered left-to-right by mean positions value-changed, which makes the
 capture ordering read as a consequence rather than a coincidence.
 
-Every number plotted is parsed from the committed Test B artifacts —
-`results/test_b_permutation_families.json` (capture, per seed, per
-algorithm) and `results/test_b_diagnostics.json` (positions changed,
-zero-footprint fraction). Nothing is hand-entered from CLAUDE.md. The
+Capture and strict-purity ceilings are parsed from the M7 artifact
+`results/phase_m_m7_capture.json`; spatial-disruption statistics are read from
+the validated Test B diagnostics artifact. Nothing is hand-entered from
+CLAUDE.md. The
 guided-search reference at 6.48% is parsed from
 `results/lens4_baseline_multiseed.json` (cell G60-MLP), the one committed
 artifact backing it.
@@ -77,7 +77,7 @@ BASELINE = "#c3c2b7"
 
 def parse():
     """Parse and recompute every plotted quantity from the artifacts."""
-    fam_path = RESULTS_DIR / "test_b_permutation_families.json"
+    fam_path = RESULTS_DIR / "phase_m_m7_capture.json"
     diag_path = RESULTS_DIR / "test_b_diagnostics.json"
     sg_path = RESULTS_DIR / "lens4_baseline_multiseed.json"
 
@@ -95,6 +95,10 @@ def parse():
             "per_seed": per_seed,
             "capture_mean": float(a.mean()),
             "capture_sd": float(a.std(ddof=0)),
+            "purity_ceiling": float(np.mean([
+                fam[key][s]["per_algo"][ALGO]["ceilings"]["union_ceiling"]
+                for s in SEEDS
+            ]) * 100),
             "pos_mean": float(d["positions_changed_mean"]),
             "pos_median": float(d["positions_changed_median"]),
             "frac_zero": float(d["positions_changed_frac_zero"]),
@@ -177,7 +181,7 @@ def render(rows, sg_row, out_path=None):
     # margins and hspace are retuned here rather than left at their 6.0in values.
     fig = plt.figure(figsize=(7.5, 3.6))
     gs = GridSpec(3, 1, height_ratios=[3.0, 1.30, 1.05], hspace=0.30,
-                  left=0.250, right=0.975, top=0.830, bottom=0.020)
+                  left=0.250, right=0.975, top=0.790, bottom=0.020)
     ax = fig.add_subplot(gs[0])
     ax2 = fig.add_subplot(gs[1], sharex=ax)
     ax3 = fig.add_subplot(gs[2], sharex=ax)
@@ -229,13 +233,13 @@ def render(rows, sg_row, out_path=None):
                         fontsize=11.5, fontweight="bold", color=INK, zorder=6)
 
     ax.set_ylim(0, 9.2)
-    ax.set_ylabel("Poison captured (%)", fontsize=9.6, color=INK)
+    ax.text(-0.55, 8.55, "Capture (%)", fontsize=8.6, color=INK,
+            ha="left", va="bottom")
     # Both ylabels are pinned to the same axes-x so they form one left rail;
     # left to themselves they track their own tick-label widths and, at the
     # compressed poster aspect, drift into each other. They are also nudged
     # apart along y: Panel B's label is longer than Panel B is tall at this
     # aspect, so it overhangs its panel and would meet Panel A's label.
-    ax.yaxis.set_label_coords(-0.062, 0.60)
     ax.yaxis.grid(True, color=GRID, lw=0.8)
     ax.set_axisbelow(True)
     ax.tick_params(axis="y", labelsize=9.5, colors=INK_SECONDARY, length=0)
@@ -245,22 +249,19 @@ def render(rows, sg_row, out_path=None):
     ax.spines["left"].set_color(BASELINE)
     plt.setp(ax.get_xticklabels(), visible=False)
 
-    # ---- Panel B: zero-footprint share (the mechanism) ----------------------
-    fz = [100 * r["frac_zero"] for r in rows]
-    ax2.bar(x, fz, width=0.60, color=C_CONTEXT, zorder=3)
-    for xi, v in enumerate(fz):
-        if v == 0.0:
-            ax2.plot([xi - 0.30, xi + 0.30], [0, 0], color=C_CONTEXT, lw=3.2,
-                     solid_capstyle="butt", zorder=4)
-        ax2.annotate(f"{v:.1f}%", xy=(xi, v), xytext=(0, 6), textcoords="offset points",
+    # ---- Panel B: strict-purity ceiling (M7 mechanism) ---------------------
+    ceilings = [r["purity_ceiling"] for r in rows]
+    ax2.bar(x, ceilings, width=0.60, color=C_CONTEXT, zorder=3)
+    for xi, v in enumerate(ceilings):
+        ax2.annotate(f"{v:.2f}", xy=(xi, v), xytext=(0, 6), textcoords="offset points",
                      ha="center", va="bottom", fontsize=10, fontweight="bold",
                      color=INK_SECONDARY, zorder=6)
-    ax2.set_ylim(0, 118)
-    ax2.set_yticks([0, 50, 100])
+    ax2.set_ylim(0, 16)
+    ax2.set_yticks([0, 8, 16])
     # One line, not two: the two-line form is taller than this panel at the
     # poster aspect and rides up into Panel A's ylabel.
-    ax2.set_ylabel("Zero footprint (%)", fontsize=8.6, color=INK)
-    ax2.yaxis.set_label_coords(-0.062, 0.36)
+    ax2.text(-0.55, 14.8, "100%-pure ceiling (%)", fontsize=8.2, color=INK,
+             ha="left", va="bottom")
     ax2.yaxis.grid(True, color=GRID, lw=0.8)
     ax2.set_axisbelow(True)
     ax2.tick_params(axis="y", labelsize=9.5, colors=INK_SECONDARY, length=0)
@@ -298,13 +299,13 @@ def render(rows, sg_row, out_path=None):
     ax2.set_xticks(x)
     ax2.set_xticklabels([])
 
-    fig.text(0.030, 0.968,
+    fig.text(0.030, 0.950,
              "Detectability tracks spatial disruption, not attack sophistication",
              fontsize=12.5, fontweight="bold", color=INK, ha="left", va="top")
-    fig.text(0.030, 0.923,
+    fig.text(0.030, 0.902,
              "Four permutation families  ·  UNSW-NB15  ·  OPTICS  ·  5 seeds "
-             "(42/123/456/789/1024)  ·  error bars are population SD",
-             fontsize=8.8, color=INK_MUTED, ha="left", va="top")
+             "(42/123/456/789/1024)  ·  M7 capture; error bars are population SD",
+             fontsize=7.4, color=INK_MUTED, ha="left", va="top")
 
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     out = out_path or (FIGURES_DIR / "figure_v3_four_families.pdf")
