@@ -1,6 +1,6 @@
 # CLAUDE.md — TDA Poisoning Detection
 
-**Authoritative project context. Last updated 2026-07-23, after Phase P.**
+**Authoritative project context. Last updated 2026-07-27, after Phase M8.**
 
 ---
 
@@ -218,6 +218,48 @@ backed by committed code**.
 
 ---
 
+### Phase M8: purity-threshold rescore (completed 2026-07-27)
+
+M8 is a read-only rescore of saved M7 OPTICS cluster records, not a new attack,
+feature-extraction, or clustering run. At 100%, >95%, >90%, >80%, and >50%
+poison purity, label `-1` is excluded from capture in every family and seed.
+The assertion passed. Duplicate and union ceilings apply only at exact 100%
+purity; unclustered ceilings apply at every threshold.
+
+| Family | 100% capture | >50% capture | Unclustered ceiling | Reading |
+|---|---:|---:|---:|---|
+| Block reversal | 0.00 | 0.00 | 63.64 +/- 1.61 | decisive |
+| Block swap | 0.00 | 0.00 | 62.20 +/- 1.41 | decisive |
+| Transpositions | 1.80 | 1.80 | 43.76 +/- 1.65 | nominally reachable, uninformative |
+| Cyclic shift | 6.28 | 12.36 | 33.72 +/- 1.70 | structurally below 40% |
+| Noise (orphaned N) | 4.96 | 7.52 | 27.72 +/- 2.00 | structurally below 40% |
+
+Reproduce with `python run_m8_purity_sweep.py`; its inputs are the committed M7
+artifact and saved cluster records. The output is
+`results/phase_m_m8_purity_sweep.json`; render the diagnostic with
+`python make_figure_m8_purity_sweep.py`. See `docs/PHASE_M_A19_A23_REPORT.md`
+for the provenance and interpretation record. M8 does not establish the source
+study's cluster configuration or recover the original frame of noise Cell N.
+
+### Final MathFest code gate
+
+**Passed 2026-07-27 in `venv312`:** `python tools/repro_check.py --expect
+2.2000` returned OPTICS capture **2.2000%** and `X_tda.shape == (5500, 60)`.
+The run used the full UNSW-NB15 CSV, R60/seed-42 control, threshold 0.4, and
+all four clustering algorithms. The expected scikit-learn OPTICS divide-by-zero
+reachability warning was emitted after the successful assertion.
+
+Before committing a final revision, run:
+
+```
+python tools/repro_check.py --expect 2.2000
+```
+
+The gate must report exactly 2.2000% for the seed-42 R60 control and
+`X_tda.shape == (5500, 60)`. Record the terminal output in the commit message
+or accompanying release note. Do not commit a revision that changes the gate
+without an explicit empirical review.
+
 ## 7. House conventions — maintain these
 
 - **Phased instructions** as markdown with numbered steps, explicit **stop conditions**, and
@@ -261,6 +303,22 @@ backed by committed code**.
 ---
 
 ## 8. Open work, in priority order
+
+### Completed after the older Phase P list below
+
+- Figures V2 and V3 are built and checked; their scripts are
+  `make_figure_v2.py` and `make_figure_v3.py`.
+- The former Tier 0.1 purity sweep is complete as Phase M8. It did not cross
+  40% for any family. The correct reading is family-specific, using the
+  unclustered ceiling rather than applying a 100%-purity union ceiling to a
+  relaxed threshold.
+- M8 files are a reproducibility unit: `run_m8_purity_sweep.py`,
+  `results/phase_m_m8_purity_sweep.json`,
+  `make_figure_m8_purity_sweep.py`, `figures/figure_m8_purity_sweep.pdf`, and
+  `docs/PHASE_M_A19_A23_REPORT.md`. Keep them together in version control.
+
+Where the older list conflicts with this completed-status block, this block
+controls.
 
 **Poster (MathFest is Aug 5–8; deadline governs everything):**
 1. Build figures **V2** (binarized clean/permuted/noised with foreground counts beneath) and **V3**

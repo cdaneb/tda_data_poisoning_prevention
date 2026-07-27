@@ -59,12 +59,13 @@ FAMILIES = {
 # reproduction target and must never be scored against:
 #   * cell N's 4.96 +/- 1.64 is orphaned — produced by a scratchpad script that was
 #     never committed (CLAUDE.md §6 provenance status), and
-#   * per the M5 finding, poison.py:40 computes n_poison over the whole passed
-#     array, so cell N perturbed a benign+malicious MIX while this run draws the
-#     malicious-only Test B target set. Same count (500), different population.
-# It is therefore recorded as `superseded`, with is_target=False and mean=None so
-# the summary printer cannot accidentally tabulate it as a prediction. An unmarked
-# orphan sitting in a table beside validated numbers is how it gets laundered.
+#   * poison.py cannot have produced cell N at all: it always adds uncontrolled
+#     byte swaps, whereas N is noise-only. M5's finding about poison.py's
+#     whole-array sampling remains valid, but does not identify N's frame.
+# M7 agrees with the orphaned N value to both reported digits (mean and population
+# SD) on the committed malicious-only frame. This is numerical corroboration, not
+# provenance: N remains unscored until its scratchpad source is recovered or a
+# dedicated whole-array run is authorized.
 REFERENCE_CAPTURE = {
     "transpositions": {"mean": 1.80, "std": 0.51, "is_target": True,
                         "provenance": "committed-code backed (Phase P, rebuilt)",
@@ -76,10 +77,10 @@ REFERENCE_CAPTURE = {
     "cyclic_shift": {"mean": 6.28, "std": 1.31, "is_target": True,
                       "provenance": "committed-code backed (Phase P, rebuilt)"},
     "noise": {"mean": None, "std": None, "is_target": False,
-               "provenance": "superseded — NOT a target",
-               "superseded_cell_N": {"mean": 4.96, "std": 1.64},
-               "why": "orphaned (no committed artifact) AND drawn from a benign+malicious "
-                      "mix rather than the malicious-only Test B frame; see M5/A12."},
+               "provenance": "orphaned, numerically corroborated by M7 — NOT a target",
+               "orphaned_cell_N": {"mean": 4.96, "std": 1.64},
+               "why": "M7 matches the recorded mean and population SD on the malicious-only "
+                      "frame; the original N script/frame remains unknown. See A19."},
 }
 
 # --- A17 pre-registration -------------------------------------------------------

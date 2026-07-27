@@ -181,7 +181,7 @@ def render(rows, sg_row, out_path=None):
     # margins and hspace are retuned here rather than left at their 6.0in values.
     fig = plt.figure(figsize=(7.5, 3.6))
     gs = GridSpec(3, 1, height_ratios=[3.0, 1.30, 1.05], hspace=0.30,
-                  left=0.250, right=0.975, top=0.790, bottom=0.020)
+                  left=0.105, right=0.985, top=0.790, bottom=0.020)
     ax = fig.add_subplot(gs[0])
     ax2 = fig.add_subplot(gs[1], sharex=ax)
     ax3 = fig.add_subplot(gs[2], sharex=ax)
@@ -281,14 +281,8 @@ def render(rows, sg_row, out_path=None):
     ax3.set_ylim(0, 1)
     ROWS = [("", 0.88, 10.5, "bold", INK),          # family label
             ("", 0.63, 8.4, "normal", INK_MUTED),   # sublabel
-            ("mean positions changed", 0.37, 9.2, "normal", INK_SECONDARY),
-            ("median positions changed", 0.11, 9.2, "normal", INK_SECONDARY)]
-    # Row labels live in the left margin, in axes coords, so they can never be
-    # clipped by the shared data x-limits.
-    for label, y, fs, _w, _c in ROWS:
-        if label:
-            ax3.text(-0.022, y, label, ha="right", va="center", fontsize=8.2,
-                     color=INK_MUTED, transform=ax3.transAxes)
+            ("", 0.25, 9.2, "normal", INK_SECONDARY),
+            ("", 0.04, 9.2, "normal", INK_SECONDARY)]
     for xi, r in enumerate(rows):
         vals = [r["label"], r["sublabel"], f"{r['pos_mean']:.2f}", f"{r['pos_median']:.0f}"]
         for v, (_lab, y, fs, w, c) in zip(vals, ROWS):
@@ -302,10 +296,8 @@ def render(rows, sg_row, out_path=None):
     fig.text(0.030, 0.950,
              "Detectability tracks spatial disruption, not attack sophistication",
              fontsize=12.5, fontweight="bold", color=INK, ha="left", va="top")
-    fig.text(0.030, 0.902,
-             "Four permutation families  ·  UNSW-NB15  ·  OPTICS  ·  5 seeds "
-             "(42/123/456/789/1024)  ·  M7 capture; error bars are population SD",
-             fontsize=7.4, color=INK_MUTED, ha="left", va="top")
+    fig.text(0.030, 0.902, "UNSW-NB15  ·  OPTICS",
+             fontsize=8.8, color=INK_MUTED, ha="left", va="top")
 
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     out = out_path or (FIGURES_DIR / "figure_v3_four_families.pdf")

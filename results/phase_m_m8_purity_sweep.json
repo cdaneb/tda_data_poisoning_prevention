@@ -1,0 +1,671 @@
+{
+  "_meta": {
+    "source": "phase_m_m7_capture.json",
+    "algorithm": "OPTICS",
+    "seeds": [
+      "42",
+      "123",
+      "456",
+      "789",
+      "1024"
+    ],
+    "purity_levels": [
+      {
+        "threshold": 1.0,
+        "label": "100%"
+      },
+      {
+        "threshold": 0.95,
+        "label": ">95%"
+      },
+      {
+        "threshold": 0.9,
+        "label": ">90%"
+      },
+      {
+        "threshold": 0.8,
+        "label": ">80%"
+      },
+      {
+        "threshold": 0.5,
+        "label": ">50%"
+      }
+    ]
+  },
+  "_preregistration": {
+    "scope": "M7 OPTICS cluster records only; no new measurement is performed.",
+    "ceiling_rule": {
+      "unclustered": "Applies at every purity threshold: label -1 is never captured.",
+      "duplicate": "Applies only at 100% purity; it dissolves below 100%.",
+      "union": "Reported only as the 100%-purity annotated point; never extended across the sweep."
+    },
+    "forty_percent_interpretation": {
+      "block_reversal": "decisive: unclustered ceiling leaves >40% reachable.",
+      "block_swap": "decisive: unclustered ceiling leaves >40% reachable.",
+      "transpositions": "nominally reachable but practically uninformative: the 40% margin lies within ceiling variation.",
+      "cyclic_shift": "structurally impossible: unclustered ceiling is below 40%.",
+      "noise": "structurally impossible: unclustered ceiling is below 40%."
+    }
+  },
+  "families": {
+    "block_reversal": {
+      "capture_curve": {
+        "100%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        ">95%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        ">90%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        ">80%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        ">50%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "unclustered_ceiling": {
+        "mean": 63.64000000000001,
+        "population_sd": 1.6069847541280553,
+        "per_seed": [
+          65.2,
+          61.0,
+          63.6,
+          63.0,
+          65.4
+        ]
+      },
+      "union_ceiling_at_100pct_only": {
+        "mean": 0.40000000000000036,
+        "population_sd": 0.30983866769659363,
+        "per_seed": [
+          0.20000000000000018,
+          0.40000000000000036,
+          1.0000000000000009,
+          0.20000000000000018,
+          0.20000000000000018
+        ]
+      },
+      "seed_capture": {
+        "42": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        },
+        "123": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        },
+        "456": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        },
+        "789": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        },
+        "1024": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        }
+      },
+      "forty_percent_score": {
+        "max_observed_capture": 0.0,
+        "crossed_40pct": false,
+        "interpretation": "decisive family for the purity-criterion hypothesis"
+      }
+    },
+    "block_swap": {
+      "capture_curve": {
+        "100%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        ">95%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        ">90%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        ">80%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        ">50%": {
+          "mean": 0.0,
+          "population_sd": 0.0,
+          "per_seed": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "unclustered_ceiling": {
+        "mean": 62.2,
+        "population_sd": 1.408545348932724,
+        "per_seed": [
+          63.0,
+          61.0,
+          61.4,
+          61.0,
+          64.60000000000001
+        ]
+      },
+      "union_ceiling_at_100pct_only": {
+        "mean": 0.3200000000000003,
+        "population_sd": 0.271293199325011,
+        "per_seed": [
+          0.0,
+          0.6000000000000005,
+          0.0,
+          0.6000000000000005,
+          0.40000000000000036
+        ]
+      },
+      "seed_capture": {
+        "42": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        },
+        "123": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        },
+        "456": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        },
+        "789": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        },
+        "1024": {
+          "100%": 0.0,
+          ">95%": 0.0,
+          ">90%": 0.0,
+          ">80%": 0.0,
+          ">50%": 0.0
+        }
+      },
+      "forty_percent_score": {
+        "max_observed_capture": 0.0,
+        "crossed_40pct": false,
+        "interpretation": "decisive family for the purity-criterion hypothesis"
+      }
+    },
+    "transpositions": {
+      "capture_curve": {
+        "100%": {
+          "mean": 1.8,
+          "population_sd": 0.5059644256269408,
+          "per_seed": [
+            2.2,
+            2.2,
+            2.2,
+            1.0,
+            1.4
+          ]
+        },
+        ">95%": {
+          "mean": 1.8,
+          "population_sd": 0.5059644256269408,
+          "per_seed": [
+            2.2,
+            2.2,
+            2.2,
+            1.0,
+            1.4
+          ]
+        },
+        ">90%": {
+          "mean": 1.8,
+          "population_sd": 0.5059644256269408,
+          "per_seed": [
+            2.2,
+            2.2,
+            2.2,
+            1.0,
+            1.4
+          ]
+        },
+        ">80%": {
+          "mean": 1.8,
+          "population_sd": 0.5059644256269408,
+          "per_seed": [
+            2.2,
+            2.2,
+            2.2,
+            1.0,
+            1.4
+          ]
+        },
+        ">50%": {
+          "mean": 1.8,
+          "population_sd": 0.5059644256269408,
+          "per_seed": [
+            2.2,
+            2.2,
+            2.2,
+            1.0,
+            1.4
+          ]
+        }
+      },
+      "unclustered_ceiling": {
+        "mean": 43.76,
+        "population_sd": 1.6511813952440189,
+        "per_seed": [
+          41.6,
+          44.39999999999999,
+          42.00000000000001,
+          45.199999999999996,
+          45.599999999999994
+        ]
+      },
+      "union_ceiling_at_100pct_only": {
+        "mean": 4.280000000000003,
+        "population_sd": 0.7440430095095316,
+        "per_seed": [
+          4.400000000000004,
+          3.8000000000000034,
+          4.200000000000004,
+          3.400000000000003,
+          5.600000000000005
+        ]
+      },
+      "seed_capture": {
+        "42": {
+          "100%": 2.2,
+          ">95%": 2.2,
+          ">90%": 2.2,
+          ">80%": 2.2,
+          ">50%": 2.2
+        },
+        "123": {
+          "100%": 2.2,
+          ">95%": 2.2,
+          ">90%": 2.2,
+          ">80%": 2.2,
+          ">50%": 2.2
+        },
+        "456": {
+          "100%": 2.2,
+          ">95%": 2.2,
+          ">90%": 2.2,
+          ">80%": 2.2,
+          ">50%": 2.2
+        },
+        "789": {
+          "100%": 1.0,
+          ">95%": 1.0,
+          ">90%": 1.0,
+          ">80%": 1.0,
+          ">50%": 1.0
+        },
+        "1024": {
+          "100%": 1.4,
+          ">95%": 1.4,
+          ">90%": 1.4,
+          ">80%": 1.4,
+          ">50%": 1.4
+        }
+      },
+      "forty_percent_score": {
+        "max_observed_capture": 1.8,
+        "crossed_40pct": false,
+        "interpretation": "nominally reachable but practically uninformative near the ceiling"
+      }
+    },
+    "cyclic_shift": {
+      "capture_curve": {
+        "100%": {
+          "mean": 6.28,
+          "population_sd": 1.3059862173851609,
+          "per_seed": [
+            6.6,
+            6.6,
+            8.4,
+            5.0,
+            4.8
+          ]
+        },
+        ">95%": {
+          "mean": 6.28,
+          "population_sd": 1.3059862173851609,
+          "per_seed": [
+            6.6,
+            6.6,
+            8.4,
+            5.0,
+            4.8
+          ]
+        },
+        ">90%": {
+          "mean": 6.720000000000001,
+          "population_sd": 1.6618062462272793,
+          "per_seed": [
+            6.6,
+            8.8,
+            8.4,
+            5.0,
+            4.8
+          ]
+        },
+        ">80%": {
+          "mean": 11.16,
+          "population_sd": 2.72,
+          "per_seed": [
+            9.2,
+            11.4,
+            13.2,
+            7.2,
+            14.8
+          ]
+        },
+        ">50%": {
+          "mean": 12.360000000000001,
+          "population_sd": 2.181375712709756,
+          "per_seed": [
+            10.8,
+            11.4,
+            14.2,
+            9.8,
+            15.6
+          ]
+        }
+      },
+      "unclustered_ceiling": {
+        "mean": 33.71999999999999,
+        "population_sd": 1.7045820602129982,
+        "per_seed": [
+          30.600000000000005,
+          33.199999999999996,
+          34.8,
+          35.199999999999996,
+          34.8
+        ]
+      },
+      "union_ceiling_at_100pct_only": {
+        "mean": 13.84,
+        "population_sd": 2.091506633984221,
+        "per_seed": [
+          11.799999999999999,
+          13.600000000000001,
+          15.000000000000002,
+          11.6,
+          17.200000000000003
+        ]
+      },
+      "seed_capture": {
+        "42": {
+          "100%": 6.6,
+          ">95%": 6.6,
+          ">90%": 6.6,
+          ">80%": 9.2,
+          ">50%": 10.8
+        },
+        "123": {
+          "100%": 6.6,
+          ">95%": 6.6,
+          ">90%": 8.8,
+          ">80%": 11.4,
+          ">50%": 11.4
+        },
+        "456": {
+          "100%": 8.4,
+          ">95%": 8.4,
+          ">90%": 8.4,
+          ">80%": 13.2,
+          ">50%": 14.2
+        },
+        "789": {
+          "100%": 5.0,
+          ">95%": 5.0,
+          ">90%": 5.0,
+          ">80%": 7.2,
+          ">50%": 9.8
+        },
+        "1024": {
+          "100%": 4.8,
+          ">95%": 4.8,
+          ">90%": 4.8,
+          ">80%": 14.8,
+          ">50%": 15.6
+        }
+      },
+      "forty_percent_score": {
+        "max_observed_capture": 12.360000000000001,
+        "crossed_40pct": false,
+        "interpretation": "structurally impossible to reach 40% because the unclustered ceiling is below 40%"
+      }
+    },
+    "noise": {
+      "capture_curve": {
+        "100%": {
+          "mean": 4.96,
+          "population_sd": 1.6365818036383026,
+          "per_seed": [
+            5.6,
+            4.6,
+            5.8,
+            2.0,
+            6.8
+          ]
+        },
+        ">95%": {
+          "mean": 4.96,
+          "population_sd": 1.6365818036383026,
+          "per_seed": [
+            5.6,
+            4.6,
+            5.8,
+            2.0,
+            6.8
+          ]
+        },
+        ">90%": {
+          "mean": 4.96,
+          "population_sd": 1.6365818036383026,
+          "per_seed": [
+            5.6,
+            4.6,
+            5.8,
+            2.0,
+            6.8
+          ]
+        },
+        ">80%": {
+          "mean": 5.8,
+          "population_sd": 2.0278066969018522,
+          "per_seed": [
+            5.6,
+            4.6,
+            6.8,
+            3.0,
+            9.0
+          ]
+        },
+        ">50%": {
+          "mean": 7.5200000000000005,
+          "population_sd": 2.1784398086704164,
+          "per_seed": [
+            9.6,
+            5.2,
+            8.6,
+            4.6,
+            9.6
+          ]
+        }
+      },
+      "unclustered_ceiling": {
+        "mean": 27.720000000000006,
+        "population_sd": 1.99839935948749,
+        "per_seed": [
+          28.800000000000004,
+          28.000000000000004,
+          28.800000000000004,
+          23.799999999999997,
+          29.200000000000003
+        ]
+      },
+      "union_ceiling_at_100pct_only": {
+        "mean": 19.319999999999997,
+        "population_sd": 1.8137254478007387,
+        "per_seed": [
+          20.399999999999995,
+          18.799999999999994,
+          20.399999999999995,
+          16.000000000000004,
+          20.999999999999996
+        ]
+      },
+      "seed_capture": {
+        "42": {
+          "100%": 5.6,
+          ">95%": 5.6,
+          ">90%": 5.6,
+          ">80%": 5.6,
+          ">50%": 9.6
+        },
+        "123": {
+          "100%": 4.6,
+          ">95%": 4.6,
+          ">90%": 4.6,
+          ">80%": 4.6,
+          ">50%": 5.2
+        },
+        "456": {
+          "100%": 5.8,
+          ">95%": 5.8,
+          ">90%": 5.8,
+          ">80%": 6.8,
+          ">50%": 8.6
+        },
+        "789": {
+          "100%": 2.0,
+          ">95%": 2.0,
+          ">90%": 2.0,
+          ">80%": 3.0,
+          ">50%": 4.6
+        },
+        "1024": {
+          "100%": 6.8,
+          ">95%": 6.8,
+          ">90%": 6.8,
+          ">80%": 9.0,
+          ">50%": 9.6
+        }
+      },
+      "forty_percent_score": {
+        "max_observed_capture": 7.5200000000000005,
+        "crossed_40pct": false,
+        "interpretation": "structurally impossible to reach 40% because the unclustered ceiling is below 40%"
+      }
+    }
+  },
+  "_a20_minus_one_check": {
+    "passed": true,
+    "statement": "Every -1 record is color Noise and contributes zero captured poison at every tested threshold."
+  }
+}
