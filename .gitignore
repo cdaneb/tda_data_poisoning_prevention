@@ -30,6 +30,7 @@ results/*
 # above: a bare `results/` marks the directory excluded and git won't descend,
 # making any negation inert — so exclude the *contents* and re-include by name.
 !results/phase_m_*.json
+!results/phase_q_*.json
 
 # Log files
 *.log

@@ -68,6 +68,21 @@ conventions used when describing all of this. In particular: never "invisible," 
 "defeats" — the phrasing is *attenuated on the foreground-count channel*, because the highest capture
 observed under any committed configuration is 6.48%, not zero.
 
+### Phase Q: controlled repair study
+
+Phase Q keeps the legacy raster, filtrations, persistence summaries, and OPTICS
+fixed while replacing the single 0.4 cutoff with a preregistered nine-threshold
+stack. It also replaces padding-dominated attack offsets with a conservative-
+support, guaranteed-nontrivial attack substrate; the historical Test B results
+remain unchanged.
+
+The first result is mixed and important: the stack reduces exact binary and
+540-vector identity to 0/200 for all four repaired families, closing the tested
+single-cutoff identity mechanism, but attack displacement remains entirely below
+the clean-clean 95th percentile and becomes smaller relative to ordinary clean
+variation. Thus the algebraic blind spot is repaired without yet establishing a
+detection improvement. See `docs/PHASE_Q_MULTITHRESHOLD_REPORT.md`.
+
 ## Repo layout
 
 ```
@@ -81,6 +96,9 @@ poison.py                     # legacy attack: Gaussian noise + uncontrolled 10-
 adversarial_attack.py         # current attack substrate: malicious_random_attack, block_reversal_attack,
                                #   block_swap_attack, cyclic_shift_attack, chale_ga_attack (surrogate-
                                #   guided GA search), train_surrogates()
+phase_q_attacks.py             # conservative-support, guaranteed-nontrivial permutation controls
+phase_q_pipeline.py            # fixed 0.1...0.9 threshold stack; embeds exact 0.4 legacy control
+phase_q_metrics.py             # clean-cost, precision, unclustered, and matched-cost evaluation
 invariance_check.py           # binarize/foreground_count/positions_changed/crossed_threshold/
                                #   max_value_check -- empirical instrumentation backing the proof.
                                #   binarize() is the single thresholding rule; foreground_count()
@@ -98,6 +116,9 @@ run_baseline.py                # single-pass baseline (TDA + clustering, no iter
 run_iterative.py                # single iterative-filter run
 run_multi_seed.py               # multi-seed statistical validation, both datasets
 run_lens4_baseline.py            # attribution-ladder runner (L / R60 / G60-MLP / G60-RF variants)
+run_phase_q_support_audit.py      # D0 legacy-vs-repaired padding/no-op audit
+run_phase_q_diagnostics.py        # D1-D4 raw/image/diagram/vector loss localization
+run_phase_q_experiment.py         # resumable R1 control-vs-stack OPTICS comparison
 run_test_b_capture.py            # Test B: 4 permutation families x 5 seeds x 4 clustering algorithms
 test_b_diagnostics.py             # Step 0 count-invariance gate + bit-identity/effective-swap diagnostics
 run_m8_purity_sweep.py            # read-only M7 OPTICS rescore across purity thresholds

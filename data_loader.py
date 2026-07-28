@@ -16,6 +16,7 @@ from paths import DATA_DIR
 
 PAYLOAD_COLUMNS = [f"payload_byte_{i}" for i in range(1, 1501)]
 LABEL_COLUMN = "label"
+METADATA_COLUMNS = ["ttl", "total_len", "protocol", "t_delta"]
 
 
 def load_unsw(max_samples=None):
@@ -42,6 +43,36 @@ def load_unsw(max_samples=None):
     print(f"  Loaded: X.shape={X.shape}, y.shape={y.shape}")
     print(f"  Labels: {dict(zip(*np.unique(y, return_counts=True)))}")
     return X, y
+
+
+def load_unsw_with_metadata(max_samples=None):
+    """Load UNSW payload bytes, labels, and the four retained metadata fields.
+
+    This additive loader is for diagnostics that audit the relationship between
+    the zero-padded 1500-byte representation and packet metadata.  It does not
+    change ``load_unsw`` or make metadata part of the TDA feature map.
+
+    Important: Payload-Byte defines ``total_len`` as the IPv4 packet length,
+    while the payload columns contain transport-layer payload bytes.  It is
+    therefore not a payload-length field and must not be used directly as an
+    attack-support boundary.
+    """
+    filepath = DATA_DIR / "Payload_data_UNSW.csv"
+    print(f"Loading UNSW-NB15 with metadata from {filepath}...")
+
+    cols_to_load = PAYLOAD_COLUMNS + METADATA_COLUMNS + [LABEL_COLUMN]
+    df = pd.read_csv(filepath, usecols=cols_to_load)
+
+    if max_samples is not None and len(df) > max_samples:
+        df = df.sample(n=max_samples, random_state=42).reset_index(drop=True)
+        print(f"  Subsampled to {max_samples} rows")
+
+    X = df[PAYLOAD_COLUMNS].values.astype(np.uint8)
+    y = df[LABEL_COLUMN].values
+    metadata = df[METADATA_COLUMNS].copy()
+
+    print(f"  Loaded: X.shape={X.shape}, y.shape={y.shape}, metadata.shape={metadata.shape}")
+    return X, y, metadata
 
 
 def load_cicids(max_samples=None):

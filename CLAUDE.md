@@ -241,6 +241,30 @@ artifact and saved cluster records. The output is
 for the provenance and interpretation record. M8 does not establish the source
 study's cluster configuration or recover the original frame of noise Cell N.
 
+### Phase Q multithreshold repair — DIAGNOSTIC COMPLETE, CAPTURE PENDING
+
+Phase Q changes only the binarization representation: threshold 0.4 / 60
+features versus the fixed `{0.1, ..., 0.9}` stack / 540 concatenated features,
+globally divided by `sqrt(9)` to preserve Euclidean distance scale.
+The 30x50 raster, five filtrations, cubical persistence, summaries, and OPTICS
+remain fixed. The 0.4 block is regression-tested for exact equality with the
+legacy pipeline.
+
+The attack substrate is also repaired before either representation is compared.
+`total_len` is IPv4 packet length, not payload length. Phase Q uses the last
+nonzero byte as a conservative support boundary, common attackable targets, and
+nontrivial parameter draws. Seed-42 D0 reduces raw no-ops from 12.5/84.5/78.5/0%
+to 0% for transpositions/reversal/swap/shift respectively.
+
+D1-D4 (200 pairs per family) localizes the failure: at threshold 0.4 most attacks
+already change the binary image, all five diagrams, and the 60-vector, but 0/200
+per family exceed the clean-clean 95th percentile in vector displacement. The
+stack drives exact binary and feature identity to 0/200, yet also yields 0/200
+above that clean reference and lowers the median attack/clean distance ratio.
+Therefore it is **not trivially blind but not yet more discriminating**. Do not
+claim improved detection unless the frozen matched-clean-cost R1 run establishes
+it. See `docs/PHASE_Q_MULTITHRESHOLD_REPORT.md`.
+
 ### Final MathFest code gate
 
 **Passed 2026-07-27 in `venv312`:** `python tools/repro_check.py --expect
