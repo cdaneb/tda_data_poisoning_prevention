@@ -103,19 +103,22 @@
 \block[titleleft,roundedcorners=16]{Motivation}{
 	\bodyfont\raggedright
 	\begin{itemize}
-		\item \textbf{Data poisoning} corrupts ML-based Network Intrusion Detection Systems (NIDS) by altering their training data.
-		\item The defense must run \textbf{before training}, so clustering is unsupervised --- there are no labels to use.
-		\item Monkam et al.\ [1] use TDA as that filter: bytes $\to$ image $\to$ cubical persistence $\to$ clustering. \textbf{What can that lens see?}
+		\item Modern Network Intrusion Detection Systems (NIDS) rely on ML models vulnerable to \textbf{data poisoning}: a cyber attack in which adversaries inject biased data to degrade model accuracy / performance.
+		\item Defenses must run \textbf{before training}, so clustering is unsupervised --- there are no labels to use.
+		\item Monkam et al.\ [1] use TDA as a filter to detect presence of data poisoning in training data, but fail to isolate a significant fraction of poisoned data.
+        \item \textbf{Gap}: What perturbations can their TDA lens see?
 	\end{itemize}
 }
 
-\block[titleleft,roundedcorners=16]{Related Work}{
+\block[titleleft,roundedcorners=16]{Background: Topological Data Analysis}{
 	\bodyfont\raggedright
 	\begin{itemize}
-		\item \textbf{Cohen-Steiner et al.\ (2005) [3].} Diagrams are stable: small perturbations give small bottleneck change. The warrant for topology as a detector.
-		\item \textbf{Monkam, De Lucia \& Bastian (2024) [1].} The pipeline reconstructed here; reports $40$--$70\%$ of poison removed.
-		\item \textbf{Ferrara (2025) [2].} Thm.\ 2 couples classification error to topological distortion --- under hypotheses (linear classifiers, Vietoris--Rips, Frobenius balls) that all fail here. A complementary axis: \emph{which points} to attack, where we ask \emph{which algebra} registers.
+        \item TDA uses concepts from topology to study the global "shape" of data (connections and clusters between data points)
+        \item Persistent homology tracks topological features (connected components = $H_0$, loops = $H_1$) as a radius parameter is increased - features that persist over longer ranges are more significant
 	\end{itemize}
+    \begin{center}
+  \includegraphics[width=\linewidth]{Figures/figure_v1_tda_background}
+\end{center}
 }
 
 \block[titleleft,roundedcorners=16]{Research Question}{
@@ -129,43 +132,59 @@
 %----------------------------------------------------------------------
 \subcolumn{0.51}
 
-\block[titleleft,roundedcorners=16]{Methods I: An Invariance Argument}{
-	\bodyfont\raggedright
-	Let $(x \circ \sigma)_i = x_{\sigma(i)}$ for $\sigma \in S_{1500}$. Binarization $b$ is pointwise, so it commutes with $\sigma$:
+\block[titleleft,roundedcorners=16]{The Argument}{
+	\bodyfont\centering
+	\begin{tikzpicture}[>=Latex, node distance=0.48cm,
+		proof/.style={draw=MyFadedNavy, rounded corners=5pt, fill=MyIvory, align=center, minimum height=1.05cm, text width=.85\linewidth},
+		annot/.style={draw=MyTerracotta, rounded corners=4pt, fill=MyTerracotta!10, align=center, font=\small, text width=.85\linewidth}]
+		\node[proof] (perm) {$x \xrightarrow{\ \sigma\in S_{1500}\ } x\circ\sigma$\\[-1pt]\small Reorder byte positions only};
+		\node[proof, below=of perm] (bin) {$b(x\circ\sigma)=b(x)\circ\sigma$\\[-1pt]\small Pointwise binarization commutes with reordering};
+		\node[proof, below=of bin] (count) {$\displaystyle\sum_{i=1}^{1500}b\big((x\circ\sigma)_i\big)=\sum_{i=1}^{1500}b(x_i)$\\[-1pt]\small A bijection only reorders the summands};
+		\node[annot, below=of count] (note) {\textbf{Equivariance:} the binarized image moves.\quad \textbf{Invariance:} the foreground count does not.};
+		\draw[->, very thick, MyFadedNavy] (perm) -- (bin);
+		\draw[->, very thick, MyFadedNavy] (bin) -- (count);
+	\end{tikzpicture}
 
-	\innerblock[bodywidth=0.86\linewidth]{}{
-	\[
-		\underbrace{b(x \circ \sigma) = b(x) \circ \sigma}_{\text{equivariance}}
-		\ \ \Longrightarrow\ \
-		\underbrace{\sum_{i=1}^{1500} b\big((x \circ \sigma)_i\big) = \sum_{i=1}^{1500} b(x_i)}_{\text{count is invariant ($\sigma$ is bijective)}}
-	\]
-	}
-
+	\raggedright
 	\begin{itemize}
-		\item \textbf{Equivariance is not invariance.} Binarization commutes; the \emph{count} is what is fixed. Both steps are needed, and the result holds for every $\sigma$ --- not just the ${\sim}60$ transpositions applied.
-		\item Every feature depending only on foreground count is therefore blind to permutation. Detection must flow through the \textbf{position-dependent} filtrations (Height, Radial). Invariance that is too coarse is a known hazard --- the motivation for group-equivariant operators [4].
-		\item The threshold is a fraction of the batch maximum --- data-dependent, but a maximum is itself permutation-invariant. \textbf{Verified in code}, not assumed.
+		\item Holds for \emph{every} permutation, not merely the attacks tested.
+		\item Count-derived features are \textbf{provably insensitive} to reordering.
+		\item The data-dependent threshold uses a batch maximum; maxima are permutation-invariant and this was verified in code.
 	\end{itemize}
 
 	\begin{center}
 	\includegraphics[width=\linewidth]{Figures/figure_v2_binarized_triptych}
 	\end{center}
 
-	\innerblock{}{
-		\centering
-		\textbf{The count channel is provably insensitive to permutation; the position channel stays open.}\\
-		Attenuated on the foreground-count channel --- not absent.
-	}
+	\innerblock{}{\centering\textbf{Residual capture must come from outside the count channel.}}
 }
 
-\block[titleleft,roundedcorners=16]{Methods II: Design}{
-	\bodyfont\raggedright
-	\begin{itemize}
-		\item UNSW-NB15, $5{,}000$ packets, $10\%$ poison, $5$ seeds. Each $1500$-byte payload $\to$ $30 \times 50$ image; $5$ filtrations $\times$ $6$ vectorizations $\times$ $2$ homology dimensions $= 60$ features (reduced homology) --- the binarize--filtration--cubical pattern of Garin \& Tauzin [5].
-		\item \textbf{Capture} $=$ fraction of the $500$ appended poisoned packets assigned to a cluster containing no clean packet. Zero-tolerance: a $99\%$-poison cluster counts for nothing. Reported $\pm$ values are population SD across $5$ seeds.
-		\item OPTICS reported throughout. DBSCAN $\approx 0$; MeanShift $\approx 0$ but its auto-bandwidth yields coarse clusters, so it is not a discriminating cross-check. HDBSCAN is nonzero only on cyclic shift, at $3/5$ seeds.
-		\item Four multiset-preserving families preserve packet length, byte range, and byte multiset; Gaussian noise is a positive control. This is structural validity, not protocol-semantic validity.
-	\end{itemize}
+\block[titleleft,roundedcorners=16]{Experimental Design}{
+	\centering
+	\begin{tikzpicture}[>=Latex,
+		card/.style={draw=MyFadedNavy, line width=1.2pt, rounded corners=8pt,
+			align=center, minimum width=18.2cm, minimum height=1.95cm,
+			text width=17.8cm, inner sep=4pt},
+		arrow/.style={->, very thick, MyTerracotta}]
+		% Explicit coordinates prevent poster-scale font sizes from collapsing the flow.
+		\node[card, fill=MyTerracotta!16] (data) at (0,0)
+			{\fontsize{19}{22}\selectfont\textbf{1. Data} \quad 5,000 UNSW-NB15 packets \quad $10\%$ poison \quad 5 seeds};
+		\node[card, fill=MyIvory] (image) at (0,-2.70)
+			{\fontsize{19}{22}\selectfont\textbf{2. Encode} \quad 1,500 payload bytes $\longrightarrow$ $30\times50$ image};
+		\node[card, fill=MyFadedNavy!12] (tda) at (0,-5.40)
+			{\fontsize{19}{22}\selectfont\textbf{3. Topologize} \quad binarize $\longrightarrow$ 5 filtrations $\longrightarrow$ cubical persistence ($H_0,H_1$)};
+		\node[card, fill=MyIvory] (features) at (0,-8.10)
+			{\fontsize{19}{22}\selectfont\textbf{4. Vectorize} \quad 5 filtrations $\times$ 6 summaries $\times$ 2 dimensions $=$ 60 features};
+		\node[card, fill=MyTerracotta!16] (cluster) at (0,-10.80)
+			{\fontsize{19}{22}\selectfont\textbf{5. Cluster} \quad OPTICS \quad $\Rightarrow$ capture = poison in a $100\%$-pure cluster};
+		\draw[arrow] (data.south) -- (image.north);
+		\draw[arrow] (image.south) -- (tda.north);
+		\draw[arrow] (tda.south) -- (features.north);
+		\draw[arrow] (features.south) -- (cluster.north);
+	\end{tikzpicture}
+
+	\raggedright\small
+	Four multiset-preserving reordering families; Gaussian noise is the positive control. Reported $\pm$ values are population SD across five seeds.
 }
 
 \end{subcolumns}
@@ -191,39 +210,33 @@
 %======================================================================
 \column{0.34}
 
-\block[titleleft,roundedcorners=16]{Results: Four Families, One Proof}{
-	\bodyfont\raggedright
+\block[titleleft,roundedcorners=16]{Results}{
+	\bodyfont\centering
 	\begin{center}
 	\includegraphics[width=\linewidth]{Figures/figure_v3_four_families}
 	\end{center}
 
-	\begin{itemize}
-		\item \textbf{The count never moved:} $0/200$ for all four families, across $1{,}600$ checks at two thresholds --- zero exceptions.
-		\item \textbf{Identical invariance, a six-point spread in capture.} The invariance class alone does not determine detectability.
-		\item \textbf{Random swaps are quiet for a computable reason:} foreground fraction $p \approx 0.042$, so only $2p(1-p) \approx 8\%$ of transpositions change the image. Control: noise shifts the count by $|\Delta| = 14.02$.
-	\end{itemize}
+	\innerblock{}{\centering\textbf{$0/1{,}600$ count changes.} Same invariance class; capture spans $0$--$6.28\%$.}
+
+	\begin{center}
+	\includegraphics[width=\linewidth]{Figures/figure_v4_guidance_shift}
+	\end{center}
+	\small\raggedright
+\textbf{Companion result.} Guidance raises capture over random swaps, but an unguided cyclic shift reaches the same level; spatial disruption matters more than sophistication.
 }
 
-\block[titleleft,roundedcorners=16]{Discussion}{
+\block[titleleft,roundedcorners=16]{Discussion and Conclusion}{
 	\bodyfont\raggedright
 	\begin{itemize}
-		\item \textbf{Capture tracks spatial disruption, not sophistication:} unguided cyclic shift matches surrogate-guided search.
-		\item \textbf{A reported negative result.} Guidance gave $+4.68 \pm 1.57$ ($5/5$ seeds) on UNSW-NB15 but \textbf{does not replicate} on CICIDS2017: $-0.60 \pm 3.03$, $2/5$ seeds, per-seed $[-0.4, -2.2, +0.4, +4.2, -5.0]$ --- the sign flips and the mean crosses zero. Pre-committed; not rescued.
-		\item \textbf{The two zeroes are saturated under this metric:} for block reversal and block swap, exact feature duplicates plus OPTICS noise leave at most $0.40$ and $0.32$ percentage points, respectively, available for $100\%$-pure capture. This is not merely a clustering failure.
-	\end{itemize}
-}
-
-\block[titleleft,roundedcorners=16]{Conclusions}{
-	\bodyfont\raggedright
-	\begin{itemize}
-		\item One channel of the detector is \textbf{provably insensitive} to permutation attacks. Stability [3] bounds how far a diagram can move; it gives no lower bound --- a large attack can move it \emph{not at all}.
-		\item \textbf{Insensitive is not undetectable:} four identically invariant families span $0\%$--$6.3\%$.
-		\item Detectability is a property of the \textbf{(attack, detector) pair} --- blind spots \emph{arising from feature-map invariances} can be read off the algebra before any experiment. The algebra does not characterise every failure mode.
+		\item \textbf{A feature-map blind spot can be read from the algebra before experimentation.}
+		\item \textbf{Insensitive is not undetectable:} detectability belongs to the \emph{attack--detector pair}, not to permutation invariance alone.
+		\item Guidance increases capture over random swaps, yet does not outperform a trivial shift: \textbf{spatial disruption matters more than sophistication.}
+		\item \textbf{Next:} isolate the residual signal by filtration. Guidance does not replicate on CICIDS2017 ($-0.60\pm3.03$).
 	\end{itemize}
 
 	\innerblock{}{
 		\small
-		\textbf{Limitations.} Proof: any fixed-threshold pipeline. Empirics: one reconstruction, one primary dataset, two thresholds, $5$ seeds; cross-dataset replication attempted and failed. The duplicate ceilings apply only to the $100\%$-purity metric, not relaxed-purity sweeps.
+		\textbf{Scope.} Proof: any fixed-threshold pipeline. Empirics: one reconstruction, five seeds, one primary dataset; cross-dataset guidance did not replicate.
 	}
 }
 
