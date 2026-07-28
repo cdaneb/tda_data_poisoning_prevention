@@ -1,142 +1,276 @@
 % =====================================================================
-% *** SUPERSEDED (Phase V7). DO NOT EDIT FOR THE MATHFEST 2026 POSTER. ***
-% The live document is base_poster.tex, which carries its own copy of these
-% blocks and does NOT \input this file. Edits made here will not reach the
-% printed poster. Kept for provenance only; a post-MathFest refactor will
-% make base_poster.tex \input this file and eliminate the second copy.
-% =====================================================================
-% POSTER BLOCKS -- CONDENSED. 3-4 bullets per section.
-% tikzposter, pure LaTeX math (safe under latin9 inputenc).
-% Layout: LEFT = Motivation/Related Work/RQ | CENTER = Methods I+II | RIGHT = Results/Conclusions
-% Delete the SIR/ODE "Model Block" -- template filler.
+%  MathFest 2026 Poster -- 36 in x 36 in
+%  "What Can a Persistence Diagram See?"
+%  Christian Dane Beels, advised by Dr. Joseph Dorta
+%  Template base: Sofia Jijon (https://sjijon.github.io)
+%
+%  LAYOUT: three independent, equal-width columns.
+%    - Left: motivation, TDA background and related work, then the proof.
+%    - Middle: research question and the empirical results.
+%    - Right: experimental design, discussion/conclusion, and references.
+%
+%  SPACING: all column separation is controlled by colspace. There are no
+%  subcolumns in this version.
 % =====================================================================
 
+\documentclass[a0paper,portrait,margin=0mm,colspace=52pt,blockverticalspace=40pt,innermargin=0pt]{tikzposter}
+\geometry{paperwidth=36in,paperheight=36in,margin=0mm}
+
+\usepackage[latin9]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{multicol}
+% \usepackage[colalign]{aligncolsatbottom}
+% ^ DISABLED (Phase V6): aligncolsatbottom is not on CTAN and is not in the
+% MiKTeX package database, so this line is a hard build failure, not the
+% "untested interaction" the original header anticipated. Its only effect was
+% cosmetic bottom-alignment of columns. Restore only if you obtain the .sty.
+
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=1pt,parsep=0pt,partopsep=0pt}
+
+% Body font for block text. tikzposter's a0 \normalsize is 24.88pt/30pt, which
+% overflowed the bottom margin in the right column (measured: content reached
+% 35.60 in against a 35.20 in limit). 22.8pt/27.4pt was found by compiling and
+% measuring: it fills the page and leaves References and Contact bottoms within
+% 0.15 in of each other. Change in ONE place to trade text against figure size.
+\newcommand{\bodyfont}{\fontsize{22.8}{27.4}\selectfont}
+
+%......................................................................
+\tikzposterlatexaffectionproofoff
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning}
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\definecolor{MyFadedNavy}{rgb}{0.224, 0.259, 0.310}
+\definecolor{MyTerracotta}{rgb}{0.914, 0.310, 0.216}
+\definecolor{MyIvory}{rgb}{0.965, 0.969, 0.922}
+
+\usetheme{Default}
+\definecolorstyle{MyStyle2016}{
+	\definecolor{ColorOne}{named}{MyFadedNavy}
+	\definecolor{ColorTwo}{named}{MyTerracotta}
+	\definecolor{ColorThree}{named}{MyIvory}
+}{
+    \colorlet{titlebgcolor}{ColorOne}
+    \colorlet{titlefgcolor}{white}
+    \colorlet{backgroundcolor}{ColorOne!15}
+    \colorlet{framecolor}{ColorOne}
+    \colorlet{blocktitlebgcolor}{white}
+    \colorlet{blocktitlefgcolor}{ColorTwo}
+    \colorlet{blockbodybgcolor}{white}
+    \colorlet{blockbodyfgcolor}{black}
+    \colorlet{innerblocktitlebgcolor}{ColorOne!15}
+    \colorlet{innerblocktitlefgcolor}{black}
+    \colorlet{innerblockbodybgcolor}{ColorOne!15}
+    \colorlet{innerblockbodyfgcolor}{black}
+    \colorlet{notebgcolor}{ColorTwo!20}
+    \colorlet{notefgcolor}{ColorTwo}
+    \colorlet{notefrcolor}{ColorTwo}
+ }
+
+\usecolorstyle{MyStyle2016}
+%......................................................................
+\title{\parbox{0.92\linewidth}{\centering What Can a Persistence Diagram See?\\[0.3cm]
+{\Large Invariance Structure and the Detectability of Data Poisoning}}}
+
+\author{\underline{Christian Dane Beels}, Dr.\ Joseph Dorta}
+
+\institute{Department of Mathematical Sciences\\United States Military Academy, West Point, NY.}
+
+%......................................................................
+\begin{document}
+
+\maketitle[width=0.96\linewidth,titletoblockverticalspace=24pt,linewidth=0,roundedcorners=10]
+
+\begin{columns}
+%======================================================================
+%  LEFT COLUMN -- motivation, background, and proof
+%======================================================================
+\column{0.333}
 
 \block[titleleft,roundedcorners=16]{Motivation}{
-	\raggedright
+	\bodyfont\raggedright
 	\begin{itemize}
-		\item ML-based intrusion detection trains on traffic adversaries partly control; \textbf{data poisoning} injects corrupted samples to degrade accuracy.
-		\item Defense must act \textbf{before training} --- no trained model, no trustworthy labels.
-		\item Monkam et al.\ (2024) apply \textbf{topological data analysis} here. \textbf{What can that lens see?}
+		\item Modern Network Intrusion Detection Systems (NIDS) rely on ML models vulnerable to \textbf{data poisoning}: a cyber attack in which adversaries inject biased data to degrade model accuracy / performance.
+		\item Defenses must run \textbf{before training}, so clustering is unsupervised --- there are no labels to use.\\
+        \begin{center}
+            \includegraphics[width=\linewidth]{Figures/figure_v5_nids_poisoning}
+        \end{center}
 	\end{itemize}
 }
 
-
-\block[titleleft,roundedcorners=16]{Related Work}{
-	\raggedright
+\block[titleleft,roundedcorners=16]{TDA Background and Related Work}{
+	\bodyfont\raggedright
 	\begin{itemize}
-		\item \textbf{Cohen-Steiner et al.\ (SoCG~'05, Pisa, pp.~263--271).} Stability: small data perturbations give small topological change --- this licenses topology as a detector.
-		\item \textbf{Monkam, De Lucia \& Bastian (2024).} Payload bytes $\to$ images $\to$ cubical persistence $\to$ clustering removes poisoned packets pre-training.
-		\item \textbf{Ferrara (2025).} A \emph{complementary axis} --- which \emph{points} an attack should target, where we ask which \emph{perturbation algebra} the detector registers. Thm.\ 2 assumes linear classifiers, Vietoris--Rips, Frobenius-ball perturbations; none hold here, so it is not under test.
+        \item TDA uses concepts from topology to study the global "shape" of data (connections and clusters between data points)
+        \item Persistent homology tracks topological features (connected components = $H_0$, loops = $H_1$) as a radius parameter is increased - features that persist over longer ranges are more significant
+		\item \textbf{Related work:} Monkam et al.\ [1] use TDA as a pre-training filter for poisoned NIDS data, motivating the question of which perturbations their TDA lens can see.
 	\end{itemize}
+    \begin{center}
+  \includegraphics[width=\linewidth]{Figures/figure_v1_tda_background}
+\end{center}
 }
 
+\block[titleleft,roundedcorners=16]{The Argument}{
+	\bodyfont\raggedright
+
+	A reordering attack applies a permutation $\large\sigma\in S_{1500}$ to the positions of a packet's 1,500 payload bytes. It changes \emph{where} byte values appear, but not the collection of byte values itself:
+	\begin{equation}
+    \Large
+		x \xrightarrow{\ \sigma\in S_{1500}\ } x\circ\sigma .
+		\tag{1}
+	\end{equation}
+
+	Binarization acts independently at each byte position. Therefore, reordering before binarization gives the same result as binarizing first and then reordering:
+	\begin{equation}
+    \Large
+		b(x\circ\sigma)=b(x)\circ\sigma .
+		\tag{2}
+	\end{equation}
+
+	The binarized image is thus \textbf{equivariant}: it moves when the packet is reordered. However, the foreground-count feature sums over all positions. Because $\sigma$ is a bijection, it only rearranges the summands:
+	\begin{equation}
+    \Large
+		\sum_{i=1}^{1500} b\!\left((x\circ\sigma)_i\right)
+		=
+		\sum_{i=1}^{1500} b(x_{\sigma(i)})
+		=
+		\sum_{i=1}^{1500} b(x_i).
+		\tag{3}
+	\end{equation}
+
+	Thus, the foreground count is \textbf{invariant} under every permutation, not merely the attacks tested here. The threshold is fitted using a batch maximum; maxima are also permutation-invariant, and this was verified in code. Count-derived features are therefore provably insensitive to byte-position reordering.
+
+	\begin{center}
+	\includegraphics[width=\linewidth]{Figures/figure_v2_binarized_triptych}
+	\end{center}
+
+	\innerblock{}{\centering\textbf{Residual capture must come from outside the count channel.}}
+}
+
+%======================================================================
+%  MIDDLE COLUMN -- research question and results
+%======================================================================
+\column{0.333}
 
 \block[titleleft,roundedcorners=16]{Research Question}{
 	\raggedright
-	\begin{itemize}
-		\item \textbf{Hypothesis:} our low detection rate was caused by unrealistically weak synthetic poison.
-		\item \textbf{Test:} a realistic attack --- surrogate NIDS classifier $+$ genetic search over multiset-preserving byte swaps.
-		\item \textbf{Result:} detectability is \emph{not} ordered by realism.
-	\end{itemize}
-
-	\begin{center}
-	\begin{tabular}{l|c}
-		\textbf{Attack} & \textbf{Poison captured}\\
-		\hline
-		Random swaps        & $1.80\% \pm 0.51$\\
-		Noise $+$ swaps     & $3.52\% \pm 1.79$\\
-		Gaussian noise      & $4.96\% \pm 1.64$\\
-		\textbf{Guided swaps} & $\mathbf{6.48\% \pm 1.24}$\\
-	\end{tabular}
-	\end{center}
-
 	\innerblock{}{
 		\centering
-		\textbf{What determines whether poisoning is topologically detectable --- the attack's invariance structure, or the filtration's sensitivities?}
+		\textbf{What determines a data poisoning attack's topological detectability --- and can a more sophisticated attack lead to less detectable topological signatures?}
 	}
 }
 
+\block[titleleft,roundedcorners=16]{Main Result: Detectability Tracks Spatial Disruption}{
+    \bodyfont\centering
 
-\block[titleleft,roundedcorners=16]{Methods I: An Invariance Argument}{
-	\raggedright
-	A swap attack permutes byte positions: $\sigma \in S_{1500}$ acting on $x \in \{0,\dots,255\}^{1500}$. Binarization $b$ is \emph{pointwise}, so it commutes with $\sigma$:
+    \innerblock{}{
+    \centering
+    \textbf{What did we investigate?}\\
+    Which poisoned-packet perturbations can a TDA-based NIDS filter detect?\\[0.35cm]
 
-	\innerblock[bodywidth=0.8\linewidth]{}{
-	\[
-		\underbrace{b(x \circ \sigma) = b(x) \circ \sigma}_{b \ \text{is \emph{equivariant}}}
-		\quad\Longrightarrow\quad
-		\underbrace{\textstyle\sum_{i} b(x_i) \ \text{unchanged}}_{\text{the \emph{count} is \emph{invariant}}}
-	\]
-	}
+    \textbf{Main result}\\
+    \textbf{Detectability tracks spatial disruption, not attack sophistication.}\\[0.35cm]
 
+    \textbf{Evidence}\\
+    All four reordering attacks preserve foreground counts ($0/1{,}600$ changes),
+    yet capture rises from $0\%$ for localized operations to $6.28\%$ for cyclic
+    shift. Surrogate-guided search reaches a comparable $6.48\%$.
+    }
+
+    \begin{center}
+        \includegraphics[width=\linewidth]{Figures/figure_v3_four_families}
+    \end{center}
+
+    \small\raggedright
+    \textbf{How to read Figure V3.} Each attack preserves the same payload-byte
+    multiset and therefore leaves the foreground-count channel unchanged. What
+    differs is the amount of meaningful spatial rearrangement. Localized block
+    operations produce no capture, while the full cyclic shift produces the
+    largest capture among the four reordering families.
+
+    \begin{center}
+        \includegraphics[width=0.88\linewidth]{Figures/figure_v4_guidance_shift}
+    \end{center}
+
+    \small\raggedright
+    \textbf{Companion evidence.} Guidance improves capture over random swaps,
+    but does not outperform a trivial cyclic shift. The important variable is
+    spatial disruption, not whether the attack is sophisticated.
+}
+
+%======================================================================
+%  RIGHT COLUMN -- design, interpretation, and references
+%======================================================================
+\column{0.333}
+
+\block[titleleft,roundedcorners=16]{Experimental Design}{
+	\centering
+	\begin{tikzpicture}[>=Latex,
+		card/.style={draw=MyFadedNavy, line width=1.2pt, rounded corners=8pt,
+			align=left, minimum width=19cm, minimum height=2.2cm,
+			text width=17.8cm, inner sep=4pt},
+		arrow/.style={->, very thick, MyTerracotta}]
+		\node[card, fill=MyTerracotta!16] (data) at (0,0)
+			{\fontsize{19}{22}\selectfont\textbf{1. Data:} \quad 5,000 UNSW-NB15 packets, 10\% poison, \\ 5 seeds};
+		\node[card, fill=MyIvory] (image) at (0,-2.70)
+			{\fontsize{19}{22}\selectfont\textbf{2. Encode:} \quad 1,500 payload bytes $\longrightarrow$ 30 $\times$ 50 image};
+		\node[card, fill=MyFadedNavy!12] (tda) at (0,-5.40)
+			{\fontsize{19}{22}\selectfont\textbf{3. Topologize:} \quad binarize $\longrightarrow$ 5 filtrations $\longrightarrow$ cubical persistence ($H_0,H_1$)};
+		\node[card, fill=MyIvory] (features) at (0,-8.10)
+			{\fontsize{19}{22}\selectfont\textbf{4. Vectorize:} \quad 5 filtrations $\times$ 6 summaries $\times$ 2 dimensions $=$ 60 features};
+		\node[card, fill=MyTerracotta!16] (cluster) at (0,-10.80)
+			{\fontsize{19}{22}\selectfont\textbf{5. Cluster:} \quad OPTICS $\Rightarrow$ capture $=$ poison in a 100\% $-$pure cluster};
+		\draw[arrow] (data.south) -- (image.north);
+		\draw[arrow] (image.south) -- (tda.north);
+		\draw[arrow] (tda.south) -- (features.north);
+		\draw[arrow] (features.south) -- (cluster.north);
+	\end{tikzpicture}
+
+	\raggedright\small
+	Four multiset-preserving reordering families; Gaussian noise is the positive control. Reported $\pm$ values are population SD across five seeds.
+}
+
+\block[titleleft,roundedcorners=16]{Discussion and Conclusion}{
+	\bodyfont\raggedright
 	\begin{itemize}
-		\item Permutations \textbf{rearrange} foreground pixels --- never change how many. Only \textbf{position-dependent} filtrations (Height, Radial) can respond.
-		\item Noise changes byte \emph{values}, crosses the threshold, and registers in \textbf{every} channel.
-		\item \textbf{Confirmed:} permutation changed the count in $0$ of $200$ samples, all four families; noise shifted it by $|\Delta| = 14.02$.
-		\item \textbf{Scope:} \texttt{Binarizer(0.4)} cuts at a fraction of the \emph{fitted} \texttt{max\_value\_}, so the threshold is data-dependent. The argument survives because a maximum is itself permutation-invariant --- verified in code, not assumed.
+		\item \textbf{A feature-map blind spot can be read from the algebra before experimentation.}
+		\item \textbf{Insensitive is not undetectable:} detectability belongs to the \emph{attack--detector pair}, not to permutation invariance alone.
+		\item Guidance increases capture over random swaps, yet does not outperform a trivial shift: \textbf{spatial disruption matters more than sophistication.}
+		\item \textbf{Next:} isolate the residual signal by filtration. Guidance does not replicate on CICIDS2017 ($-0.60\pm3.03$).
 	\end{itemize}
-
-	\begin{center}
-	\includegraphics[width=0.96\linewidth]{figures/figure_v2_binarized_triptych.pdf}
-	\end{center}
 
 	\innerblock{}{
-		\centering
-		\textbf{Attenuated on the foreground-count channel --- not absent.} That channel is \emph{provably insensitive} to permutation; the position channel stays open. Elementary mathematics --- but we find no prior statement of it for this pipeline.
+		\small
+		\textbf{Scope.} Proof: any fixed-threshold pipeline. Empirics: one reconstruction, five seeds, one primary dataset; cross-dataset guidance did not replicate.
 	}
 }
 
 
-\block[titleleft,roundedcorners=16]{Methods II: Design}{
-	\raggedright
-	\begin{itemize}
-		\item UNSW-NB15, $5{,}000$ samples, $10\%$ poison, \textbf{5 seeds}; $60$ topological features; OPTICS reported (other algorithms $\approx 0$).
-		\item A \textbf{surrogate classifier} was required --- the cited attacks are model-relative, but the source paper specifies none. MLP ($0.969$), RF cross-check ($0.985$). These are \emph{attacker-side} accuracies; capture \% below is \emph{detector-side}.
-	\end{itemize}
-
-	\begin{center}
-	\begin{tabular}{l|c|c|l}
-		\textbf{Cell} & \textbf{Noise} & \textbf{Swaps} & \textbf{Isolates}\\
-		\hline
-		N   & on  & ---    & noise\\
-		S   & off & random & swaps\\
-		SG  & off & guided & guidance\\
-		NS  & on  & random & noise $+$ swaps\\
-		NSG & on  & guided & guidance under noise
-	\end{tabular}
-	\end{center}
+\block[titleleft,roundedcorners=16]{References}{
+\fontsize{16}{19}\selectfont
+\begin{itemize}[itemsep=2pt,leftmargin=*]
+	\item[{[1]}] G. F. Monkam, M. J. De Lucia, and N. D. Bastian, ``A topological data analysis approach for detecting data poisoning attacks against machine learning based network intrusion detection systems,'' \emph{Computers \& Security}, vol.\ 144, art.\ no.\ 103929, Sep.\ 2024.
+	\item[{[2]}] M. Ferrara, ``Modeling by topological data analysis and game theory for analyzing data poisoning phenomena,'' \emph{AIMS Mathematics}, vol.\ 10, no.\ 7, pp.\ 15457--15475, Jul.\ 2025.
+	\item[{[3]}] D. Cohen-Steiner, H. Edelsbrunner, and J. Harer, ``Stability of persistence diagrams,'' in \emph{Proc.\ 21st Annu.\ Symp.\ Computational Geometry (SCG '05)}, Pisa, Italy, Jun.\ 2005, pp.\ 263--271.
+	\item[{[4]}] M. G. Bergomi, P. Frosini, D. Giorgi, and N. Quercioli, ``Towards a topological--geometrical theory of group equivariant non-expansive operators for data analysis and machine learning,'' \emph{Nature Machine Intelligence}, vol.\ 1, pp.\ 423--433, 2019.
+	\item[{[5]}] A. Garin and G. Tauzin, ``A topological reading lesson: Classification of MNIST using TDA,'' arXiv:1910.08345, 2019.
+\end{itemize}
 }
 
+% Contact moved here (was bottom of the left subcolumn) so that it sits at
+% bottom-right, opposite the References strip at bottom-left.
 
-\block[titleleft,roundedcorners=16]{Results}{
+\iffalse
+\block[titleleft,roundedcorners=16]{Contact}{
+	\small
 	\raggedright
-	\begin{center}
-	\begin{tabular}{l|c|c}
-		\textbf{Permutation family} & \textbf{Mean pos.\ changed} & \textbf{Poison captured}\\
-		\hline
-		Block reversal ($k=120$)    & $14.08$  & $\mathbf{0.00\% \pm 0.00}$\\
-		Block swap ($2 \times k=60$) & $17.63$  & $\mathbf{0.00\% \pm 0.00}$\\
-		Transpositions ($60$)       & $22.93$  & $1.80\% \pm 0.51$\\
-		Cyclic shift                & $281.09$ & $6.28\% \pm 1.31$\\
-	\end{tabular}
-	\end{center}
-
-	\begin{center}
-	\includegraphics[width=0.96\linewidth]{figures/figure_v3_four_families.pdf}
-	\end{center}
-
-	\begin{itemize}
-		\item \textbf{Detectability tracks spatial disruption, not realism.} Unguided cyclic shift ($6.28\% \pm 1.31$) matches surrogate-guided search ($6.48\% \pm 1.24$): guidance is an efficient route to disruption, not a distinct phenomenon.
-		\item \textbf{Guidance --- UNSW-specific.} $+4.68 \pm 1.57$, 5/5 seeds on UNSW-NB15. \textbf{CICIDS2017: $-0.60 \pm 3.03$, 2/5 seeds positive}, per-seed $\Delta$ $[-0.40, -2.20, +0.40, +4.20, -5.00]$. Sign flips per seed; the mean crosses zero. Reported as a genuine negative under pre-commitment.
-		\item \textbf{No configuration} approached the $40$--$70\%$ reported by the source paper; the highest capture under any committed configuration is $6.48\%$.
-	\end{itemize}
+	\textbf{Christian Dane Beels} \quad christian.beels@westpoint.edu\\
+	github.com/cdaneb/ \quad linkedin.com/in/christiandanebeels/\\
+	Dept.\ of Mathematical Sciences, USMA West Point
 }
+\fi
 
-
-% ===== FIX 8 (OPTIONAL) -- delete this block entire if not wanted =====
-\block[titleleft,roundedcorners=16]{Why Permutations?}{
-	\raggedright
-	Permutations are the \textbf{probe}, not the proposed attack: $S_{1500}$ is precisely the group under which the foreground count is invariant, so it isolates exactly what that channel cannot see. The concerning case is the \emph{functional} reordering living in the same group --- HTTP header order, chunked-segment order, padding placement. Whether such attacks inherit the attenuation is a \textbf{conjecture this work motivates, not a result}.
-}
-% ===== END FIX 8 =====
+\end{columns}
+\end{document}
