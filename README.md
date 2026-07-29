@@ -76,12 +76,58 @@ stack. It also replaces padding-dominated attack offsets with a conservative-
 support, guaranteed-nontrivial attack substrate; the historical Test B results
 remain unchanged.
 
-The first result is mixed and important: the stack reduces exact binary and
-540-vector identity to 0/200 for all four repaired families, closing the tested
+The diagnostic result is mixed: the stack reduces exact binary and 540-vector
+identity to 0/200 for all four repaired families, closing the tested
 single-cutoff identity mechanism, but attack displacement remains entirely below
 the clean-clean 95th percentile and becomes smaller relative to ordinary clean
-variation. Thus the algebraic blind spot is repaired without yet establishing a
-detection improvement. See `docs/PHASE_Q_MULTITHRESHOLD_REPORT.md`.
+variation.
+
+The complete R1 capture grid (four families x five seeds, WIRE, full UNSW CSV)
+settles the question, and the answer is negative. The algebraic repair is
+confirmed — exact-duplicate-with-clean fraction drops ~13-20x across all
+families and seeds — but downstream detection is falsified: matched-clean-cost
+poison removal is zero for three families and a negligible +0.6% (3/5 seeds) for
+block reversal at operationally clean budgets, and negative for all four at the
+loosest purity. The stack achieves this by pushing nearly everything to the
+unclustered bin (poison unclustered ~0.85 -> ~0.99, clean unclustered ~0.37 ->
+~0.55), which is fragmentation, not separation. **The simple equally-weighted
+threshold-stack repair is falsified as a detector**, even though it closes the
+exact single-cutoff identity mechanism. See
+`docs/PHASE_Q_MULTITHRESHOLD_REPORT.md`.
+
+### Phase Q3: collision provenance
+
+Phase Q2 noticed that the 5500x60 feature matrix is heavily degenerate and left
+it as its most promising unexplored lead. Phase Q3 traces those collisions back
+through every pipeline stage — raw payload, support record, threshold-0.4 mask,
+five filtration images, unscaled and scaled diagrams, 12-feature blocks, final
+60-vector — using exact hashes and equivalence classes, with an additive
+instrumented pipeline whose output is bitwise equal to `extract_tda_features()`.
+
+First, a definition. Q2's "51.8%" is the **redundancy fraction**,
+`(n_rows - n_unique_classes)/n_rows = 2849/5500`; the **repeated-member
+fraction** (rows in a class of size >= 2) is **57.02%**. The two differ and the
+phrase "duplicate fraction" should not be used for either.
+
+Assigning every repeated final-vector class to its earliest merger stage
+(mutually exclusive; five seeds, population SD): **50.80 +/- 0.50%** of the
+collision mass is already identical in the **raw 1500-byte payload**,
+**46.68 +/- 0.46%** is first created by **threshold-0.4 binarization**, and
+**2.52 +/- 0.31%** in cubical persistence. The support record, the five
+filtration images, the Scaler, the persistence summaries, and the final
+concatenation merge **exactly zero rows on every seed**. So ~97.5% of the
+degeneracy is upstream of any topology, and the diagram step introduces no new
+clean/poison confusion at all — **the topological feature map is effectively
+exonerated** as a source of it. The empty-payload explanation is refuted
+outright: zero all-zero payload rows on every seed.
+
+Decomposing strict-100%-purity failure over all 500 poisoned rows: 1.80 +/- 0.51%
+captured, **56.24 +/- 1.65% assigned label `-1`**, **39.48 +/- 1.73% sharing an
+exact 60-vector with a clean row**, 2.48 +/- 0.90% in a mixed neighbourhood of
+distinct vectors, nothing residual. Exact collision obstructs 42.28 +/- 1.64% of
+poison and binds under this fit, but `-1` assignment is the larger single
+mechanism, and `1 - obstruction` is **not** an algorithm-independent ceiling.
+See `docs/PHASE_Q3_COLLISION_REPORT.md`.
 
 ## Repo layout
 

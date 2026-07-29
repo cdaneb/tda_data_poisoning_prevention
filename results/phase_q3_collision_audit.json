@@ -1,0 +1,5383 @@
+{
+  "phase": "Q3",
+  "description": "Collision-provenance audit: the earliest pipeline stage at which distinct UNSW payload rows become indistinguishable, and how much of the strict-100%-purity capture failure that explains.",
+  "generated_utc": "2026-07-29T01:35:18.475554+00:00",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.0-181-generic-x86_64-with-glibc2.39",
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "scikit_learn": "1.3.2",
+    "giotto_tda": "0.6.2"
+  },
+  "definitions": {
+    "repeated_member_fraction": "rows in a class of size >= 2, / all rows",
+    "redundancy_fraction": "(n_rows - n_unique_classes) / n_rows",
+    "coordinate_class_obstruction": "poison rows sharing an exact final 60-vector with >= 1 clean row, / all poison rows",
+    "earliest_merger_stage": "the first stage in the chain at which a row's exact equivalence class stops being a singleton; well-defined and mutually exclusive because each stage is a deterministic function of the previous one (monotonicity asserted, violations must be 0)",
+    "diagram_canonicalisation": "valid points are those with death > birth; sorted by (homology_dimension, birth, death); giotto-tda diagonal padding excluded; array point order carries no information"
+  },
+  "scope": {
+    "pipeline": "legacy single-threshold 0.4, 30x50 raster, 60 features",
+    "frame": "R60 / malicious_random_attack, n_swaps=60, poison_rate=0.10",
+    "clustering": {
+      "min_samples": 5,
+      "max_eps": 2.0
+    },
+    "not_done": [
+      "no row filtering",
+      "no deduplication",
+      "no metadata added",
+      "no binarization change",
+      "no filtration change",
+      "no OPTICS tuning",
+      "no Phase Q attack families"
+    ]
+  },
+  "chain_stages": [
+    "raw_payload",
+    "supported_payload_record",
+    "binary_mask",
+    "filtration_images",
+    "unscaled_diagrams",
+    "scaled_diagrams",
+    "feature_blocks",
+    "final_60_vector"
+  ],
+  "seeds": {
+    "42": {
+      "seed": 42,
+      "realization": {
+        "seed": 42,
+        "dataset": "UNSW-NB15 Payload-Byte",
+        "attack": "malicious_random_attack",
+        "n_swaps": 60,
+        "poison_rate": 0.1,
+        "max_samples": 5000,
+        "n_total": 5500,
+        "n_clean": 5000,
+        "n_poison": 500,
+        "attack_validity_pct": 100.0,
+        "subsample_index_hash": "b5cc86ee44668444",
+        "input_hash": "fce036c2424196ef",
+        "poison_mask_hash": "8f8ee5534151e4fe",
+        "attack_target_index": null
+      },
+      "equality_check": {
+        "instrumented_equals_production_exactly": true,
+        "instrumented_equals_production_bitwise": true,
+        "production_feature_hash": "9e6650402ee5dcdece6a598afdb73b64",
+        "instrumented_feature_hash": "9e6650402ee5dcdece6a598afdb73b64",
+        "shape": [
+          5500,
+          60
+        ]
+      },
+      "fitted_state": {
+        "binarizer_max_value_": {
+          "height_0_1": 255.0,
+          "height_1_0": 255.0,
+          "radial_0_50": 255.0,
+          "radial_0_25": 255.0,
+          "radial_30_0": 255.0
+        },
+        "scaler_scale_": {
+          "height_0_1": 15.0,
+          "height_1_0": 25.0,
+          "radial_0_50": 24.956059691509786,
+          "radial_0_25": 27.504545078950134,
+          "radial_30_0": 20.862646045025066
+        }
+      },
+      "effective_byte_cut": {
+        "height_0_1": 102.0,
+        "height_1_0": 102.0,
+        "radial_0_50": 102.0,
+        "radial_0_25": 102.0,
+        "radial_30_0": 102.0
+      },
+      "optics_params": {
+        "min_samples": 5,
+        "max_eps": 2.0
+      },
+      "labels_hash": "04d00d42b1d96f77488941e5a9984e4a",
+      "Q3_A_definition_and_reproduction": {
+        "definition_note": "repeated_member_fraction counts rows in a class of size >= 2; redundancy_fraction is (n_rows - n_unique_classes) / n_rows. The phrase 'duplicate fraction' is not used.",
+        "final_vector_class_stats": {
+          "stage": "final_60_vector",
+          "n_rows": 5500,
+          "n_unique_classes": 2651,
+          "n_repeated_classes": 287,
+          "n_repeated_member_rows": 3136,
+          "repeated_member_fraction": 0.5701818181818182,
+          "redundancy_fraction": 0.518,
+          "n_redundant_rows": 2849,
+          "largest_class_size": 1043,
+          "largest_class_share": 0.18963636363636363,
+          "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+          "repeated_class_size_quantiles": {
+            "5": 2.0,
+            "25": 2.0,
+            "50": 2.0,
+            "75": 3.0,
+            "95": 13.699999999999989,
+            "100": 1043.0
+          },
+          "mean_class_size": 2.074688796680498,
+          "all_classes": {
+            "clean_only": 2316,
+            "poison_only": 297,
+            "mixed": 38,
+            "clean_only_member_rows": 2806,
+            "poison_only_member_rows": 297,
+            "mixed_member_rows": 2397,
+            "mixed_class_poison_rows": 203,
+            "mixed_class_clean_rows": 2194
+          },
+          "repeated_classes": {
+            "clean_only": 249,
+            "poison_only": 0,
+            "mixed": 38,
+            "clean_only_member_rows": 739,
+            "poison_only_member_rows": 0,
+            "mixed_member_rows": 2397
+          },
+          "poison_rows_sharing_class_with_clean": 203,
+          "poison_obstruction_fraction": 0.406
+        },
+        "feature_hash_exact": "9e6650402ee5dcdece6a598afdb73b64",
+        "feature_hash_rounded9": "ffce38eb0cd462df",
+        "q2_reference": {
+          "source_artifact": "results/phase_q2_geometry.json  arms.legacy_30x50_t04",
+          "input_hash": "fce036c2424196ef",
+          "poison_mask_hash": "8f8ee5534151e4fe",
+          "feature_hash_rounded9": "ffce38eb0cd462df",
+          "n_exact_duplicate_rows": 2849,
+          "max_duplicate_multiplicity": 1043
+        },
+        "q2_statistic_resolution": {
+          "q2_reported_value": 0.518,
+          "q2_reported_n_rows": 2849,
+          "reproduced_redundancy_fraction": 0.518,
+          "reproduced_n_redundant_rows": 2849,
+          "reproduced_repeated_member_fraction": 0.5701818181818182,
+          "reproduced_n_repeated_member_rows": 3136,
+          "q2_51_8_pct_is_redundancy_fraction": true,
+          "q2_51_8_pct_is_repeated_member_fraction": false,
+          "input_hash_matches_q2": true,
+          "poison_mask_hash_matches_q2": true,
+          "feature_hash_matches_q2": true
+        },
+        "largest_final_class": {
+          "size": 1043,
+          "share_of_all_rows": 0.18963636363636363,
+          "signature": "56471b75d85a974bb49adf1373fd497c",
+          "reproduces_q2_1043": true,
+          "n_clean": 950,
+          "n_poison": 93
+        },
+        "optics_label_behaviour_in_exact_classes": {
+          "n_repeated_classes_examined": 287,
+          "max_distinct_labels_in_one_class": 2,
+          "n_classes_split_across_labels": 4,
+          "n_classes_split_across_two_real_clusters": 0,
+          "n_classes_split_only_by_noise_assignment": 4,
+          "split_class_examples": [
+            {
+              "signature": "4e2527bf2229e62a2c53c1104905ba49",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                33
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "2c566943a2971a8b3accde0f76784309",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                84
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "be5aeafe3e101e879a30136202a9454d",
+              "size": 3,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                27
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "f48e434cb8ce46117b7e91f130fed68b",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                37
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            }
+          ],
+          "all_exact_classes_co_assigned": false,
+          "no_exact_class_spans_two_real_clusters": true,
+          "scope_note": "Verified empirically for this fitted OPTICS ({'min_samples': 5, 'max_eps': 2.0}) at this seed. Not proven for OPTICS in general and not claimed for any other algorithm. The distinction matters: a class split only because one twin was left at -1 still cannot produce two competing real clusters, but it does mean a 100%-poison cluster can exist while an identical clean row sits in noise."
+        }
+      },
+      "Q3_D_strict_purity_failure_decomposition": {
+        "n_poison": 500,
+        "categories_priority_order": [
+          "captured_in_100pct_poison_non_noise_cluster",
+          "label_minus_1_unclustered",
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row",
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster",
+          "residual_unexplained"
+        ],
+        "decomposition": {
+          "captured_in_100pct_poison_non_noise_cluster": {
+            "n": 11,
+            "pct_of_poison": 2.2
+          },
+          "label_minus_1_unclustered": {
+            "n": 292,
+            "pct_of_poison": 58.4
+          },
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row": {
+            "n": 186,
+            "pct_of_poison": 37.2
+          },
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster": {
+            "n": 11,
+            "pct_of_poison": 2.2
+          },
+          "residual_unexplained": {
+            "n": 0,
+            "pct_of_poison": 0.0
+          }
+        },
+        "categories_sum_to_all_poison": true,
+        "residual_is_empty": true,
+        "residual_note": "A non-noise poisoned row is in a cluster that is either 100% poison (category 1) or mixed (categories 3/4), so category 5 is expected to be empty; it is reported rather than assumed.",
+        "coordinate_class_obstruction": {
+          "numerator_poison_sharing_exact_vector_with_clean": 203,
+          "denominator_all_poison": 500,
+          "obstruction_fraction": 0.406,
+          "one_minus_obstruction": 0.594,
+          "n_captured_rows_also_in_a_mixed_exact_vector_class": 0,
+          "obstruction_binds_under_this_fit": true,
+          "scope_note": "1 - obstruction is NOT claimed as an algorithm-independent capture ceiling. It is a ceiling exactly to the extent that the clustering rule cannot split identical coordinates; that co-assignment is verified empirically for the standing OPTICS fit in Q3-A and claimed only at that scope."
+        },
+        "comparisons": {
+          "observed_exact_purity_capture_pct": 2.1999999999999997,
+          "poison_unclustered_fraction": 0.584,
+          "clean_unclustered_fraction": 0.3698,
+          "n_clusters": 127,
+          "colors": {
+            "Green": 96,
+            "Red": 1,
+            "Yellow": 30,
+            "Pink": 0,
+            "Noise": 1
+          }
+        }
+      },
+      "Q3_B_largest_class_trace": {
+        "signature": "56471b75d85a974bb49adf1373fd497c",
+        "size": 1043,
+        "share_of_all_rows": 0.18963636363636363,
+        "n_clean": 950,
+        "n_poison": 93,
+        "n_source_rows": 950,
+        "n_appended_poison_rows": 93,
+        "n_poison_whose_clean_source_is_also_in_this_class": 93,
+        "unsw_label_composition": {
+          "analysis": 71,
+          "backdoor": 62,
+          "dos": 105,
+          "exploits": 179,
+          "fuzzers": 225,
+          "generic": 124,
+          "normal": 201,
+          "reconnaissance": 76
+        },
+        "per_stage_distinct_signatures": [
+          {
+            "stage": "raw_payload",
+            "n_distinct_upstream_signatures": 406
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_distinct_upstream_signatures": 406
+          },
+          {
+            "stage": "binary_mask",
+            "n_distinct_upstream_signatures": 34
+          },
+          {
+            "stage": "filtration_images",
+            "n_distinct_upstream_signatures": 34
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "feature_blocks",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "final_60_vector",
+            "n_distinct_upstream_signatures": 1
+          }
+        ],
+        "earliest_merger_stage_histogram": {
+          "raw_payload": 792,
+          "binary_mask": 238,
+          "unscaled_diagrams": 13
+        },
+        "earliest_merger_stage_for_class": "raw_payload",
+        "poison_members_identical_to_own_clean_source": {
+          "raw_payload": 6,
+          "supported_payload_record": 6,
+          "binary_mask": 93,
+          "filtration_images": 93,
+          "unscaled_diagrams": 93,
+          "scaled_diagrams": 93,
+          "feature_blocks": 93,
+          "final_60_vector": 93
+        },
+        "n_poison_members": 93,
+        "padding_profile": {
+          "support_end": {
+            "n": 1043,
+            "mean": 323.1677852348993,
+            "min": 1,
+            "max": 1500,
+            "quantiles": {
+              "0": 1.0,
+              "5": 5.0,
+              "25": 19.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1500.0
+            }
+          },
+          "nonzero_count": {
+            "n": 1043,
+            "mean": 245.29530201342283,
+            "min": 1,
+            "max": 1460,
+            "quantiles": {
+              "0": 1.0,
+              "5": 3.0,
+              "25": 12.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1460.0
+            }
+          },
+          "n_all_zero_payload": 0,
+          "all_zero_share_of_class": 0.0,
+          "foreground_count_at_threshold_0_4": {
+            "n": 1043,
+            "mean": 29.900287631831254,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 0.0,
+              "75": 0.0,
+              "95": 16.0,
+              "100": 1460.0
+            }
+          }
+        },
+        "optics_labels_in_class": {
+          "labels": [
+            116
+          ],
+          "counts": [
+            1043
+          ]
+        },
+        "example_row_indices": [
+          1,
+          5,
+          9,
+          10,
+          11
+        ],
+        "example_note": "Ordinary 0-based row numbers into the 5500-row combined matrix (0..4999 = subsampled clean rows, 5000..5499 = appended poison). No payload bytes are recorded anywhere in this artifact."
+      },
+      "Q3_C_population_attribution": {
+        "stage_class_stats": [
+          {
+            "stage": "raw_payload",
+            "n_rows": 5500,
+            "n_unique_classes": 4394,
+            "n_repeated_classes": 489,
+            "n_repeated_member_rows": 1595,
+            "repeated_member_fraction": 0.29,
+            "redundancy_fraction": 0.2010909090909091,
+            "n_redundant_rows": 1106,
+            "largest_class_size": 63,
+            "largest_class_share": 0.011454545454545455,
+            "largest_class_signature": "9a4bbdb074ac7196163165d9b3a1b6e9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 63.0
+            },
+            "mean_class_size": 1.2517068730086482,
+            "all_classes": {
+              "clean_only": 3894,
+              "poison_only": 452,
+              "mixed": 48,
+              "clean_only_member_rows": 4917,
+              "poison_only_member_rows": 452,
+              "mixed_member_rows": 131,
+              "mixed_class_poison_rows": 48,
+              "mixed_class_clean_rows": 83
+            },
+            "repeated_classes": {
+              "clean_only": 441,
+              "poison_only": 0,
+              "mixed": 48,
+              "clean_only_member_rows": 1464,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 131
+            },
+            "poison_rows_sharing_class_with_clean": 48,
+            "poison_obstruction_fraction": 0.096
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_rows": 5500,
+            "n_unique_classes": 4394,
+            "n_repeated_classes": 489,
+            "n_repeated_member_rows": 1595,
+            "repeated_member_fraction": 0.29,
+            "redundancy_fraction": 0.2010909090909091,
+            "n_redundant_rows": 1106,
+            "largest_class_size": 63,
+            "largest_class_share": 0.011454545454545455,
+            "largest_class_signature": "98e7da204ebba6ffd09b8669f029da8a",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 63.0
+            },
+            "mean_class_size": 1.2517068730086482,
+            "all_classes": {
+              "clean_only": 3894,
+              "poison_only": 452,
+              "mixed": 48,
+              "clean_only_member_rows": 4917,
+              "poison_only_member_rows": 452,
+              "mixed_member_rows": 131,
+              "mixed_class_poison_rows": 48,
+              "mixed_class_clean_rows": 83
+            },
+            "repeated_classes": {
+              "clean_only": 441,
+              "poison_only": 0,
+              "mixed": 48,
+              "clean_only_member_rows": 1464,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 131
+            },
+            "poison_rows_sharing_class_with_clean": 48,
+            "poison_obstruction_fraction": 0.096
+          },
+          {
+            "stage": "binary_mask",
+            "n_rows": 5500,
+            "n_unique_classes": 2754,
+            "n_repeated_classes": 317,
+            "n_repeated_member_rows": 3063,
+            "repeated_member_fraction": 0.5569090909090909,
+            "redundancy_fraction": 0.49927272727272726,
+            "n_redundant_rows": 2746,
+            "largest_class_size": 898,
+            "largest_class_share": 0.16327272727272726,
+            "largest_class_signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 4.0,
+              "95": 13.0,
+              "100": 898.0
+            },
+            "mean_class_size": 1.9970951343500363,
+            "all_classes": {
+              "clean_only": 2404,
+              "poison_only": 297,
+              "mixed": 53,
+              "clean_only_member_rows": 3032,
+              "poison_only_member_rows": 297,
+              "mixed_member_rows": 2171,
+              "mixed_class_poison_rows": 203,
+              "mixed_class_clean_rows": 1968
+            },
+            "repeated_classes": {
+              "clean_only": 264,
+              "poison_only": 0,
+              "mixed": 53,
+              "clean_only_member_rows": 892,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2171
+            },
+            "poison_rows_sharing_class_with_clean": 203,
+            "poison_obstruction_fraction": 0.406
+          },
+          {
+            "stage": "filtration_images",
+            "n_rows": 5500,
+            "n_unique_classes": 2754,
+            "n_repeated_classes": 317,
+            "n_repeated_member_rows": 3063,
+            "repeated_member_fraction": 0.5569090909090909,
+            "redundancy_fraction": 0.49927272727272726,
+            "n_redundant_rows": 2746,
+            "largest_class_size": 898,
+            "largest_class_share": 0.16327272727272726,
+            "largest_class_signature": "8af86cc68a30fb20cf2e3a204a20e0c9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 4.0,
+              "95": 13.0,
+              "100": 898.0
+            },
+            "mean_class_size": 1.9970951343500363,
+            "all_classes": {
+              "clean_only": 2404,
+              "poison_only": 297,
+              "mixed": 53,
+              "clean_only_member_rows": 3032,
+              "poison_only_member_rows": 297,
+              "mixed_member_rows": 2171,
+              "mixed_class_poison_rows": 203,
+              "mixed_class_clean_rows": 1968
+            },
+            "repeated_classes": {
+              "clean_only": 264,
+              "poison_only": 0,
+              "mixed": 53,
+              "clean_only_member_rows": 892,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2171
+            },
+            "poison_rows_sharing_class_with_clean": 203,
+            "poison_obstruction_fraction": 0.406
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2651,
+            "n_repeated_classes": 287,
+            "n_repeated_member_rows": 3136,
+            "repeated_member_fraction": 0.5701818181818182,
+            "redundancy_fraction": 0.518,
+            "n_redundant_rows": 2849,
+            "largest_class_size": 1043,
+            "largest_class_share": 0.18963636363636363,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.699999999999989,
+              "100": 1043.0
+            },
+            "mean_class_size": 2.074688796680498,
+            "all_classes": {
+              "clean_only": 2316,
+              "poison_only": 297,
+              "mixed": 38,
+              "clean_only_member_rows": 2806,
+              "poison_only_member_rows": 297,
+              "mixed_member_rows": 2397,
+              "mixed_class_poison_rows": 203,
+              "mixed_class_clean_rows": 2194
+            },
+            "repeated_classes": {
+              "clean_only": 249,
+              "poison_only": 0,
+              "mixed": 38,
+              "clean_only_member_rows": 739,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2397
+            },
+            "poison_rows_sharing_class_with_clean": 203,
+            "poison_obstruction_fraction": 0.406
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2651,
+            "n_repeated_classes": 287,
+            "n_repeated_member_rows": 3136,
+            "repeated_member_fraction": 0.5701818181818182,
+            "redundancy_fraction": 0.518,
+            "n_redundant_rows": 2849,
+            "largest_class_size": 1043,
+            "largest_class_share": 0.18963636363636363,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.699999999999989,
+              "100": 1043.0
+            },
+            "mean_class_size": 2.074688796680498,
+            "all_classes": {
+              "clean_only": 2316,
+              "poison_only": 297,
+              "mixed": 38,
+              "clean_only_member_rows": 2806,
+              "poison_only_member_rows": 297,
+              "mixed_member_rows": 2397,
+              "mixed_class_poison_rows": 203,
+              "mixed_class_clean_rows": 2194
+            },
+            "repeated_classes": {
+              "clean_only": 249,
+              "poison_only": 0,
+              "mixed": 38,
+              "clean_only_member_rows": 739,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2397
+            },
+            "poison_rows_sharing_class_with_clean": 203,
+            "poison_obstruction_fraction": 0.406
+          },
+          {
+            "stage": "feature_blocks",
+            "n_rows": 5500,
+            "n_unique_classes": 2651,
+            "n_repeated_classes": 287,
+            "n_repeated_member_rows": 3136,
+            "repeated_member_fraction": 0.5701818181818182,
+            "redundancy_fraction": 0.518,
+            "n_redundant_rows": 2849,
+            "largest_class_size": 1043,
+            "largest_class_share": 0.18963636363636363,
+            "largest_class_signature": "f315124e67272fbfcbfdadf1dd37e7be",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.699999999999989,
+              "100": 1043.0
+            },
+            "mean_class_size": 2.074688796680498,
+            "all_classes": {
+              "clean_only": 2316,
+              "poison_only": 297,
+              "mixed": 38,
+              "clean_only_member_rows": 2806,
+              "poison_only_member_rows": 297,
+              "mixed_member_rows": 2397,
+              "mixed_class_poison_rows": 203,
+              "mixed_class_clean_rows": 2194
+            },
+            "repeated_classes": {
+              "clean_only": 249,
+              "poison_only": 0,
+              "mixed": 38,
+              "clean_only_member_rows": 739,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2397
+            },
+            "poison_rows_sharing_class_with_clean": 203,
+            "poison_obstruction_fraction": 0.406
+          },
+          {
+            "stage": "final_60_vector",
+            "n_rows": 5500,
+            "n_unique_classes": 2651,
+            "n_repeated_classes": 287,
+            "n_repeated_member_rows": 3136,
+            "repeated_member_fraction": 0.5701818181818182,
+            "redundancy_fraction": 0.518,
+            "n_redundant_rows": 2849,
+            "largest_class_size": 1043,
+            "largest_class_share": 0.18963636363636363,
+            "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.699999999999989,
+              "100": 1043.0
+            },
+            "mean_class_size": 2.074688796680498,
+            "all_classes": {
+              "clean_only": 2316,
+              "poison_only": 297,
+              "mixed": 38,
+              "clean_only_member_rows": 2806,
+              "poison_only_member_rows": 297,
+              "mixed_member_rows": 2397,
+              "mixed_class_poison_rows": 203,
+              "mixed_class_clean_rows": 2194
+            },
+            "repeated_classes": {
+              "clean_only": 249,
+              "poison_only": 0,
+              "mixed": 38,
+              "clean_only_member_rows": 739,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2397
+            },
+            "poison_rows_sharing_class_with_clean": 203,
+            "poison_obstruction_fraction": 0.406
+          }
+        ],
+        "earliest_merger_attribution": {
+          "stage_order": [
+            "raw_payload",
+            "supported_payload_record",
+            "binary_mask",
+            "filtration_images",
+            "unscaled_diagrams",
+            "scaled_diagrams",
+            "feature_blocks",
+            "final_60_vector"
+          ],
+          "n_final_repeated_member_rows": 3136,
+          "monotonicity_violations": 0,
+          "rows": [
+            {
+              "stage": "raw_payload",
+              "n_newly_merged_classes": 489,
+              "member_rows": 1595,
+              "clean_rows": 1547,
+              "poison_rows": 48,
+              "mixed_class_poison_rows": 48,
+              "share_of_final_repeated_member_mass": 0.5086096938775511
+            },
+            {
+              "stage": "supported_payload_record",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "binary_mask",
+              "n_newly_merged_classes": 168,
+              "member_rows": 1468,
+              "clean_rows": 1313,
+              "poison_rows": 155,
+              "mixed_class_poison_rows": 155,
+              "share_of_final_repeated_member_mass": 0.46811224489795916
+            },
+            {
+              "stage": "filtration_images",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "unscaled_diagrams",
+              "n_newly_merged_classes": 34,
+              "member_rows": 73,
+              "clean_rows": 73,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.023278061224489797
+            },
+            {
+              "stage": "scaled_diagrams",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "feature_blocks",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "final_60_vector",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            }
+          ],
+          "attribution_sums_to_final_repeated_mass": true
+        },
+        "stage_transitions": [
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "raw_payload",
+            "to": "supported_payload_record"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 174,
+            "n_rows_in_newly_merged_classes": 2679,
+            "n_mixed_classes_first_created_here": 29,
+            "largest_newly_merged_class": {
+              "size": 898,
+              "n_upstream_classes": 324,
+              "signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+              "example_row_indices": [
+                1,
+                9,
+                10
+              ],
+              "example_upstream_signatures": [
+                "ec82168853d7924932e848362845253e",
+                "b8d6c48ac008d99e03eda564182fb621",
+                "6e595f18532ca7df4c80f75deabb5201"
+              ]
+            },
+            "from": "supported_payload_record",
+            "to": "binary_mask"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "binary_mask",
+            "to": "filtration_images"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 48,
+            "n_rows_in_newly_merged_classes": 1539,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 1043,
+              "n_upstream_classes": 34,
+              "signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+              "example_row_indices": [
+                1,
+                5,
+                9
+              ],
+              "example_upstream_signatures": [
+                "8af86cc68a30fb20cf2e3a204a20e0c9",
+                "30499bc25f57a045b977ce1e87346f79",
+                "8af86cc68a30fb20cf2e3a204a20e0c9"
+              ]
+            },
+            "from": "filtration_images",
+            "to": "unscaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "unscaled_diagrams",
+            "to": "scaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "scaled_diagrams",
+            "to": "feature_blocks"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "feature_blocks",
+            "to": "final_60_vector"
+          }
+        ],
+        "padding_characterisation_of_raw_collisions": {
+          "n_raw_repeated_member_rows": 1595,
+          "n_all_zero_payload_rows": 0,
+          "all_zero_share_of_raw_repeated_mass": 0.0,
+          "support_end_of_raw_repeated_rows": {
+            "n": 1595,
+            "mean": 156.59874608150471,
+            "min": 1,
+            "max": 1472,
+            "quantiles": {
+              "0": 1.0,
+              "5": 6.0,
+              "25": 29.0,
+              "50": 34.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1472.0
+            }
+          },
+          "support_end_of_raw_singleton_rows": {
+            "n": 3905,
+            "mean": 427.61664532650445,
+            "min": 1,
+            "max": 1500,
+            "quantiles": {
+              "0": 1.0,
+              "5": 22.0,
+              "25": 29.0,
+              "50": 102.0,
+              "75": 724.0,
+              "95": 1460.0,
+              "100": 1500.0
+            }
+          },
+          "foreground_count_of_raw_repeated_rows": {
+            "n": 1595,
+            "mean": 35.18808777429467,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 6.0,
+              "75": 9.0,
+              "95": 95.49999999999977,
+              "100": 1460.0
+            }
+          },
+          "note": "(support_end, row[:support_end]) determines the whole zero-padded row, so the supported-payload record is a bijection with the raw row and merges nothing. Its attribution row is expected to be 0 and serves as a self-check."
+        },
+        "per_filtration_ablation": {
+          "blocks": [
+            {
+              "filtration": "height_0_1",
+              "n_unique_classes": 1764,
+              "repeated_member_fraction": 0.7067272727272728,
+              "redundancy_fraction": 0.6792727272727273,
+              "largest_class_size": 1045,
+              "n_block_classes_merging_multiple_binary_classes": 95,
+              "n_rows_merged_relative_to_binary": 3744,
+              "n_block_classes_merging_multiple_raw_classes": 104,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 751
+            },
+            {
+              "filtration": "height_1_0",
+              "n_unique_classes": 2544,
+              "repeated_member_fraction": 0.5901818181818181,
+              "redundancy_fraction": 0.5374545454545454,
+              "largest_class_size": 1047,
+              "n_block_classes_merging_multiple_binary_classes": 95,
+              "n_rows_merged_relative_to_binary": 2359,
+              "n_block_classes_merging_multiple_raw_classes": 166,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 110
+            },
+            {
+              "filtration": "radial_0_50",
+              "n_unique_classes": 2542,
+              "repeated_member_fraction": 0.5912727272727273,
+              "redundancy_fraction": 0.5378181818181819,
+              "largest_class_size": 1045,
+              "n_block_classes_merging_multiple_binary_classes": 95,
+              "n_rows_merged_relative_to_binary": 2356,
+              "n_block_classes_merging_multiple_raw_classes": 169,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 116
+            },
+            {
+              "filtration": "radial_0_25",
+              "n_unique_classes": 2549,
+              "repeated_member_fraction": 0.5898181818181818,
+              "redundancy_fraction": 0.5365454545454545,
+              "largest_class_size": 1046,
+              "n_block_classes_merging_multiple_binary_classes": 93,
+              "n_rows_merged_relative_to_binary": 2346,
+              "n_block_classes_merging_multiple_raw_classes": 168,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 108
+            },
+            {
+              "filtration": "radial_30_0",
+              "n_unique_classes": 2514,
+              "repeated_member_fraction": 0.5943636363636363,
+              "redundancy_fraction": 0.5429090909090909,
+              "largest_class_size": 1047,
+              "n_block_classes_merging_multiple_binary_classes": 103,
+              "n_rows_merged_relative_to_binary": 2231,
+              "n_block_classes_merging_multiple_raw_classes": 163,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 133
+            }
+          ],
+          "final_repeated_member_fraction": 0.5701818181818182,
+          "most_collision_prone_block": "height_0_1",
+          "note": "Diagnostic only. Q3 does not select, reweight, or drop any filtration on the basis of this table."
+        }
+      },
+      "elapsed_seconds": 97.1
+    },
+    "123": {
+      "seed": 123,
+      "realization": {
+        "seed": 123,
+        "dataset": "UNSW-NB15 Payload-Byte",
+        "attack": "malicious_random_attack",
+        "n_swaps": 60,
+        "poison_rate": 0.1,
+        "max_samples": 5000,
+        "n_total": 5500,
+        "n_clean": 5000,
+        "n_poison": 500,
+        "attack_validity_pct": 100.0,
+        "subsample_index_hash": "3abe4da4be1fd56e",
+        "input_hash": "412bb0535df9f108",
+        "poison_mask_hash": "8f8ee5534151e4fe",
+        "attack_target_index": null
+      },
+      "equality_check": {
+        "instrumented_equals_production_exactly": true,
+        "instrumented_equals_production_bitwise": true,
+        "production_feature_hash": "ee0206800d1f785b8289624990e66d55",
+        "instrumented_feature_hash": "ee0206800d1f785b8289624990e66d55",
+        "shape": [
+          5500,
+          60
+        ]
+      },
+      "fitted_state": {
+        "binarizer_max_value_": {
+          "height_0_1": 255.0,
+          "height_1_0": 255.0,
+          "radial_0_50": 255.0,
+          "radial_0_25": 255.0,
+          "radial_30_0": 255.0
+        },
+        "scaler_scale_": {
+          "height_0_1": 15.0,
+          "height_1_0": 25.0,
+          "radial_0_50": 24.956059691509786,
+          "radial_0_25": 27.504545078950134,
+          "radial_30_0": 20.862646045025066
+        }
+      },
+      "effective_byte_cut": {
+        "height_0_1": 102.0,
+        "height_1_0": 102.0,
+        "radial_0_50": 102.0,
+        "radial_0_25": 102.0,
+        "radial_30_0": 102.0
+      },
+      "optics_params": {
+        "min_samples": 5,
+        "max_eps": 2.0
+      },
+      "labels_hash": "1394d3045c553a41d31fbf272a08b2a7",
+      "Q3_A_definition_and_reproduction": {
+        "definition_note": "repeated_member_fraction counts rows in a class of size >= 2; redundancy_fraction is (n_rows - n_unique_classes) / n_rows. The phrase 'duplicate fraction' is not used.",
+        "final_vector_class_stats": {
+          "stage": "final_60_vector",
+          "n_rows": 5500,
+          "n_unique_classes": 2678,
+          "n_repeated_classes": 278,
+          "n_repeated_member_rows": 3100,
+          "repeated_member_fraction": 0.5636363636363636,
+          "redundancy_fraction": 0.513090909090909,
+          "n_redundant_rows": 2822,
+          "largest_class_size": 1094,
+          "largest_class_share": 0.1989090909090909,
+          "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+          "repeated_class_size_quantiles": {
+            "5": 2.0,
+            "25": 2.0,
+            "50": 2.0,
+            "75": 3.0,
+            "95": 16.149999999999977,
+            "100": 1094.0
+          },
+          "mean_class_size": 2.0537714712471993,
+          "all_classes": {
+            "clean_only": 2353,
+            "poison_only": 282,
+            "mixed": 43,
+            "clean_only_member_rows": 2814,
+            "poison_only_member_rows": 282,
+            "mixed_member_rows": 2404,
+            "mixed_class_poison_rows": 218,
+            "mixed_class_clean_rows": 2186
+          },
+          "repeated_classes": {
+            "clean_only": 235,
+            "poison_only": 0,
+            "mixed": 43,
+            "clean_only_member_rows": 696,
+            "poison_only_member_rows": 0,
+            "mixed_member_rows": 2404
+          },
+          "poison_rows_sharing_class_with_clean": 218,
+          "poison_obstruction_fraction": 0.436
+        },
+        "feature_hash_exact": "ee0206800d1f785b8289624990e66d55",
+        "feature_hash_rounded9": "b59d7a2822e3baad",
+        "q2_reference": {
+          "source_artifact": "results/phase_q2_geometry.json  arms.legacy_30x50_t04",
+          "input_hash": "fce036c2424196ef",
+          "poison_mask_hash": "8f8ee5534151e4fe",
+          "feature_hash_rounded9": "ffce38eb0cd462df",
+          "n_exact_duplicate_rows": 2849,
+          "max_duplicate_multiplicity": 1043
+        },
+        "q2_statistic_resolution": {
+          "q2_reported_value": 0.518,
+          "q2_reported_n_rows": 2849,
+          "reproduced_redundancy_fraction": 0.513090909090909,
+          "reproduced_n_redundant_rows": 2822,
+          "reproduced_repeated_member_fraction": 0.5636363636363636,
+          "reproduced_n_repeated_member_rows": 3100,
+          "q2_51_8_pct_is_redundancy_fraction": false,
+          "q2_51_8_pct_is_repeated_member_fraction": false,
+          "input_hash_matches_q2": false,
+          "poison_mask_hash_matches_q2": true,
+          "feature_hash_matches_q2": false
+        },
+        "largest_final_class": {
+          "size": 1094,
+          "share_of_all_rows": 0.1989090909090909,
+          "signature": "56471b75d85a974bb49adf1373fd497c",
+          "reproduces_q2_1043": false,
+          "n_clean": 1001,
+          "n_poison": 93
+        },
+        "optics_label_behaviour_in_exact_classes": {
+          "n_repeated_classes_examined": 278,
+          "max_distinct_labels_in_one_class": 2,
+          "n_classes_split_across_labels": 2,
+          "n_classes_split_across_two_real_clusters": 0,
+          "n_classes_split_only_by_noise_assignment": 2,
+          "split_class_examples": [
+            {
+              "signature": "43cd9ce7ee86033223af38557dbba546",
+              "size": 3,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                94
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "6fb786e6186764c14cb3ba44a531f1f8",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                73
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            }
+          ],
+          "all_exact_classes_co_assigned": false,
+          "no_exact_class_spans_two_real_clusters": true,
+          "scope_note": "Verified empirically for this fitted OPTICS ({'min_samples': 5, 'max_eps': 2.0}) at this seed. Not proven for OPTICS in general and not claimed for any other algorithm. The distinction matters: a class split only because one twin was left at -1 still cannot produce two competing real clusters, but it does mean a 100%-poison cluster can exist while an identical clean row sits in noise."
+        }
+      },
+      "Q3_D_strict_purity_failure_decomposition": {
+        "n_poison": 500,
+        "categories_priority_order": [
+          "captured_in_100pct_poison_non_noise_cluster",
+          "label_minus_1_unclustered",
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row",
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster",
+          "residual_unexplained"
+        ],
+        "decomposition": {
+          "captured_in_100pct_poison_non_noise_cluster": {
+            "n": 11,
+            "pct_of_poison": 2.2
+          },
+          "label_minus_1_unclustered": {
+            "n": 278,
+            "pct_of_poison": 55.6
+          },
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row": {
+            "n": 203,
+            "pct_of_poison": 40.6
+          },
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster": {
+            "n": 8,
+            "pct_of_poison": 1.6
+          },
+          "residual_unexplained": {
+            "n": 0,
+            "pct_of_poison": 0.0
+          }
+        },
+        "categories_sum_to_all_poison": true,
+        "residual_is_empty": true,
+        "residual_note": "A non-noise poisoned row is in a cluster that is either 100% poison (category 1) or mixed (categories 3/4), so category 5 is expected to be empty; it is reported rather than assumed.",
+        "coordinate_class_obstruction": {
+          "numerator_poison_sharing_exact_vector_with_clean": 218,
+          "denominator_all_poison": 500,
+          "obstruction_fraction": 0.436,
+          "one_minus_obstruction": 0.5640000000000001,
+          "n_captured_rows_also_in_a_mixed_exact_vector_class": 0,
+          "obstruction_binds_under_this_fit": true,
+          "scope_note": "1 - obstruction is NOT claimed as an algorithm-independent capture ceiling. It is a ceiling exactly to the extent that the clustering rule cannot split identical coordinates; that co-assignment is verified empirically for the standing OPTICS fit in Q3-A and claimed only at that scope."
+        },
+        "comparisons": {
+          "observed_exact_purity_capture_pct": 2.1999999999999997,
+          "poison_unclustered_fraction": 0.556,
+          "clean_unclustered_fraction": 0.3744,
+          "n_clusters": 146,
+          "colors": {
+            "Green": 112,
+            "Red": 1,
+            "Yellow": 33,
+            "Pink": 0,
+            "Noise": 1
+          }
+        }
+      },
+      "Q3_B_largest_class_trace": {
+        "signature": "56471b75d85a974bb49adf1373fd497c",
+        "size": 1094,
+        "share_of_all_rows": 0.1989090909090909,
+        "n_clean": 1001,
+        "n_poison": 93,
+        "n_source_rows": 1001,
+        "n_appended_poison_rows": 93,
+        "n_poison_whose_clean_source_is_also_in_this_class": 93,
+        "unsw_label_composition": {
+          "analysis": 81,
+          "backdoor": 67,
+          "dos": 122,
+          "exploits": 185,
+          "fuzzers": 255,
+          "generic": 103,
+          "normal": 219,
+          "reconnaissance": 62
+        },
+        "per_stage_distinct_signatures": [
+          {
+            "stage": "raw_payload",
+            "n_distinct_upstream_signatures": 422
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_distinct_upstream_signatures": 422
+          },
+          {
+            "stage": "binary_mask",
+            "n_distinct_upstream_signatures": 41
+          },
+          {
+            "stage": "filtration_images",
+            "n_distinct_upstream_signatures": 41
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "feature_blocks",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "final_60_vector",
+            "n_distinct_upstream_signatures": 1
+          }
+        ],
+        "earliest_merger_stage_histogram": {
+          "raw_payload": 850,
+          "binary_mask": 229,
+          "unscaled_diagrams": 15
+        },
+        "earliest_merger_stage_for_class": "raw_payload",
+        "poison_members_identical_to_own_clean_source": {
+          "raw_payload": 14,
+          "supported_payload_record": 14,
+          "binary_mask": 93,
+          "filtration_images": 93,
+          "unscaled_diagrams": 93,
+          "scaled_diagrams": 93,
+          "feature_blocks": 93,
+          "final_60_vector": 93
+        },
+        "n_poison_members": 93,
+        "padding_profile": {
+          "support_end": {
+            "n": 1094,
+            "mean": 314.9707495429616,
+            "min": 1,
+            "max": 1499,
+            "quantiles": {
+              "0": 1.0,
+              "5": 5.0,
+              "25": 16.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1499.0
+            }
+          },
+          "nonzero_count": {
+            "n": 1094,
+            "mean": 239.10329067641683,
+            "min": 1,
+            "max": 1460,
+            "quantiles": {
+              "0": 1.0,
+              "5": 2.0,
+              "25": 11.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1460.0
+            }
+          },
+          "n_all_zero_payload": 0,
+          "all_zero_share_of_class": 0.0,
+          "foreground_count_at_threshold_0_4": {
+            "n": 1094,
+            "mean": 30.744972577696526,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 0.0,
+              "75": 0.0,
+              "95": 16.0,
+              "100": 1460.0
+            }
+          }
+        },
+        "optics_labels_in_class": {
+          "labels": [
+            129
+          ],
+          "counts": [
+            1094
+          ]
+        },
+        "example_row_indices": [
+          9,
+          17,
+          19,
+          23,
+          26
+        ],
+        "example_note": "Ordinary 0-based row numbers into the 5500-row combined matrix (0..4999 = subsampled clean rows, 5000..5499 = appended poison). No payload bytes are recorded anywhere in this artifact."
+      },
+      "Q3_C_population_attribution": {
+        "stage_class_stats": [
+          {
+            "stage": "raw_payload",
+            "n_rows": 5500,
+            "n_unique_classes": 4411,
+            "n_repeated_classes": 487,
+            "n_repeated_member_rows": 1576,
+            "repeated_member_fraction": 0.28654545454545455,
+            "redundancy_fraction": 0.198,
+            "n_redundant_rows": 1089,
+            "largest_class_size": 73,
+            "largest_class_share": 0.013272727272727273,
+            "largest_class_signature": "9a4bbdb074ac7196163165d9b3a1b6e9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 73.0
+            },
+            "mean_class_size": 1.2468827930174564,
+            "all_classes": {
+              "clean_only": 3911,
+              "poison_only": 437,
+              "mixed": 63,
+              "clean_only_member_rows": 4851,
+              "poison_only_member_rows": 437,
+              "mixed_member_rows": 212,
+              "mixed_class_poison_rows": 63,
+              "mixed_class_clean_rows": 149
+            },
+            "repeated_classes": {
+              "clean_only": 424,
+              "poison_only": 0,
+              "mixed": 63,
+              "clean_only_member_rows": 1364,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 212
+            },
+            "poison_rows_sharing_class_with_clean": 63,
+            "poison_obstruction_fraction": 0.126
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_rows": 5500,
+            "n_unique_classes": 4411,
+            "n_repeated_classes": 487,
+            "n_repeated_member_rows": 1576,
+            "repeated_member_fraction": 0.28654545454545455,
+            "redundancy_fraction": 0.198,
+            "n_redundant_rows": 1089,
+            "largest_class_size": 73,
+            "largest_class_share": 0.013272727272727273,
+            "largest_class_signature": "98e7da204ebba6ffd09b8669f029da8a",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 73.0
+            },
+            "mean_class_size": 1.2468827930174564,
+            "all_classes": {
+              "clean_only": 3911,
+              "poison_only": 437,
+              "mixed": 63,
+              "clean_only_member_rows": 4851,
+              "poison_only_member_rows": 437,
+              "mixed_member_rows": 212,
+              "mixed_class_poison_rows": 63,
+              "mixed_class_clean_rows": 149
+            },
+            "repeated_classes": {
+              "clean_only": 424,
+              "poison_only": 0,
+              "mixed": 63,
+              "clean_only_member_rows": 1364,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 212
+            },
+            "poison_rows_sharing_class_with_clean": 63,
+            "poison_obstruction_fraction": 0.126
+          },
+          {
+            "stage": "binary_mask",
+            "n_rows": 5500,
+            "n_unique_classes": 2784,
+            "n_repeated_classes": 315,
+            "n_repeated_member_rows": 3031,
+            "repeated_member_fraction": 0.5510909090909091,
+            "redundancy_fraction": 0.4938181818181818,
+            "n_redundant_rows": 2716,
+            "largest_class_size": 914,
+            "largest_class_share": 0.16618181818181818,
+            "largest_class_signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 4.0,
+              "95": 13.0,
+              "100": 914.0
+            },
+            "mean_class_size": 1.9755747126436782,
+            "all_classes": {
+              "clean_only": 2436,
+              "poison_only": 282,
+              "mixed": 66,
+              "clean_only_member_rows": 2988,
+              "poison_only_member_rows": 282,
+              "mixed_member_rows": 2230,
+              "mixed_class_poison_rows": 218,
+              "mixed_class_clean_rows": 2012
+            },
+            "repeated_classes": {
+              "clean_only": 249,
+              "poison_only": 0,
+              "mixed": 66,
+              "clean_only_member_rows": 801,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2230
+            },
+            "poison_rows_sharing_class_with_clean": 218,
+            "poison_obstruction_fraction": 0.436
+          },
+          {
+            "stage": "filtration_images",
+            "n_rows": 5500,
+            "n_unique_classes": 2784,
+            "n_repeated_classes": 315,
+            "n_repeated_member_rows": 3031,
+            "repeated_member_fraction": 0.5510909090909091,
+            "redundancy_fraction": 0.4938181818181818,
+            "n_redundant_rows": 2716,
+            "largest_class_size": 914,
+            "largest_class_share": 0.16618181818181818,
+            "largest_class_signature": "8af86cc68a30fb20cf2e3a204a20e0c9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 4.0,
+              "95": 13.0,
+              "100": 914.0
+            },
+            "mean_class_size": 1.9755747126436782,
+            "all_classes": {
+              "clean_only": 2436,
+              "poison_only": 282,
+              "mixed": 66,
+              "clean_only_member_rows": 2988,
+              "poison_only_member_rows": 282,
+              "mixed_member_rows": 2230,
+              "mixed_class_poison_rows": 218,
+              "mixed_class_clean_rows": 2012
+            },
+            "repeated_classes": {
+              "clean_only": 249,
+              "poison_only": 0,
+              "mixed": 66,
+              "clean_only_member_rows": 801,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2230
+            },
+            "poison_rows_sharing_class_with_clean": 218,
+            "poison_obstruction_fraction": 0.436
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2678,
+            "n_repeated_classes": 278,
+            "n_repeated_member_rows": 3100,
+            "repeated_member_fraction": 0.5636363636363636,
+            "redundancy_fraction": 0.513090909090909,
+            "n_redundant_rows": 2822,
+            "largest_class_size": 1094,
+            "largest_class_share": 0.1989090909090909,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 16.149999999999977,
+              "100": 1094.0
+            },
+            "mean_class_size": 2.0537714712471993,
+            "all_classes": {
+              "clean_only": 2353,
+              "poison_only": 282,
+              "mixed": 43,
+              "clean_only_member_rows": 2814,
+              "poison_only_member_rows": 282,
+              "mixed_member_rows": 2404,
+              "mixed_class_poison_rows": 218,
+              "mixed_class_clean_rows": 2186
+            },
+            "repeated_classes": {
+              "clean_only": 235,
+              "poison_only": 0,
+              "mixed": 43,
+              "clean_only_member_rows": 696,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2404
+            },
+            "poison_rows_sharing_class_with_clean": 218,
+            "poison_obstruction_fraction": 0.436
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2678,
+            "n_repeated_classes": 278,
+            "n_repeated_member_rows": 3100,
+            "repeated_member_fraction": 0.5636363636363636,
+            "redundancy_fraction": 0.513090909090909,
+            "n_redundant_rows": 2822,
+            "largest_class_size": 1094,
+            "largest_class_share": 0.1989090909090909,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 16.149999999999977,
+              "100": 1094.0
+            },
+            "mean_class_size": 2.0537714712471993,
+            "all_classes": {
+              "clean_only": 2353,
+              "poison_only": 282,
+              "mixed": 43,
+              "clean_only_member_rows": 2814,
+              "poison_only_member_rows": 282,
+              "mixed_member_rows": 2404,
+              "mixed_class_poison_rows": 218,
+              "mixed_class_clean_rows": 2186
+            },
+            "repeated_classes": {
+              "clean_only": 235,
+              "poison_only": 0,
+              "mixed": 43,
+              "clean_only_member_rows": 696,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2404
+            },
+            "poison_rows_sharing_class_with_clean": 218,
+            "poison_obstruction_fraction": 0.436
+          },
+          {
+            "stage": "feature_blocks",
+            "n_rows": 5500,
+            "n_unique_classes": 2678,
+            "n_repeated_classes": 278,
+            "n_repeated_member_rows": 3100,
+            "repeated_member_fraction": 0.5636363636363636,
+            "redundancy_fraction": 0.513090909090909,
+            "n_redundant_rows": 2822,
+            "largest_class_size": 1094,
+            "largest_class_share": 0.1989090909090909,
+            "largest_class_signature": "f315124e67272fbfcbfdadf1dd37e7be",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 16.149999999999977,
+              "100": 1094.0
+            },
+            "mean_class_size": 2.0537714712471993,
+            "all_classes": {
+              "clean_only": 2353,
+              "poison_only": 282,
+              "mixed": 43,
+              "clean_only_member_rows": 2814,
+              "poison_only_member_rows": 282,
+              "mixed_member_rows": 2404,
+              "mixed_class_poison_rows": 218,
+              "mixed_class_clean_rows": 2186
+            },
+            "repeated_classes": {
+              "clean_only": 235,
+              "poison_only": 0,
+              "mixed": 43,
+              "clean_only_member_rows": 696,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2404
+            },
+            "poison_rows_sharing_class_with_clean": 218,
+            "poison_obstruction_fraction": 0.436
+          },
+          {
+            "stage": "final_60_vector",
+            "n_rows": 5500,
+            "n_unique_classes": 2678,
+            "n_repeated_classes": 278,
+            "n_repeated_member_rows": 3100,
+            "repeated_member_fraction": 0.5636363636363636,
+            "redundancy_fraction": 0.513090909090909,
+            "n_redundant_rows": 2822,
+            "largest_class_size": 1094,
+            "largest_class_share": 0.1989090909090909,
+            "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 16.149999999999977,
+              "100": 1094.0
+            },
+            "mean_class_size": 2.0537714712471993,
+            "all_classes": {
+              "clean_only": 2353,
+              "poison_only": 282,
+              "mixed": 43,
+              "clean_only_member_rows": 2814,
+              "poison_only_member_rows": 282,
+              "mixed_member_rows": 2404,
+              "mixed_class_poison_rows": 218,
+              "mixed_class_clean_rows": 2186
+            },
+            "repeated_classes": {
+              "clean_only": 235,
+              "poison_only": 0,
+              "mixed": 43,
+              "clean_only_member_rows": 696,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2404
+            },
+            "poison_rows_sharing_class_with_clean": 218,
+            "poison_obstruction_fraction": 0.436
+          }
+        ],
+        "earliest_merger_attribution": {
+          "stage_order": [
+            "raw_payload",
+            "supported_payload_record",
+            "binary_mask",
+            "filtration_images",
+            "unscaled_diagrams",
+            "scaled_diagrams",
+            "feature_blocks",
+            "final_60_vector"
+          ],
+          "n_final_repeated_member_rows": 3100,
+          "monotonicity_violations": 0,
+          "rows": [
+            {
+              "stage": "raw_payload",
+              "n_newly_merged_classes": 487,
+              "member_rows": 1576,
+              "clean_rows": 1513,
+              "poison_rows": 63,
+              "mixed_class_poison_rows": 63,
+              "share_of_final_repeated_member_mass": 0.5083870967741936
+            },
+            {
+              "stage": "supported_payload_record",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "binary_mask",
+              "n_newly_merged_classes": 165,
+              "member_rows": 1455,
+              "clean_rows": 1300,
+              "poison_rows": 155,
+              "mixed_class_poison_rows": 155,
+              "share_of_final_repeated_member_mass": 0.4693548387096774
+            },
+            {
+              "stage": "filtration_images",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "unscaled_diagrams",
+              "n_newly_merged_classes": 31,
+              "member_rows": 69,
+              "clean_rows": 69,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.022258064516129033
+            },
+            {
+              "stage": "scaled_diagrams",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "feature_blocks",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "final_60_vector",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            }
+          ],
+          "attribution_sums_to_final_repeated_mass": true
+        },
+        "stage_transitions": [
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "raw_payload",
+            "to": "supported_payload_record"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 168,
+            "n_rows_in_newly_merged_classes": 2651,
+            "n_mixed_classes_first_created_here": 36,
+            "largest_newly_merged_class": {
+              "size": 914,
+              "n_upstream_classes": 320,
+              "signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+              "example_row_indices": [
+                9,
+                17,
+                19
+              ],
+              "example_upstream_signatures": [
+                "d21c7897a64fb2db6b27ba29fb5df1b9",
+                "27b531c3a358e480d72518a3b352d4bd",
+                "98e7da204ebba6ffd09b8669f029da8a"
+              ]
+            },
+            "from": "supported_payload_record",
+            "to": "binary_mask"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "binary_mask",
+            "to": "filtration_images"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 47,
+            "n_rows_in_newly_merged_classes": 1590,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 1094,
+              "n_upstream_classes": 41,
+              "signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+              "example_row_indices": [
+                9,
+                17,
+                19
+              ],
+              "example_upstream_signatures": [
+                "8af86cc68a30fb20cf2e3a204a20e0c9",
+                "8af86cc68a30fb20cf2e3a204a20e0c9",
+                "8af86cc68a30fb20cf2e3a204a20e0c9"
+              ]
+            },
+            "from": "filtration_images",
+            "to": "unscaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "unscaled_diagrams",
+            "to": "scaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "scaled_diagrams",
+            "to": "feature_blocks"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "feature_blocks",
+            "to": "final_60_vector"
+          }
+        ],
+        "padding_characterisation_of_raw_collisions": {
+          "n_raw_repeated_member_rows": 1576,
+          "n_all_zero_payload_rows": 0,
+          "all_zero_share_of_raw_repeated_mass": 0.0,
+          "support_end_of_raw_repeated_rows": {
+            "n": 1576,
+            "mean": 164.82043147208122,
+            "min": 1,
+            "max": 1472,
+            "quantiles": {
+              "0": 1.0,
+              "5": 6.0,
+              "25": 27.5,
+              "50": 39.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1472.0
+            }
+          },
+          "support_end_of_raw_singleton_rows": {
+            "n": 3924,
+            "mean": 418.39118246687053,
+            "min": 1,
+            "max": 1500,
+            "quantiles": {
+              "0": 1.0,
+              "5": 22.0,
+              "25": 29.0,
+              "50": 96.5,
+              "75": 680.25,
+              "95": 1460.0,
+              "100": 1500.0
+            }
+          },
+          "foreground_count_of_raw_repeated_rows": {
+            "n": 1576,
+            "mean": 28.738578680203045,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 3.0,
+              "75": 8.0,
+              "95": 58.0,
+              "100": 1460.0
+            }
+          },
+          "note": "(support_end, row[:support_end]) determines the whole zero-padded row, so the supported-payload record is a bijection with the raw row and merges nothing. Its attribution row is expected to be 0 and serves as a self-check."
+        },
+        "per_filtration_ablation": {
+          "blocks": [
+            {
+              "filtration": "height_0_1",
+              "n_unique_classes": 1730,
+              "repeated_member_fraction": 0.7123636363636363,
+              "redundancy_fraction": 0.6854545454545454,
+              "largest_class_size": 1095,
+              "n_block_classes_merging_multiple_binary_classes": 103,
+              "n_rows_merged_relative_to_binary": 3802,
+              "n_block_classes_merging_multiple_raw_classes": 114,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 818
+            },
+            {
+              "filtration": "height_1_0",
+              "n_unique_classes": 2560,
+              "repeated_member_fraction": 0.586,
+              "redundancy_fraction": 0.5345454545454545,
+              "largest_class_size": 1099,
+              "n_block_classes_merging_multiple_binary_classes": 93,
+              "n_rows_merged_relative_to_binary": 2720,
+              "n_block_classes_merging_multiple_raw_classes": 166,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 123
+            },
+            {
+              "filtration": "radial_0_50",
+              "n_unique_classes": 2559,
+              "repeated_member_fraction": 0.5872727272727273,
+              "redundancy_fraction": 0.5347272727272727,
+              "largest_class_size": 1096,
+              "n_block_classes_merging_multiple_binary_classes": 95,
+              "n_rows_merged_relative_to_binary": 2717,
+              "n_block_classes_merging_multiple_raw_classes": 172,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 130
+            },
+            {
+              "filtration": "radial_0_25",
+              "n_unique_classes": 2556,
+              "repeated_member_fraction": 0.5878181818181818,
+              "redundancy_fraction": 0.5352727272727272,
+              "largest_class_size": 1098,
+              "n_block_classes_merging_multiple_binary_classes": 96,
+              "n_rows_merged_relative_to_binary": 2722,
+              "n_block_classes_merging_multiple_raw_classes": 172,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 133
+            },
+            {
+              "filtration": "radial_30_0",
+              "n_unique_classes": 2550,
+              "repeated_member_fraction": 0.5892727272727273,
+              "redundancy_fraction": 0.5363636363636364,
+              "largest_class_size": 1099,
+              "n_block_classes_merging_multiple_binary_classes": 101,
+              "n_rows_merged_relative_to_binary": 1861,
+              "n_block_classes_merging_multiple_raw_classes": 175,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 141
+            }
+          ],
+          "final_repeated_member_fraction": 0.5636363636363636,
+          "most_collision_prone_block": "height_0_1",
+          "note": "Diagnostic only. Q3 does not select, reweight, or drop any filtration on the basis of this table."
+        }
+      },
+      "elapsed_seconds": 87.7
+    },
+    "456": {
+      "seed": 456,
+      "realization": {
+        "seed": 456,
+        "dataset": "UNSW-NB15 Payload-Byte",
+        "attack": "malicious_random_attack",
+        "n_swaps": 60,
+        "poison_rate": 0.1,
+        "max_samples": 5000,
+        "n_total": 5500,
+        "n_clean": 5000,
+        "n_poison": 500,
+        "attack_validity_pct": 100.0,
+        "subsample_index_hash": "4a8edc0629c2cbee",
+        "input_hash": "e8a8c13582a3aaa8",
+        "poison_mask_hash": "8f8ee5534151e4fe",
+        "attack_target_index": null
+      },
+      "equality_check": {
+        "instrumented_equals_production_exactly": true,
+        "instrumented_equals_production_bitwise": true,
+        "production_feature_hash": "f551118abb8424c8daaf3e02e2b4c944",
+        "instrumented_feature_hash": "f551118abb8424c8daaf3e02e2b4c944",
+        "shape": [
+          5500,
+          60
+        ]
+      },
+      "fitted_state": {
+        "binarizer_max_value_": {
+          "height_0_1": 255.0,
+          "height_1_0": 255.0,
+          "radial_0_50": 255.0,
+          "radial_0_25": 255.0,
+          "radial_30_0": 255.0
+        },
+        "scaler_scale_": {
+          "height_0_1": 15.0,
+          "height_1_0": 25.0,
+          "radial_0_50": 24.956059691509786,
+          "radial_0_25": 27.504545078950134,
+          "radial_30_0": 20.862646045025066
+        }
+      },
+      "effective_byte_cut": {
+        "height_0_1": 102.0,
+        "height_1_0": 102.0,
+        "radial_0_50": 102.0,
+        "radial_0_25": 102.0,
+        "radial_30_0": 102.0
+      },
+      "optics_params": {
+        "min_samples": 5,
+        "max_eps": 2.0
+      },
+      "labels_hash": "3aea32f90c650d11771b2e15cd90ea5f",
+      "Q3_A_definition_and_reproduction": {
+        "definition_note": "repeated_member_fraction counts rows in a class of size >= 2; redundancy_fraction is (n_rows - n_unique_classes) / n_rows. The phrase 'duplicate fraction' is not used.",
+        "final_vector_class_stats": {
+          "stage": "final_60_vector",
+          "n_rows": 5500,
+          "n_unique_classes": 2739,
+          "n_repeated_classes": 273,
+          "n_repeated_member_rows": 3034,
+          "repeated_member_fraction": 0.5516363636363636,
+          "redundancy_fraction": 0.502,
+          "n_redundant_rows": 2761,
+          "largest_class_size": 1001,
+          "largest_class_share": 0.182,
+          "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+          "repeated_class_size_quantiles": {
+            "5": 2.0,
+            "25": 2.0,
+            "50": 2.0,
+            "75": 3.0,
+            "95": 13.0,
+            "100": 1001.0
+          },
+          "mean_class_size": 2.0080321285140563,
+          "all_classes": {
+            "clean_only": 2409,
+            "poison_only": 299,
+            "mixed": 31,
+            "clean_only_member_rows": 2887,
+            "poison_only_member_rows": 299,
+            "mixed_member_rows": 2314,
+            "mixed_class_poison_rows": 201,
+            "mixed_class_clean_rows": 2113
+          },
+          "repeated_classes": {
+            "clean_only": 242,
+            "poison_only": 0,
+            "mixed": 31,
+            "clean_only_member_rows": 720,
+            "poison_only_member_rows": 0,
+            "mixed_member_rows": 2314
+          },
+          "poison_rows_sharing_class_with_clean": 201,
+          "poison_obstruction_fraction": 0.402
+        },
+        "feature_hash_exact": "f551118abb8424c8daaf3e02e2b4c944",
+        "feature_hash_rounded9": "a59823bf23b8a69e",
+        "q2_reference": {
+          "source_artifact": "results/phase_q2_geometry.json  arms.legacy_30x50_t04",
+          "input_hash": "fce036c2424196ef",
+          "poison_mask_hash": "8f8ee5534151e4fe",
+          "feature_hash_rounded9": "ffce38eb0cd462df",
+          "n_exact_duplicate_rows": 2849,
+          "max_duplicate_multiplicity": 1043
+        },
+        "q2_statistic_resolution": {
+          "q2_reported_value": 0.518,
+          "q2_reported_n_rows": 2849,
+          "reproduced_redundancy_fraction": 0.502,
+          "reproduced_n_redundant_rows": 2761,
+          "reproduced_repeated_member_fraction": 0.5516363636363636,
+          "reproduced_n_repeated_member_rows": 3034,
+          "q2_51_8_pct_is_redundancy_fraction": false,
+          "q2_51_8_pct_is_repeated_member_fraction": false,
+          "input_hash_matches_q2": false,
+          "poison_mask_hash_matches_q2": true,
+          "feature_hash_matches_q2": false
+        },
+        "largest_final_class": {
+          "size": 1001,
+          "share_of_all_rows": 0.182,
+          "signature": "56471b75d85a974bb49adf1373fd497c",
+          "reproduces_q2_1043": false,
+          "n_clean": 906,
+          "n_poison": 95
+        },
+        "optics_label_behaviour_in_exact_classes": {
+          "n_repeated_classes_examined": 273,
+          "max_distinct_labels_in_one_class": 2,
+          "n_classes_split_across_labels": 6,
+          "n_classes_split_across_two_real_clusters": 0,
+          "n_classes_split_only_by_noise_assignment": 6,
+          "split_class_examples": [
+            {
+              "signature": "e8c27523dcd113fa0d350fd571d30ba7",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                53
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "3d27275905630bd67b49f39900376b05",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                111
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "c5094015b73312bab12b70390c5a3d9c",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                36
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "723689d85a7c8288328ad48231263755",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                126
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "0fdef4774b18c361e73357db02027ad8",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                119
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "3f0dfeabd6f3806a647d428731939179",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                43
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            }
+          ],
+          "all_exact_classes_co_assigned": false,
+          "no_exact_class_spans_two_real_clusters": true,
+          "scope_note": "Verified empirically for this fitted OPTICS ({'min_samples': 5, 'max_eps': 2.0}) at this seed. Not proven for OPTICS in general and not claimed for any other algorithm. The distinction matters: a class split only because one twin was left at -1 still cannot produce two competing real clusters, but it does mean a 100%-poison cluster can exist while an identical clean row sits in noise."
+        }
+      },
+      "Q3_D_strict_purity_failure_decomposition": {
+        "n_poison": 500,
+        "categories_priority_order": [
+          "captured_in_100pct_poison_non_noise_cluster",
+          "label_minus_1_unclustered",
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row",
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster",
+          "residual_unexplained"
+        ],
+        "decomposition": {
+          "captured_in_100pct_poison_non_noise_cluster": {
+            "n": 11,
+            "pct_of_poison": 2.2
+          },
+          "label_minus_1_unclustered": {
+            "n": 290,
+            "pct_of_poison": 58.0
+          },
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row": {
+            "n": 189,
+            "pct_of_poison": 37.8
+          },
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster": {
+            "n": 10,
+            "pct_of_poison": 2.0
+          },
+          "residual_unexplained": {
+            "n": 0,
+            "pct_of_poison": 0.0
+          }
+        },
+        "categories_sum_to_all_poison": true,
+        "residual_is_empty": true,
+        "residual_note": "A non-noise poisoned row is in a cluster that is either 100% poison (category 1) or mixed (categories 3/4), so category 5 is expected to be empty; it is reported rather than assumed.",
+        "coordinate_class_obstruction": {
+          "numerator_poison_sharing_exact_vector_with_clean": 201,
+          "denominator_all_poison": 500,
+          "obstruction_fraction": 0.402,
+          "one_minus_obstruction": 0.598,
+          "n_captured_rows_also_in_a_mixed_exact_vector_class": 0,
+          "obstruction_binds_under_this_fit": true,
+          "scope_note": "1 - obstruction is NOT claimed as an algorithm-independent capture ceiling. It is a ceiling exactly to the extent that the clustering rule cannot split identical coordinates; that co-assignment is verified empirically for the standing OPTICS fit in Q3-A and claimed only at that scope."
+        },
+        "comparisons": {
+          "observed_exact_purity_capture_pct": 2.1999999999999997,
+          "poison_unclustered_fraction": 0.58,
+          "clean_unclustered_fraction": 0.383,
+          "n_clusters": 137,
+          "colors": {
+            "Green": 107,
+            "Red": 2,
+            "Yellow": 28,
+            "Pink": 0,
+            "Noise": 1
+          }
+        }
+      },
+      "Q3_B_largest_class_trace": {
+        "signature": "56471b75d85a974bb49adf1373fd497c",
+        "size": 1001,
+        "share_of_all_rows": 0.182,
+        "n_clean": 906,
+        "n_poison": 95,
+        "n_source_rows": 906,
+        "n_appended_poison_rows": 95,
+        "n_poison_whose_clean_source_is_also_in_this_class": 95,
+        "unsw_label_composition": {
+          "analysis": 78,
+          "backdoor": 61,
+          "dos": 94,
+          "exploits": 189,
+          "fuzzers": 204,
+          "generic": 132,
+          "normal": 177,
+          "reconnaissance": 66
+        },
+        "per_stage_distinct_signatures": [
+          {
+            "stage": "raw_payload",
+            "n_distinct_upstream_signatures": 379
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_distinct_upstream_signatures": 379
+          },
+          {
+            "stage": "binary_mask",
+            "n_distinct_upstream_signatures": 32
+          },
+          {
+            "stage": "filtration_images",
+            "n_distinct_upstream_signatures": 32
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "feature_blocks",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "final_60_vector",
+            "n_distinct_upstream_signatures": 1
+          }
+        ],
+        "earliest_merger_stage_histogram": {
+          "raw_payload": 792,
+          "binary_mask": 192,
+          "unscaled_diagrams": 17
+        },
+        "earliest_merger_stage_for_class": "raw_payload",
+        "poison_members_identical_to_own_clean_source": {
+          "raw_payload": 14,
+          "supported_payload_record": 14,
+          "binary_mask": 94,
+          "filtration_images": 94,
+          "unscaled_diagrams": 95,
+          "scaled_diagrams": 95,
+          "feature_blocks": 95,
+          "final_60_vector": 95
+        },
+        "n_poison_members": 95,
+        "padding_profile": {
+          "support_end": {
+            "n": 1001,
+            "mean": 335.94205794205794,
+            "min": 1,
+            "max": 1500,
+            "quantiles": {
+              "0": 1.0,
+              "5": 4.0,
+              "25": 16.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1500.0
+            }
+          },
+          "nonzero_count": {
+            "n": 1001,
+            "mean": 258.9220779220779,
+            "min": 1,
+            "max": 1460,
+            "quantiles": {
+              "0": 1.0,
+              "5": 2.0,
+              "25": 11.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1460.0
+            }
+          },
+          "n_all_zero_payload": 0,
+          "all_zero_share_of_class": 0.0,
+          "foreground_count_at_threshold_0_4": {
+            "n": 1001,
+            "mean": 27.140859140859142,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 0.0,
+              "75": 0.0,
+              "95": 4.0,
+              "100": 1460.0
+            }
+          }
+        },
+        "optics_labels_in_class": {
+          "labels": [
+            131
+          ],
+          "counts": [
+            1001
+          ]
+        },
+        "example_row_indices": [
+          1,
+          3,
+          6,
+          8,
+          26
+        ],
+        "example_note": "Ordinary 0-based row numbers into the 5500-row combined matrix (0..4999 = subsampled clean rows, 5000..5499 = appended poison). No payload bytes are recorded anywhere in this artifact."
+      },
+      "Q3_C_population_attribution": {
+        "stage_class_stats": [
+          {
+            "stage": "raw_payload",
+            "n_rows": 5500,
+            "n_unique_classes": 4466,
+            "n_repeated_classes": 484,
+            "n_repeated_member_rows": 1518,
+            "repeated_member_fraction": 0.276,
+            "redundancy_fraction": 0.188,
+            "n_redundant_rows": 1034,
+            "largest_class_size": 76,
+            "largest_class_share": 0.013818181818181818,
+            "largest_class_signature": "9a4bbdb074ac7196163165d9b3a1b6e9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 76.0
+            },
+            "mean_class_size": 1.2315270935960592,
+            "all_classes": {
+              "clean_only": 3968,
+              "poison_only": 447,
+              "mixed": 51,
+              "clean_only_member_rows": 4887,
+              "poison_only_member_rows": 447,
+              "mixed_member_rows": 166,
+              "mixed_class_poison_rows": 53,
+              "mixed_class_clean_rows": 113
+            },
+            "repeated_classes": {
+              "clean_only": 433,
+              "poison_only": 0,
+              "mixed": 51,
+              "clean_only_member_rows": 1352,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 166
+            },
+            "poison_rows_sharing_class_with_clean": 53,
+            "poison_obstruction_fraction": 0.106
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_rows": 5500,
+            "n_unique_classes": 4466,
+            "n_repeated_classes": 484,
+            "n_repeated_member_rows": 1518,
+            "repeated_member_fraction": 0.276,
+            "redundancy_fraction": 0.188,
+            "n_redundant_rows": 1034,
+            "largest_class_size": 76,
+            "largest_class_share": 0.013818181818181818,
+            "largest_class_signature": "98e7da204ebba6ffd09b8669f029da8a",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 76.0
+            },
+            "mean_class_size": 1.2315270935960592,
+            "all_classes": {
+              "clean_only": 3968,
+              "poison_only": 447,
+              "mixed": 51,
+              "clean_only_member_rows": 4887,
+              "poison_only_member_rows": 447,
+              "mixed_member_rows": 166,
+              "mixed_class_poison_rows": 53,
+              "mixed_class_clean_rows": 113
+            },
+            "repeated_classes": {
+              "clean_only": 433,
+              "poison_only": 0,
+              "mixed": 51,
+              "clean_only_member_rows": 1352,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 166
+            },
+            "poison_rows_sharing_class_with_clean": 53,
+            "poison_obstruction_fraction": 0.106
+          },
+          {
+            "stage": "binary_mask",
+            "n_rows": 5500,
+            "n_unique_classes": 2842,
+            "n_repeated_classes": 296,
+            "n_repeated_member_rows": 2954,
+            "repeated_member_fraction": 0.5370909090909091,
+            "redundancy_fraction": 0.4832727272727273,
+            "n_redundant_rows": 2658,
+            "largest_class_size": 875,
+            "largest_class_share": 0.1590909090909091,
+            "largest_class_signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 4.0,
+              "95": 15.0,
+              "100": 875.0
+            },
+            "mean_class_size": 1.9352568613652357,
+            "all_classes": {
+              "clean_only": 2498,
+              "poison_only": 300,
+              "mixed": 44,
+              "clean_only_member_rows": 3090,
+              "poison_only_member_rows": 300,
+              "mixed_member_rows": 2110,
+              "mixed_class_poison_rows": 200,
+              "mixed_class_clean_rows": 1910
+            },
+            "repeated_classes": {
+              "clean_only": 252,
+              "poison_only": 0,
+              "mixed": 44,
+              "clean_only_member_rows": 844,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2110
+            },
+            "poison_rows_sharing_class_with_clean": 200,
+            "poison_obstruction_fraction": 0.4
+          },
+          {
+            "stage": "filtration_images",
+            "n_rows": 5500,
+            "n_unique_classes": 2842,
+            "n_repeated_classes": 296,
+            "n_repeated_member_rows": 2954,
+            "repeated_member_fraction": 0.5370909090909091,
+            "redundancy_fraction": 0.4832727272727273,
+            "n_redundant_rows": 2658,
+            "largest_class_size": 875,
+            "largest_class_share": 0.1590909090909091,
+            "largest_class_signature": "8af86cc68a30fb20cf2e3a204a20e0c9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 4.0,
+              "95": 15.0,
+              "100": 875.0
+            },
+            "mean_class_size": 1.9352568613652357,
+            "all_classes": {
+              "clean_only": 2498,
+              "poison_only": 300,
+              "mixed": 44,
+              "clean_only_member_rows": 3090,
+              "poison_only_member_rows": 300,
+              "mixed_member_rows": 2110,
+              "mixed_class_poison_rows": 200,
+              "mixed_class_clean_rows": 1910
+            },
+            "repeated_classes": {
+              "clean_only": 252,
+              "poison_only": 0,
+              "mixed": 44,
+              "clean_only_member_rows": 844,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2110
+            },
+            "poison_rows_sharing_class_with_clean": 200,
+            "poison_obstruction_fraction": 0.4
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2739,
+            "n_repeated_classes": 273,
+            "n_repeated_member_rows": 3034,
+            "repeated_member_fraction": 0.5516363636363636,
+            "redundancy_fraction": 0.502,
+            "n_redundant_rows": 2761,
+            "largest_class_size": 1001,
+            "largest_class_share": 0.182,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.0,
+              "100": 1001.0
+            },
+            "mean_class_size": 2.0080321285140563,
+            "all_classes": {
+              "clean_only": 2409,
+              "poison_only": 299,
+              "mixed": 31,
+              "clean_only_member_rows": 2887,
+              "poison_only_member_rows": 299,
+              "mixed_member_rows": 2314,
+              "mixed_class_poison_rows": 201,
+              "mixed_class_clean_rows": 2113
+            },
+            "repeated_classes": {
+              "clean_only": 242,
+              "poison_only": 0,
+              "mixed": 31,
+              "clean_only_member_rows": 720,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2314
+            },
+            "poison_rows_sharing_class_with_clean": 201,
+            "poison_obstruction_fraction": 0.402
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2739,
+            "n_repeated_classes": 273,
+            "n_repeated_member_rows": 3034,
+            "repeated_member_fraction": 0.5516363636363636,
+            "redundancy_fraction": 0.502,
+            "n_redundant_rows": 2761,
+            "largest_class_size": 1001,
+            "largest_class_share": 0.182,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.0,
+              "100": 1001.0
+            },
+            "mean_class_size": 2.0080321285140563,
+            "all_classes": {
+              "clean_only": 2409,
+              "poison_only": 299,
+              "mixed": 31,
+              "clean_only_member_rows": 2887,
+              "poison_only_member_rows": 299,
+              "mixed_member_rows": 2314,
+              "mixed_class_poison_rows": 201,
+              "mixed_class_clean_rows": 2113
+            },
+            "repeated_classes": {
+              "clean_only": 242,
+              "poison_only": 0,
+              "mixed": 31,
+              "clean_only_member_rows": 720,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2314
+            },
+            "poison_rows_sharing_class_with_clean": 201,
+            "poison_obstruction_fraction": 0.402
+          },
+          {
+            "stage": "feature_blocks",
+            "n_rows": 5500,
+            "n_unique_classes": 2739,
+            "n_repeated_classes": 273,
+            "n_repeated_member_rows": 3034,
+            "repeated_member_fraction": 0.5516363636363636,
+            "redundancy_fraction": 0.502,
+            "n_redundant_rows": 2761,
+            "largest_class_size": 1001,
+            "largest_class_share": 0.182,
+            "largest_class_signature": "f315124e67272fbfcbfdadf1dd37e7be",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.0,
+              "100": 1001.0
+            },
+            "mean_class_size": 2.0080321285140563,
+            "all_classes": {
+              "clean_only": 2409,
+              "poison_only": 299,
+              "mixed": 31,
+              "clean_only_member_rows": 2887,
+              "poison_only_member_rows": 299,
+              "mixed_member_rows": 2314,
+              "mixed_class_poison_rows": 201,
+              "mixed_class_clean_rows": 2113
+            },
+            "repeated_classes": {
+              "clean_only": 242,
+              "poison_only": 0,
+              "mixed": 31,
+              "clean_only_member_rows": 720,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2314
+            },
+            "poison_rows_sharing_class_with_clean": 201,
+            "poison_obstruction_fraction": 0.402
+          },
+          {
+            "stage": "final_60_vector",
+            "n_rows": 5500,
+            "n_unique_classes": 2739,
+            "n_repeated_classes": 273,
+            "n_repeated_member_rows": 3034,
+            "repeated_member_fraction": 0.5516363636363636,
+            "redundancy_fraction": 0.502,
+            "n_redundant_rows": 2761,
+            "largest_class_size": 1001,
+            "largest_class_share": 0.182,
+            "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.0,
+              "100": 1001.0
+            },
+            "mean_class_size": 2.0080321285140563,
+            "all_classes": {
+              "clean_only": 2409,
+              "poison_only": 299,
+              "mixed": 31,
+              "clean_only_member_rows": 2887,
+              "poison_only_member_rows": 299,
+              "mixed_member_rows": 2314,
+              "mixed_class_poison_rows": 201,
+              "mixed_class_clean_rows": 2113
+            },
+            "repeated_classes": {
+              "clean_only": 242,
+              "poison_only": 0,
+              "mixed": 31,
+              "clean_only_member_rows": 720,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2314
+            },
+            "poison_rows_sharing_class_with_clean": 201,
+            "poison_obstruction_fraction": 0.402
+          }
+        ],
+        "earliest_merger_attribution": {
+          "stage_order": [
+            "raw_payload",
+            "supported_payload_record",
+            "binary_mask",
+            "filtration_images",
+            "unscaled_diagrams",
+            "scaled_diagrams",
+            "feature_blocks",
+            "final_60_vector"
+          ],
+          "n_final_repeated_member_rows": 3034,
+          "monotonicity_violations": 0,
+          "rows": [
+            {
+              "stage": "raw_payload",
+              "n_newly_merged_classes": 484,
+              "member_rows": 1518,
+              "clean_rows": 1465,
+              "poison_rows": 53,
+              "mixed_class_poison_rows": 53,
+              "share_of_final_repeated_member_mass": 0.5003295978905735
+            },
+            {
+              "stage": "supported_payload_record",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "binary_mask",
+              "n_newly_merged_classes": 157,
+              "member_rows": 1436,
+              "clean_rows": 1289,
+              "poison_rows": 147,
+              "mixed_class_poison_rows": 147,
+              "share_of_final_repeated_member_mass": 0.4733025708635465
+            },
+            {
+              "stage": "filtration_images",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "unscaled_diagrams",
+              "n_newly_merged_classes": 34,
+              "member_rows": 80,
+              "clean_rows": 79,
+              "poison_rows": 1,
+              "mixed_class_poison_rows": 1,
+              "share_of_final_repeated_member_mass": 0.026367831245880026
+            },
+            {
+              "stage": "scaled_diagrams",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "feature_blocks",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "final_60_vector",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            }
+          ],
+          "attribution_sums_to_final_repeated_mass": true
+        },
+        "stage_transitions": [
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "raw_payload",
+            "to": "supported_payload_record"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 161,
+            "n_rows_in_newly_merged_classes": 2629,
+            "n_mixed_classes_first_created_here": 22,
+            "largest_newly_merged_class": {
+              "size": 875,
+              "n_upstream_classes": 307,
+              "signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+              "example_row_indices": [
+                1,
+                3,
+                6
+              ],
+              "example_upstream_signatures": [
+                "9bc9b25f79cab1bf68fb2b30466bfede",
+                "f6115175d8f9d2acdd3a45b71dca2cf8",
+                "706bcd3454e6a06b1bef3294af17aa24"
+              ]
+            },
+            "from": "supported_payload_record",
+            "to": "binary_mask"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "binary_mask",
+            "to": "filtration_images"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 50,
+            "n_rows_in_newly_merged_classes": 1505,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 1001,
+              "n_upstream_classes": 32,
+              "signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+              "example_row_indices": [
+                1,
+                3,
+                6
+              ],
+              "example_upstream_signatures": [
+                "8af86cc68a30fb20cf2e3a204a20e0c9",
+                "8af86cc68a30fb20cf2e3a204a20e0c9",
+                "8af86cc68a30fb20cf2e3a204a20e0c9"
+              ]
+            },
+            "from": "filtration_images",
+            "to": "unscaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "unscaled_diagrams",
+            "to": "scaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "scaled_diagrams",
+            "to": "feature_blocks"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "feature_blocks",
+            "to": "final_60_vector"
+          }
+        ],
+        "padding_characterisation_of_raw_collisions": {
+          "n_raw_repeated_member_rows": 1518,
+          "n_all_zero_payload_rows": 0,
+          "all_zero_share_of_raw_repeated_mass": 0.0,
+          "support_end_of_raw_repeated_rows": {
+            "n": 1518,
+            "mean": 166.1403162055336,
+            "min": 1,
+            "max": 1460,
+            "quantiles": {
+              "0": 1.0,
+              "5": 6.0,
+              "25": 29.0,
+              "50": 39.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1460.0
+            }
+          },
+          "support_end_of_raw_singleton_rows": {
+            "n": 3982,
+            "mean": 417.16499246609743,
+            "min": 1,
+            "max": 1500,
+            "quantiles": {
+              "0": 1.0,
+              "5": 22.0,
+              "25": 29.0,
+              "50": 81.5,
+              "75": 689.75,
+              "95": 1460.0,
+              "100": 1500.0
+            }
+          },
+          "foreground_count_of_raw_repeated_rows": {
+            "n": 1518,
+            "mean": 31.321475625823453,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 3.0,
+              "75": 8.0,
+              "95": 33.0,
+              "100": 1460.0
+            }
+          },
+          "note": "(support_end, row[:support_end]) determines the whole zero-padded row, so the supported-payload record is a bijection with the raw row and merges nothing. Its attribution row is expected to be 0 and serves as a self-check."
+        },
+        "per_filtration_ablation": {
+          "blocks": [
+            {
+              "filtration": "height_0_1",
+              "n_unique_classes": 1770,
+              "repeated_member_fraction": 0.7027272727272728,
+              "redundancy_fraction": 0.6781818181818182,
+              "largest_class_size": 1002,
+              "n_block_classes_merging_multiple_binary_classes": 98,
+              "n_rows_merged_relative_to_binary": 3776,
+              "n_block_classes_merging_multiple_raw_classes": 105,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 831
+            },
+            {
+              "filtration": "height_1_0",
+              "n_unique_classes": 2612,
+              "repeated_member_fraction": 0.5776363636363636,
+              "redundancy_fraction": 0.525090909090909,
+              "largest_class_size": 1007,
+              "n_block_classes_merging_multiple_binary_classes": 108,
+              "n_rows_merged_relative_to_binary": 2353,
+              "n_block_classes_merging_multiple_raw_classes": 170,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 143
+            },
+            {
+              "filtration": "radial_0_50",
+              "n_unique_classes": 2617,
+              "repeated_member_fraction": 0.5758181818181818,
+              "redundancy_fraction": 0.5241818181818182,
+              "largest_class_size": 1006,
+              "n_block_classes_merging_multiple_binary_classes": 101,
+              "n_rows_merged_relative_to_binary": 2338,
+              "n_block_classes_merging_multiple_raw_classes": 165,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 133
+            },
+            {
+              "filtration": "radial_0_25",
+              "n_unique_classes": 2618,
+              "repeated_member_fraction": 0.5756363636363636,
+              "redundancy_fraction": 0.524,
+              "largest_class_size": 1007,
+              "n_block_classes_merging_multiple_binary_classes": 101,
+              "n_rows_merged_relative_to_binary": 2337,
+              "n_block_classes_merging_multiple_raw_classes": 165,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 132
+            },
+            {
+              "filtration": "radial_30_0",
+              "n_unique_classes": 2597,
+              "repeated_member_fraction": 0.5790909090909091,
+              "redundancy_fraction": 0.5278181818181819,
+              "largest_class_size": 1007,
+              "n_block_classes_merging_multiple_binary_classes": 101,
+              "n_rows_merged_relative_to_binary": 1797,
+              "n_block_classes_merging_multiple_raw_classes": 169,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 151
+            }
+          ],
+          "final_repeated_member_fraction": 0.5516363636363636,
+          "most_collision_prone_block": "height_0_1",
+          "note": "Diagnostic only. Q3 does not select, reweight, or drop any filtration on the basis of this table."
+        }
+      },
+      "elapsed_seconds": 87.6
+    },
+    "789": {
+      "seed": 789,
+      "realization": {
+        "seed": 789,
+        "dataset": "UNSW-NB15 Payload-Byte",
+        "attack": "malicious_random_attack",
+        "n_swaps": 60,
+        "poison_rate": 0.1,
+        "max_samples": 5000,
+        "n_total": 5500,
+        "n_clean": 5000,
+        "n_poison": 500,
+        "attack_validity_pct": 100.0,
+        "subsample_index_hash": "6b77f883c9b81889",
+        "input_hash": "d23e2631ead4955d",
+        "poison_mask_hash": "8f8ee5534151e4fe",
+        "attack_target_index": null
+      },
+      "equality_check": {
+        "instrumented_equals_production_exactly": true,
+        "instrumented_equals_production_bitwise": true,
+        "production_feature_hash": "d326a2089a9da332c54999cd7062995a",
+        "instrumented_feature_hash": "d326a2089a9da332c54999cd7062995a",
+        "shape": [
+          5500,
+          60
+        ]
+      },
+      "fitted_state": {
+        "binarizer_max_value_": {
+          "height_0_1": 255.0,
+          "height_1_0": 255.0,
+          "radial_0_50": 255.0,
+          "radial_0_25": 255.0,
+          "radial_30_0": 255.0
+        },
+        "scaler_scale_": {
+          "height_0_1": 15.0,
+          "height_1_0": 25.0,
+          "radial_0_50": 24.956059691509786,
+          "radial_0_25": 27.504545078950134,
+          "radial_30_0": 20.862646045025066
+        }
+      },
+      "effective_byte_cut": {
+        "height_0_1": 102.0,
+        "height_1_0": 102.0,
+        "radial_0_50": 102.0,
+        "radial_0_25": 102.0,
+        "radial_30_0": 102.0
+      },
+      "optics_params": {
+        "min_samples": 5,
+        "max_eps": 2.0
+      },
+      "labels_hash": "89e646143aa365cb0a1ef104869da750",
+      "Q3_A_definition_and_reproduction": {
+        "definition_note": "repeated_member_fraction counts rows in a class of size >= 2; redundancy_fraction is (n_rows - n_unique_classes) / n_rows. The phrase 'duplicate fraction' is not used.",
+        "final_vector_class_stats": {
+          "stage": "final_60_vector",
+          "n_rows": 5500,
+          "n_unique_classes": 2685,
+          "n_repeated_classes": 271,
+          "n_repeated_member_rows": 3086,
+          "repeated_member_fraction": 0.5610909090909091,
+          "redundancy_fraction": 0.5118181818181818,
+          "n_redundant_rows": 2815,
+          "largest_class_size": 1090,
+          "largest_class_share": 0.19818181818181818,
+          "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+          "repeated_class_size_quantiles": {
+            "5": 2.0,
+            "25": 2.0,
+            "50": 2.0,
+            "75": 3.0,
+            "95": 13.0,
+            "100": 1090.0
+          },
+          "mean_class_size": 2.0484171322160147,
+          "all_classes": {
+            "clean_only": 2367,
+            "poison_only": 278,
+            "mixed": 40,
+            "clean_only_member_rows": 2848,
+            "poison_only_member_rows": 278,
+            "mixed_member_rows": 2374,
+            "mixed_class_poison_rows": 222,
+            "mixed_class_clean_rows": 2152
+          },
+          "repeated_classes": {
+            "clean_only": 231,
+            "poison_only": 0,
+            "mixed": 40,
+            "clean_only_member_rows": 712,
+            "poison_only_member_rows": 0,
+            "mixed_member_rows": 2374
+          },
+          "poison_rows_sharing_class_with_clean": 222,
+          "poison_obstruction_fraction": 0.444
+        },
+        "feature_hash_exact": "d326a2089a9da332c54999cd7062995a",
+        "feature_hash_rounded9": "65afeb6a09ad7a59",
+        "q2_reference": {
+          "source_artifact": "results/phase_q2_geometry.json  arms.legacy_30x50_t04",
+          "input_hash": "fce036c2424196ef",
+          "poison_mask_hash": "8f8ee5534151e4fe",
+          "feature_hash_rounded9": "ffce38eb0cd462df",
+          "n_exact_duplicate_rows": 2849,
+          "max_duplicate_multiplicity": 1043
+        },
+        "q2_statistic_resolution": {
+          "q2_reported_value": 0.518,
+          "q2_reported_n_rows": 2849,
+          "reproduced_redundancy_fraction": 0.5118181818181818,
+          "reproduced_n_redundant_rows": 2815,
+          "reproduced_repeated_member_fraction": 0.5610909090909091,
+          "reproduced_n_repeated_member_rows": 3086,
+          "q2_51_8_pct_is_redundancy_fraction": false,
+          "q2_51_8_pct_is_repeated_member_fraction": false,
+          "input_hash_matches_q2": false,
+          "poison_mask_hash_matches_q2": true,
+          "feature_hash_matches_q2": false
+        },
+        "largest_final_class": {
+          "size": 1090,
+          "share_of_all_rows": 0.19818181818181818,
+          "signature": "56471b75d85a974bb49adf1373fd497c",
+          "reproduces_q2_1043": false,
+          "n_clean": 974,
+          "n_poison": 116
+        },
+        "optics_label_behaviour_in_exact_classes": {
+          "n_repeated_classes_examined": 271,
+          "max_distinct_labels_in_one_class": 2,
+          "n_classes_split_across_labels": 2,
+          "n_classes_split_across_two_real_clusters": 0,
+          "n_classes_split_only_by_noise_assignment": 2,
+          "split_class_examples": [
+            {
+              "signature": "051a0112337b2895f8f2d6ca5f276542",
+              "size": 2,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                120
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            },
+            {
+              "signature": "09f66fda21b9c0914569c1a37addb018",
+              "size": 3,
+              "n_distinct_labels": 2,
+              "labels": [
+                -1,
+                98
+              ],
+              "split_kind": "one_real_cluster_plus_noise"
+            }
+          ],
+          "all_exact_classes_co_assigned": false,
+          "no_exact_class_spans_two_real_clusters": true,
+          "scope_note": "Verified empirically for this fitted OPTICS ({'min_samples': 5, 'max_eps': 2.0}) at this seed. Not proven for OPTICS in general and not claimed for any other algorithm. The distinction matters: a class split only because one twin was left at -1 still cannot produce two competing real clusters, but it does mean a 100%-poison cluster can exist while an identical clean row sits in noise."
+        }
+      },
+      "Q3_D_strict_purity_failure_decomposition": {
+        "n_poison": 500,
+        "categories_priority_order": [
+          "captured_in_100pct_poison_non_noise_cluster",
+          "label_minus_1_unclustered",
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row",
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster",
+          "residual_unexplained"
+        ],
+        "decomposition": {
+          "captured_in_100pct_poison_non_noise_cluster": {
+            "n": 5,
+            "pct_of_poison": 1.0
+          },
+          "label_minus_1_unclustered": {
+            "n": 274,
+            "pct_of_poison": 54.8
+          },
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row": {
+            "n": 209,
+            "pct_of_poison": 41.8
+          },
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster": {
+            "n": 12,
+            "pct_of_poison": 2.4
+          },
+          "residual_unexplained": {
+            "n": 0,
+            "pct_of_poison": 0.0
+          }
+        },
+        "categories_sum_to_all_poison": true,
+        "residual_is_empty": true,
+        "residual_note": "A non-noise poisoned row is in a cluster that is either 100% poison (category 1) or mixed (categories 3/4), so category 5 is expected to be empty; it is reported rather than assumed.",
+        "coordinate_class_obstruction": {
+          "numerator_poison_sharing_exact_vector_with_clean": 222,
+          "denominator_all_poison": 500,
+          "obstruction_fraction": 0.444,
+          "one_minus_obstruction": 0.556,
+          "n_captured_rows_also_in_a_mixed_exact_vector_class": 0,
+          "obstruction_binds_under_this_fit": true,
+          "scope_note": "1 - obstruction is NOT claimed as an algorithm-independent capture ceiling. It is a ceiling exactly to the extent that the clustering rule cannot split identical coordinates; that co-assignment is verified empirically for the standing OPTICS fit in Q3-A and claimed only at that scope."
+        },
+        "comparisons": {
+          "observed_exact_purity_capture_pct": 1.0,
+          "poison_unclustered_fraction": 0.548,
+          "clean_unclustered_fraction": 0.3804,
+          "n_clusters": 135,
+          "colors": {
+            "Green": 102,
+            "Red": 1,
+            "Yellow": 32,
+            "Pink": 0,
+            "Noise": 1
+          }
+        }
+      },
+      "Q3_B_largest_class_trace": {
+        "signature": "56471b75d85a974bb49adf1373fd497c",
+        "size": 1090,
+        "share_of_all_rows": 0.19818181818181818,
+        "n_clean": 974,
+        "n_poison": 116,
+        "n_source_rows": 974,
+        "n_appended_poison_rows": 116,
+        "n_poison_whose_clean_source_is_also_in_this_class": 116,
+        "unsw_label_composition": {
+          "analysis": 75,
+          "backdoor": 72,
+          "dos": 86,
+          "exploits": 217,
+          "fuzzers": 231,
+          "generic": 140,
+          "normal": 197,
+          "reconnaissance": 72
+        },
+        "per_stage_distinct_signatures": [
+          {
+            "stage": "raw_payload",
+            "n_distinct_upstream_signatures": 440
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_distinct_upstream_signatures": 440
+          },
+          {
+            "stage": "binary_mask",
+            "n_distinct_upstream_signatures": 39
+          },
+          {
+            "stage": "filtration_images",
+            "n_distinct_upstream_signatures": 39
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "feature_blocks",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "final_60_vector",
+            "n_distinct_upstream_signatures": 1
+          }
+        ],
+        "earliest_merger_stage_histogram": {
+          "raw_payload": 821,
+          "binary_mask": 250,
+          "unscaled_diagrams": 19
+        },
+        "earliest_merger_stage_for_class": "raw_payload",
+        "poison_members_identical_to_own_clean_source": {
+          "raw_payload": 13,
+          "supported_payload_record": 13,
+          "binary_mask": 114,
+          "filtration_images": 114,
+          "unscaled_diagrams": 116,
+          "scaled_diagrams": 116,
+          "feature_blocks": 116,
+          "final_60_vector": 116
+        },
+        "n_poison_members": 116,
+        "padding_profile": {
+          "support_end": {
+            "n": 1090,
+            "mean": 340.7119266055046,
+            "min": 1,
+            "max": 1500,
+            "quantiles": {
+              "0": 1.0,
+              "5": 4.0,
+              "25": 19.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1500.0
+            }
+          },
+          "nonzero_count": {
+            "n": 1090,
+            "mean": 249.21559633027522,
+            "min": 1,
+            "max": 1460,
+            "quantiles": {
+              "0": 1.0,
+              "5": 2.0,
+              "25": 12.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1460.0
+            }
+          },
+          "n_all_zero_payload": 0,
+          "all_zero_share_of_class": 0.0,
+          "foreground_count_at_threshold_0_4": {
+            "n": 1090,
+            "mean": 15.555045871559633,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 0.0,
+              "75": 0.0,
+              "95": 4.0,
+              "100": 1460.0
+            }
+          }
+        },
+        "optics_labels_in_class": {
+          "labels": [
+            124
+          ],
+          "counts": [
+            1090
+          ]
+        },
+        "example_row_indices": [
+          3,
+          11,
+          21,
+          22,
+          24
+        ],
+        "example_note": "Ordinary 0-based row numbers into the 5500-row combined matrix (0..4999 = subsampled clean rows, 5000..5499 = appended poison). No payload bytes are recorded anywhere in this artifact."
+      },
+      "Q3_C_population_attribution": {
+        "stage_class_stats": [
+          {
+            "stage": "raw_payload",
+            "n_rows": 5500,
+            "n_unique_classes": 4424,
+            "n_repeated_classes": 488,
+            "n_repeated_member_rows": 1564,
+            "repeated_member_fraction": 0.2843636363636364,
+            "redundancy_fraction": 0.19563636363636364,
+            "n_redundant_rows": 1076,
+            "largest_class_size": 71,
+            "largest_class_share": 0.012909090909090908,
+            "largest_class_signature": "9a4bbdb074ac7196163165d9b3a1b6e9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 71.0
+            },
+            "mean_class_size": 1.2432188065099457,
+            "all_classes": {
+              "clean_only": 3925,
+              "poison_only": 433,
+              "mixed": 66,
+              "clean_only_member_rows": 4908,
+              "poison_only_member_rows": 433,
+              "mixed_member_rows": 159,
+              "mixed_class_poison_rows": 67,
+              "mixed_class_clean_rows": 92
+            },
+            "repeated_classes": {
+              "clean_only": 422,
+              "poison_only": 0,
+              "mixed": 66,
+              "clean_only_member_rows": 1405,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 159
+            },
+            "poison_rows_sharing_class_with_clean": 67,
+            "poison_obstruction_fraction": 0.134
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_rows": 5500,
+            "n_unique_classes": 4424,
+            "n_repeated_classes": 488,
+            "n_repeated_member_rows": 1564,
+            "repeated_member_fraction": 0.2843636363636364,
+            "redundancy_fraction": 0.19563636363636364,
+            "n_redundant_rows": 1076,
+            "largest_class_size": 71,
+            "largest_class_share": 0.012909090909090908,
+            "largest_class_signature": "98e7da204ebba6ffd09b8669f029da8a",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 71.0
+            },
+            "mean_class_size": 1.2432188065099457,
+            "all_classes": {
+              "clean_only": 3925,
+              "poison_only": 433,
+              "mixed": 66,
+              "clean_only_member_rows": 4908,
+              "poison_only_member_rows": 433,
+              "mixed_member_rows": 159,
+              "mixed_class_poison_rows": 67,
+              "mixed_class_clean_rows": 92
+            },
+            "repeated_classes": {
+              "clean_only": 422,
+              "poison_only": 0,
+              "mixed": 66,
+              "clean_only_member_rows": 1405,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 159
+            },
+            "poison_rows_sharing_class_with_clean": 67,
+            "poison_obstruction_fraction": 0.134
+          },
+          {
+            "stage": "binary_mask",
+            "n_rows": 5500,
+            "n_unique_classes": 2802,
+            "n_repeated_classes": 293,
+            "n_repeated_member_rows": 2991,
+            "repeated_member_fraction": 0.5438181818181819,
+            "redundancy_fraction": 0.49054545454545456,
+            "n_redundant_rows": 2698,
+            "largest_class_size": 938,
+            "largest_class_share": 0.17054545454545456,
+            "largest_class_signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 5.0,
+              "95": 12.399999999999977,
+              "100": 938.0
+            },
+            "mean_class_size": 1.9628836545324768,
+            "all_classes": {
+              "clean_only": 2470,
+              "poison_only": 280,
+              "mixed": 52,
+              "clean_only_member_rows": 3100,
+              "poison_only_member_rows": 280,
+              "mixed_member_rows": 2120,
+              "mixed_class_poison_rows": 220,
+              "mixed_class_clean_rows": 1900
+            },
+            "repeated_classes": {
+              "clean_only": 241,
+              "poison_only": 0,
+              "mixed": 52,
+              "clean_only_member_rows": 871,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2120
+            },
+            "poison_rows_sharing_class_with_clean": 220,
+            "poison_obstruction_fraction": 0.44
+          },
+          {
+            "stage": "filtration_images",
+            "n_rows": 5500,
+            "n_unique_classes": 2802,
+            "n_repeated_classes": 293,
+            "n_repeated_member_rows": 2991,
+            "repeated_member_fraction": 0.5438181818181819,
+            "redundancy_fraction": 0.49054545454545456,
+            "n_redundant_rows": 2698,
+            "largest_class_size": 938,
+            "largest_class_share": 0.17054545454545456,
+            "largest_class_signature": "8af86cc68a30fb20cf2e3a204a20e0c9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 5.0,
+              "95": 12.399999999999977,
+              "100": 938.0
+            },
+            "mean_class_size": 1.9628836545324768,
+            "all_classes": {
+              "clean_only": 2470,
+              "poison_only": 280,
+              "mixed": 52,
+              "clean_only_member_rows": 3100,
+              "poison_only_member_rows": 280,
+              "mixed_member_rows": 2120,
+              "mixed_class_poison_rows": 220,
+              "mixed_class_clean_rows": 1900
+            },
+            "repeated_classes": {
+              "clean_only": 241,
+              "poison_only": 0,
+              "mixed": 52,
+              "clean_only_member_rows": 871,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2120
+            },
+            "poison_rows_sharing_class_with_clean": 220,
+            "poison_obstruction_fraction": 0.44
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2685,
+            "n_repeated_classes": 271,
+            "n_repeated_member_rows": 3086,
+            "repeated_member_fraction": 0.5610909090909091,
+            "redundancy_fraction": 0.5118181818181818,
+            "n_redundant_rows": 2815,
+            "largest_class_size": 1090,
+            "largest_class_share": 0.19818181818181818,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.0,
+              "100": 1090.0
+            },
+            "mean_class_size": 2.0484171322160147,
+            "all_classes": {
+              "clean_only": 2367,
+              "poison_only": 278,
+              "mixed": 40,
+              "clean_only_member_rows": 2848,
+              "poison_only_member_rows": 278,
+              "mixed_member_rows": 2374,
+              "mixed_class_poison_rows": 222,
+              "mixed_class_clean_rows": 2152
+            },
+            "repeated_classes": {
+              "clean_only": 231,
+              "poison_only": 0,
+              "mixed": 40,
+              "clean_only_member_rows": 712,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2374
+            },
+            "poison_rows_sharing_class_with_clean": 222,
+            "poison_obstruction_fraction": 0.444
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2685,
+            "n_repeated_classes": 271,
+            "n_repeated_member_rows": 3086,
+            "repeated_member_fraction": 0.5610909090909091,
+            "redundancy_fraction": 0.5118181818181818,
+            "n_redundant_rows": 2815,
+            "largest_class_size": 1090,
+            "largest_class_share": 0.19818181818181818,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.0,
+              "100": 1090.0
+            },
+            "mean_class_size": 2.0484171322160147,
+            "all_classes": {
+              "clean_only": 2367,
+              "poison_only": 278,
+              "mixed": 40,
+              "clean_only_member_rows": 2848,
+              "poison_only_member_rows": 278,
+              "mixed_member_rows": 2374,
+              "mixed_class_poison_rows": 222,
+              "mixed_class_clean_rows": 2152
+            },
+            "repeated_classes": {
+              "clean_only": 231,
+              "poison_only": 0,
+              "mixed": 40,
+              "clean_only_member_rows": 712,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2374
+            },
+            "poison_rows_sharing_class_with_clean": 222,
+            "poison_obstruction_fraction": 0.444
+          },
+          {
+            "stage": "feature_blocks",
+            "n_rows": 5500,
+            "n_unique_classes": 2685,
+            "n_repeated_classes": 271,
+            "n_repeated_member_rows": 3086,
+            "repeated_member_fraction": 0.5610909090909091,
+            "redundancy_fraction": 0.5118181818181818,
+            "n_redundant_rows": 2815,
+            "largest_class_size": 1090,
+            "largest_class_share": 0.19818181818181818,
+            "largest_class_signature": "f315124e67272fbfcbfdadf1dd37e7be",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.0,
+              "100": 1090.0
+            },
+            "mean_class_size": 2.0484171322160147,
+            "all_classes": {
+              "clean_only": 2367,
+              "poison_only": 278,
+              "mixed": 40,
+              "clean_only_member_rows": 2848,
+              "poison_only_member_rows": 278,
+              "mixed_member_rows": 2374,
+              "mixed_class_poison_rows": 222,
+              "mixed_class_clean_rows": 2152
+            },
+            "repeated_classes": {
+              "clean_only": 231,
+              "poison_only": 0,
+              "mixed": 40,
+              "clean_only_member_rows": 712,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2374
+            },
+            "poison_rows_sharing_class_with_clean": 222,
+            "poison_obstruction_fraction": 0.444
+          },
+          {
+            "stage": "final_60_vector",
+            "n_rows": 5500,
+            "n_unique_classes": 2685,
+            "n_repeated_classes": 271,
+            "n_repeated_member_rows": 3086,
+            "repeated_member_fraction": 0.5610909090909091,
+            "redundancy_fraction": 0.5118181818181818,
+            "n_redundant_rows": 2815,
+            "largest_class_size": 1090,
+            "largest_class_share": 0.19818181818181818,
+            "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 13.0,
+              "100": 1090.0
+            },
+            "mean_class_size": 2.0484171322160147,
+            "all_classes": {
+              "clean_only": 2367,
+              "poison_only": 278,
+              "mixed": 40,
+              "clean_only_member_rows": 2848,
+              "poison_only_member_rows": 278,
+              "mixed_member_rows": 2374,
+              "mixed_class_poison_rows": 222,
+              "mixed_class_clean_rows": 2152
+            },
+            "repeated_classes": {
+              "clean_only": 231,
+              "poison_only": 0,
+              "mixed": 40,
+              "clean_only_member_rows": 712,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2374
+            },
+            "poison_rows_sharing_class_with_clean": 222,
+            "poison_obstruction_fraction": 0.444
+          }
+        ],
+        "earliest_merger_attribution": {
+          "stage_order": [
+            "raw_payload",
+            "supported_payload_record",
+            "binary_mask",
+            "filtration_images",
+            "unscaled_diagrams",
+            "scaled_diagrams",
+            "feature_blocks",
+            "final_60_vector"
+          ],
+          "n_final_repeated_member_rows": 3086,
+          "monotonicity_violations": 0,
+          "rows": [
+            {
+              "stage": "raw_payload",
+              "n_newly_merged_classes": 488,
+              "member_rows": 1564,
+              "clean_rows": 1497,
+              "poison_rows": 67,
+              "mixed_class_poison_rows": 67,
+              "share_of_final_repeated_member_mass": 0.5068049254698639
+            },
+            {
+              "stage": "supported_payload_record",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "binary_mask",
+              "n_newly_merged_classes": 159,
+              "member_rows": 1427,
+              "clean_rows": 1274,
+              "poison_rows": 153,
+              "mixed_class_poison_rows": 153,
+              "share_of_final_repeated_member_mass": 0.4624108878807518
+            },
+            {
+              "stage": "filtration_images",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "unscaled_diagrams",
+              "n_newly_merged_classes": 43,
+              "member_rows": 95,
+              "clean_rows": 93,
+              "poison_rows": 2,
+              "mixed_class_poison_rows": 2,
+              "share_of_final_repeated_member_mass": 0.030784186649384315
+            },
+            {
+              "stage": "scaled_diagrams",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "feature_blocks",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "final_60_vector",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            }
+          ],
+          "attribution_sums_to_final_repeated_mass": true
+        },
+        "stage_transitions": [
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "raw_payload",
+            "to": "supported_payload_record"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 162,
+            "n_rows_in_newly_merged_classes": 2646,
+            "n_mixed_classes_first_created_here": 23,
+            "largest_newly_merged_class": {
+              "size": 938,
+              "n_upstream_classes": 352,
+              "signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+              "example_row_indices": [
+                3,
+                11,
+                21
+              ],
+              "example_upstream_signatures": [
+                "1ed934664332527a21143751b3e4a1f0",
+                "e47fa37ec8d3559bdc5c0b8f186d4906",
+                "b57026efac0de4c14d6f53fc2fe1a76c"
+              ]
+            },
+            "from": "supported_payload_record",
+            "to": "binary_mask"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "binary_mask",
+            "to": "filtration_images"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 55,
+            "n_rows_in_newly_merged_classes": 1588,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 1090,
+              "n_upstream_classes": 39,
+              "signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+              "example_row_indices": [
+                3,
+                11,
+                21
+              ],
+              "example_upstream_signatures": [
+                "8af86cc68a30fb20cf2e3a204a20e0c9",
+                "8af86cc68a30fb20cf2e3a204a20e0c9",
+                "8af86cc68a30fb20cf2e3a204a20e0c9"
+              ]
+            },
+            "from": "filtration_images",
+            "to": "unscaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "unscaled_diagrams",
+            "to": "scaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "scaled_diagrams",
+            "to": "feature_blocks"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "feature_blocks",
+            "to": "final_60_vector"
+          }
+        ],
+        "padding_characterisation_of_raw_collisions": {
+          "n_raw_repeated_member_rows": 1564,
+          "n_all_zero_payload_rows": 0,
+          "all_zero_share_of_raw_repeated_mass": 0.0,
+          "support_end_of_raw_repeated_rows": {
+            "n": 1564,
+            "mean": 161.22826086956522,
+            "min": 1,
+            "max": 1460,
+            "quantiles": {
+              "0": 1.0,
+              "5": 6.0,
+              "25": 28.0,
+              "50": 40.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1460.0
+            }
+          },
+          "support_end_of_raw_singleton_rows": {
+            "n": 3936,
+            "mean": 434.6565040650407,
+            "min": 1,
+            "max": 1500,
+            "quantiles": {
+              "0": 1.0,
+              "5": 22.0,
+              "25": 29.0,
+              "50": 104.0,
+              "75": 773.25,
+              "95": 1460.0,
+              "100": 1500.0
+            }
+          },
+          "foreground_count_of_raw_repeated_rows": {
+            "n": 1564,
+            "mean": 25.505754475703323,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 3.0,
+              "75": 8.0,
+              "95": 87.0,
+              "100": 1460.0
+            }
+          },
+          "note": "(support_end, row[:support_end]) determines the whole zero-padded row, so the supported-payload record is a bijection with the raw row and merges nothing. Its attribution row is expected to be 0 and serves as a self-check."
+        },
+        "per_filtration_ablation": {
+          "blocks": [
+            {
+              "filtration": "height_0_1",
+              "n_unique_classes": 1776,
+              "repeated_member_fraction": 0.7027272727272728,
+              "redundancy_fraction": 0.6770909090909091,
+              "largest_class_size": 1092,
+              "n_block_classes_merging_multiple_binary_classes": 97,
+              "n_rows_merged_relative_to_binary": 3748,
+              "n_block_classes_merging_multiple_raw_classes": 103,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 779
+            },
+            {
+              "filtration": "height_1_0",
+              "n_unique_classes": 2566,
+              "repeated_member_fraction": 0.5852727272727273,
+              "redundancy_fraction": 0.5334545454545454,
+              "largest_class_size": 1101,
+              "n_block_classes_merging_multiple_binary_classes": 107,
+              "n_rows_merged_relative_to_binary": 2371,
+              "n_block_classes_merging_multiple_raw_classes": 182,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 133
+            },
+            {
+              "filtration": "radial_0_50",
+              "n_unique_classes": 2564,
+              "repeated_member_fraction": 0.586,
+              "redundancy_fraction": 0.5338181818181819,
+              "largest_class_size": 1098,
+              "n_block_classes_merging_multiple_binary_classes": 106,
+              "n_rows_merged_relative_to_binary": 2369,
+              "n_block_classes_merging_multiple_raw_classes": 183,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 137
+            },
+            {
+              "filtration": "radial_0_25",
+              "n_unique_classes": 2570,
+              "repeated_member_fraction": 0.5843636363636364,
+              "redundancy_fraction": 0.5327272727272727,
+              "largest_class_size": 1099,
+              "n_block_classes_merging_multiple_binary_classes": 103,
+              "n_rows_merged_relative_to_binary": 2360,
+              "n_block_classes_merging_multiple_raw_classes": 180,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 128
+            },
+            {
+              "filtration": "radial_30_0",
+              "n_unique_classes": 2552,
+              "repeated_member_fraction": 0.5852727272727273,
+              "redundancy_fraction": 0.536,
+              "largest_class_size": 1101,
+              "n_block_classes_merging_multiple_binary_classes": 99,
+              "n_rows_merged_relative_to_binary": 2717,
+              "n_block_classes_merging_multiple_raw_classes": 167,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 133
+            }
+          ],
+          "final_repeated_member_fraction": 0.5610909090909091,
+          "most_collision_prone_block": "height_0_1",
+          "note": "Diagnostic only. Q3 does not select, reweight, or drop any filtration on the basis of this table."
+        }
+      },
+      "elapsed_seconds": 87.3
+    },
+    "1024": {
+      "seed": 1024,
+      "realization": {
+        "seed": 1024,
+        "dataset": "UNSW-NB15 Payload-Byte",
+        "attack": "malicious_random_attack",
+        "n_swaps": 60,
+        "poison_rate": 0.1,
+        "max_samples": 5000,
+        "n_total": 5500,
+        "n_clean": 5000,
+        "n_poison": 500,
+        "attack_validity_pct": 100.0,
+        "subsample_index_hash": "4acfa7bbf063b3fa",
+        "input_hash": "74b923ae078bad98",
+        "poison_mask_hash": "8f8ee5534151e4fe",
+        "attack_target_index": null
+      },
+      "equality_check": {
+        "instrumented_equals_production_exactly": true,
+        "instrumented_equals_production_bitwise": true,
+        "production_feature_hash": "18fd02bf3bca6a1acf78356484154a58",
+        "instrumented_feature_hash": "18fd02bf3bca6a1acf78356484154a58",
+        "shape": [
+          5500,
+          60
+        ]
+      },
+      "fitted_state": {
+        "binarizer_max_value_": {
+          "height_0_1": 255.0,
+          "height_1_0": 255.0,
+          "radial_0_50": 255.0,
+          "radial_0_25": 255.0,
+          "radial_30_0": 255.0
+        },
+        "scaler_scale_": {
+          "height_0_1": 15.0,
+          "height_1_0": 25.0,
+          "radial_0_50": 24.956059691509786,
+          "radial_0_25": 27.504545078950134,
+          "radial_30_0": 20.862646045025066
+        }
+      },
+      "effective_byte_cut": {
+        "height_0_1": 102.0,
+        "height_1_0": 102.0,
+        "radial_0_50": 102.0,
+        "radial_0_25": 102.0,
+        "radial_30_0": 102.0
+      },
+      "optics_params": {
+        "min_samples": 5,
+        "max_eps": 2.0
+      },
+      "labels_hash": "24433401a0b331f346b92e0b8ac55d52",
+      "Q3_A_definition_and_reproduction": {
+        "definition_note": "repeated_member_fraction counts rows in a class of size >= 2; redundancy_fraction is (n_rows - n_unique_classes) / n_rows. The phrase 'duplicate fraction' is not used.",
+        "final_vector_class_stats": {
+          "stage": "final_60_vector",
+          "n_rows": 5500,
+          "n_unique_classes": 2645,
+          "n_repeated_classes": 279,
+          "n_repeated_member_rows": 3134,
+          "repeated_member_fraction": 0.5698181818181818,
+          "redundancy_fraction": 0.519090909090909,
+          "n_redundant_rows": 2855,
+          "largest_class_size": 1035,
+          "largest_class_share": 0.18818181818181817,
+          "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+          "repeated_class_size_quantiles": {
+            "5": 2.0,
+            "25": 2.0,
+            "50": 2.0,
+            "75": 3.0,
+            "95": 15.199999999999932,
+            "100": 1035.0
+          },
+          "mean_class_size": 2.0793950850661624,
+          "all_classes": {
+            "clean_only": 2317,
+            "poison_only": 287,
+            "mixed": 41,
+            "clean_only_member_rows": 2838,
+            "poison_only_member_rows": 287,
+            "mixed_member_rows": 2375,
+            "mixed_class_poison_rows": 213,
+            "mixed_class_clean_rows": 2162
+          },
+          "repeated_classes": {
+            "clean_only": 238,
+            "poison_only": 0,
+            "mixed": 41,
+            "clean_only_member_rows": 759,
+            "poison_only_member_rows": 0,
+            "mixed_member_rows": 2375
+          },
+          "poison_rows_sharing_class_with_clean": 213,
+          "poison_obstruction_fraction": 0.426
+        },
+        "feature_hash_exact": "18fd02bf3bca6a1acf78356484154a58",
+        "feature_hash_rounded9": "73a90032a47f6ed9",
+        "q2_reference": {
+          "source_artifact": "results/phase_q2_geometry.json  arms.legacy_30x50_t04",
+          "input_hash": "fce036c2424196ef",
+          "poison_mask_hash": "8f8ee5534151e4fe",
+          "feature_hash_rounded9": "ffce38eb0cd462df",
+          "n_exact_duplicate_rows": 2849,
+          "max_duplicate_multiplicity": 1043
+        },
+        "q2_statistic_resolution": {
+          "q2_reported_value": 0.518,
+          "q2_reported_n_rows": 2849,
+          "reproduced_redundancy_fraction": 0.519090909090909,
+          "reproduced_n_redundant_rows": 2855,
+          "reproduced_repeated_member_fraction": 0.5698181818181818,
+          "reproduced_n_repeated_member_rows": 3134,
+          "q2_51_8_pct_is_redundancy_fraction": false,
+          "q2_51_8_pct_is_repeated_member_fraction": false,
+          "input_hash_matches_q2": false,
+          "poison_mask_hash_matches_q2": true,
+          "feature_hash_matches_q2": false
+        },
+        "largest_final_class": {
+          "size": 1035,
+          "share_of_all_rows": 0.18818181818181817,
+          "signature": "56471b75d85a974bb49adf1373fd497c",
+          "reproduces_q2_1043": false,
+          "n_clean": 948,
+          "n_poison": 87
+        },
+        "optics_label_behaviour_in_exact_classes": {
+          "n_repeated_classes_examined": 279,
+          "max_distinct_labels_in_one_class": 1,
+          "n_classes_split_across_labels": 0,
+          "n_classes_split_across_two_real_clusters": 0,
+          "n_classes_split_only_by_noise_assignment": 0,
+          "split_class_examples": [],
+          "all_exact_classes_co_assigned": true,
+          "no_exact_class_spans_two_real_clusters": true,
+          "scope_note": "Verified empirically for this fitted OPTICS ({'min_samples': 5, 'max_eps': 2.0}) at this seed. Not proven for OPTICS in general and not claimed for any other algorithm. The distinction matters: a class split only because one twin was left at -1 still cannot produce two competing real clusters, but it does mean a 100%-poison cluster can exist while an identical clean row sits in noise."
+        }
+      },
+      "Q3_D_strict_purity_failure_decomposition": {
+        "n_poison": 500,
+        "categories_priority_order": [
+          "captured_in_100pct_poison_non_noise_cluster",
+          "label_minus_1_unclustered",
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row",
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster",
+          "residual_unexplained"
+        ],
+        "decomposition": {
+          "captured_in_100pct_poison_non_noise_cluster": {
+            "n": 7,
+            "pct_of_poison": 1.4
+          },
+          "label_minus_1_unclustered": {
+            "n": 272,
+            "pct_of_poison": 54.4
+          },
+          "non_noise_and_shares_exact_final_vector_with_a_clean_row": {
+            "n": 200,
+            "pct_of_poison": 40.0
+          },
+          "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster": {
+            "n": 21,
+            "pct_of_poison": 4.2
+          },
+          "residual_unexplained": {
+            "n": 0,
+            "pct_of_poison": 0.0
+          }
+        },
+        "categories_sum_to_all_poison": true,
+        "residual_is_empty": true,
+        "residual_note": "A non-noise poisoned row is in a cluster that is either 100% poison (category 1) or mixed (categories 3/4), so category 5 is expected to be empty; it is reported rather than assumed.",
+        "coordinate_class_obstruction": {
+          "numerator_poison_sharing_exact_vector_with_clean": 213,
+          "denominator_all_poison": 500,
+          "obstruction_fraction": 0.426,
+          "one_minus_obstruction": 0.5740000000000001,
+          "n_captured_rows_also_in_a_mixed_exact_vector_class": 0,
+          "obstruction_binds_under_this_fit": true,
+          "scope_note": "1 - obstruction is NOT claimed as an algorithm-independent capture ceiling. It is a ceiling exactly to the extent that the clustering rule cannot split identical coordinates; that co-assignment is verified empirically for the standing OPTICS fit in Q3-A and claimed only at that scope."
+        },
+        "comparisons": {
+          "observed_exact_purity_capture_pct": 1.4000000000000001,
+          "poison_unclustered_fraction": 0.544,
+          "clean_unclustered_fraction": 0.3706,
+          "n_clusters": 141,
+          "colors": {
+            "Green": 102,
+            "Red": 1,
+            "Yellow": 38,
+            "Pink": 0,
+            "Noise": 1
+          }
+        }
+      },
+      "Q3_B_largest_class_trace": {
+        "signature": "56471b75d85a974bb49adf1373fd497c",
+        "size": 1035,
+        "share_of_all_rows": 0.18818181818181817,
+        "n_clean": 948,
+        "n_poison": 87,
+        "n_source_rows": 948,
+        "n_appended_poison_rows": 87,
+        "n_poison_whose_clean_source_is_also_in_this_class": 87,
+        "unsw_label_composition": {
+          "analysis": 72,
+          "backdoor": 63,
+          "dos": 120,
+          "exploits": 210,
+          "fuzzers": 205,
+          "generic": 127,
+          "normal": 184,
+          "reconnaissance": 54
+        },
+        "per_stage_distinct_signatures": [
+          {
+            "stage": "raw_payload",
+            "n_distinct_upstream_signatures": 391
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_distinct_upstream_signatures": 391
+          },
+          {
+            "stage": "binary_mask",
+            "n_distinct_upstream_signatures": 36
+          },
+          {
+            "stage": "filtration_images",
+            "n_distinct_upstream_signatures": 36
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "feature_blocks",
+            "n_distinct_upstream_signatures": 1
+          },
+          {
+            "stage": "final_60_vector",
+            "n_distinct_upstream_signatures": 1
+          }
+        ],
+        "earliest_merger_stage_histogram": {
+          "raw_payload": 811,
+          "binary_mask": 208,
+          "unscaled_diagrams": 16
+        },
+        "earliest_merger_stage_for_class": "raw_payload",
+        "poison_members_identical_to_own_clean_source": {
+          "raw_payload": 9,
+          "supported_payload_record": 9,
+          "binary_mask": 87,
+          "filtration_images": 87,
+          "unscaled_diagrams": 87,
+          "scaled_diagrams": 87,
+          "feature_blocks": 87,
+          "final_60_vector": 87
+        },
+        "n_poison_members": 87,
+        "padding_profile": {
+          "support_end": {
+            "n": 1035,
+            "mean": 278.6917874396135,
+            "min": 1,
+            "max": 1500,
+            "quantiles": {
+              "0": 1.0,
+              "5": 5.0,
+              "25": 18.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1500.0
+            }
+          },
+          "nonzero_count": {
+            "n": 1035,
+            "mean": 201.76231884057972,
+            "min": 1,
+            "max": 1460,
+            "quantiles": {
+              "0": 1.0,
+              "5": 2.0,
+              "25": 12.0,
+              "50": 80.0,
+              "75": 80.0,
+              "95": 1460.0,
+              "100": 1460.0
+            }
+          },
+          "n_all_zero_payload": 0,
+          "all_zero_share_of_class": 0.0,
+          "foreground_count_at_threshold_0_4": {
+            "n": 1035,
+            "mean": 22.745893719806762,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 0.0,
+              "75": 0.0,
+              "95": 4.0,
+              "100": 1460.0
+            }
+          }
+        },
+        "optics_labels_in_class": {
+          "labels": [
+            0
+          ],
+          "counts": [
+            1035
+          ]
+        },
+        "example_row_indices": [
+          0,
+          1,
+          7,
+          12,
+          14
+        ],
+        "example_note": "Ordinary 0-based row numbers into the 5500-row combined matrix (0..4999 = subsampled clean rows, 5000..5499 = appended poison). No payload bytes are recorded anywhere in this artifact."
+      },
+      "Q3_C_population_attribution": {
+        "stage_class_stats": [
+          {
+            "stage": "raw_payload",
+            "n_rows": 5500,
+            "n_unique_classes": 4387,
+            "n_repeated_classes": 504,
+            "n_repeated_member_rows": 1617,
+            "repeated_member_fraction": 0.294,
+            "redundancy_fraction": 0.20236363636363636,
+            "n_redundant_rows": 1113,
+            "largest_class_size": 53,
+            "largest_class_share": 0.009636363636363636,
+            "largest_class_signature": "9a4bbdb074ac7196163165d9b3a1b6e9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 53.0
+            },
+            "mean_class_size": 1.253704125826305,
+            "all_classes": {
+              "clean_only": 3888,
+              "poison_only": 443,
+              "mixed": 56,
+              "clean_only_member_rows": 4884,
+              "poison_only_member_rows": 443,
+              "mixed_member_rows": 173,
+              "mixed_class_poison_rows": 57,
+              "mixed_class_clean_rows": 116
+            },
+            "repeated_classes": {
+              "clean_only": 448,
+              "poison_only": 0,
+              "mixed": 56,
+              "clean_only_member_rows": 1444,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 173
+            },
+            "poison_rows_sharing_class_with_clean": 57,
+            "poison_obstruction_fraction": 0.114
+          },
+          {
+            "stage": "supported_payload_record",
+            "n_rows": 5500,
+            "n_unique_classes": 4387,
+            "n_repeated_classes": 504,
+            "n_repeated_member_rows": 1617,
+            "repeated_member_fraction": 0.294,
+            "redundancy_fraction": 0.20236363636363636,
+            "n_redundant_rows": 1113,
+            "largest_class_size": 53,
+            "largest_class_share": 0.009636363636363636,
+            "largest_class_signature": "98e7da204ebba6ffd09b8669f029da8a",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 7.0,
+              "100": 53.0
+            },
+            "mean_class_size": 1.253704125826305,
+            "all_classes": {
+              "clean_only": 3888,
+              "poison_only": 443,
+              "mixed": 56,
+              "clean_only_member_rows": 4884,
+              "poison_only_member_rows": 443,
+              "mixed_member_rows": 173,
+              "mixed_class_poison_rows": 57,
+              "mixed_class_clean_rows": 116
+            },
+            "repeated_classes": {
+              "clean_only": 448,
+              "poison_only": 0,
+              "mixed": 56,
+              "clean_only_member_rows": 1444,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 173
+            },
+            "poison_rows_sharing_class_with_clean": 57,
+            "poison_obstruction_fraction": 0.114
+          },
+          {
+            "stage": "binary_mask",
+            "n_rows": 5500,
+            "n_unique_classes": 2749,
+            "n_repeated_classes": 310,
+            "n_repeated_member_rows": 3061,
+            "repeated_member_fraction": 0.5565454545454546,
+            "redundancy_fraction": 0.5001818181818182,
+            "n_redundant_rows": 2751,
+            "largest_class_size": 890,
+            "largest_class_share": 0.1618181818181818,
+            "largest_class_signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 4.0,
+              "95": 14.550000000000011,
+              "100": 890.0
+            },
+            "mean_class_size": 2.000727537286286,
+            "all_classes": {
+              "clean_only": 2405,
+              "poison_only": 287,
+              "mixed": 57,
+              "clean_only_member_rows": 3040,
+              "poison_only_member_rows": 287,
+              "mixed_member_rows": 2173,
+              "mixed_class_poison_rows": 213,
+              "mixed_class_clean_rows": 1960
+            },
+            "repeated_classes": {
+              "clean_only": 253,
+              "poison_only": 0,
+              "mixed": 57,
+              "clean_only_member_rows": 888,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2173
+            },
+            "poison_rows_sharing_class_with_clean": 213,
+            "poison_obstruction_fraction": 0.426
+          },
+          {
+            "stage": "filtration_images",
+            "n_rows": 5500,
+            "n_unique_classes": 2749,
+            "n_repeated_classes": 310,
+            "n_repeated_member_rows": 3061,
+            "repeated_member_fraction": 0.5565454545454546,
+            "redundancy_fraction": 0.5001818181818182,
+            "n_redundant_rows": 2751,
+            "largest_class_size": 890,
+            "largest_class_share": 0.1618181818181818,
+            "largest_class_signature": "8af86cc68a30fb20cf2e3a204a20e0c9",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 4.0,
+              "95": 14.550000000000011,
+              "100": 890.0
+            },
+            "mean_class_size": 2.000727537286286,
+            "all_classes": {
+              "clean_only": 2405,
+              "poison_only": 287,
+              "mixed": 57,
+              "clean_only_member_rows": 3040,
+              "poison_only_member_rows": 287,
+              "mixed_member_rows": 2173,
+              "mixed_class_poison_rows": 213,
+              "mixed_class_clean_rows": 1960
+            },
+            "repeated_classes": {
+              "clean_only": 253,
+              "poison_only": 0,
+              "mixed": 57,
+              "clean_only_member_rows": 888,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2173
+            },
+            "poison_rows_sharing_class_with_clean": 213,
+            "poison_obstruction_fraction": 0.426
+          },
+          {
+            "stage": "unscaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2645,
+            "n_repeated_classes": 279,
+            "n_repeated_member_rows": 3134,
+            "repeated_member_fraction": 0.5698181818181818,
+            "redundancy_fraction": 0.519090909090909,
+            "n_redundant_rows": 2855,
+            "largest_class_size": 1035,
+            "largest_class_share": 0.18818181818181817,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 15.199999999999932,
+              "100": 1035.0
+            },
+            "mean_class_size": 2.0793950850661624,
+            "all_classes": {
+              "clean_only": 2317,
+              "poison_only": 287,
+              "mixed": 41,
+              "clean_only_member_rows": 2838,
+              "poison_only_member_rows": 287,
+              "mixed_member_rows": 2375,
+              "mixed_class_poison_rows": 213,
+              "mixed_class_clean_rows": 2162
+            },
+            "repeated_classes": {
+              "clean_only": 238,
+              "poison_only": 0,
+              "mixed": 41,
+              "clean_only_member_rows": 759,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2375
+            },
+            "poison_rows_sharing_class_with_clean": 213,
+            "poison_obstruction_fraction": 0.426
+          },
+          {
+            "stage": "scaled_diagrams",
+            "n_rows": 5500,
+            "n_unique_classes": 2645,
+            "n_repeated_classes": 279,
+            "n_repeated_member_rows": 3134,
+            "repeated_member_fraction": 0.5698181818181818,
+            "redundancy_fraction": 0.519090909090909,
+            "n_redundant_rows": 2855,
+            "largest_class_size": 1035,
+            "largest_class_share": 0.18818181818181817,
+            "largest_class_signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 15.199999999999932,
+              "100": 1035.0
+            },
+            "mean_class_size": 2.0793950850661624,
+            "all_classes": {
+              "clean_only": 2317,
+              "poison_only": 287,
+              "mixed": 41,
+              "clean_only_member_rows": 2838,
+              "poison_only_member_rows": 287,
+              "mixed_member_rows": 2375,
+              "mixed_class_poison_rows": 213,
+              "mixed_class_clean_rows": 2162
+            },
+            "repeated_classes": {
+              "clean_only": 238,
+              "poison_only": 0,
+              "mixed": 41,
+              "clean_only_member_rows": 759,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2375
+            },
+            "poison_rows_sharing_class_with_clean": 213,
+            "poison_obstruction_fraction": 0.426
+          },
+          {
+            "stage": "feature_blocks",
+            "n_rows": 5500,
+            "n_unique_classes": 2645,
+            "n_repeated_classes": 279,
+            "n_repeated_member_rows": 3134,
+            "repeated_member_fraction": 0.5698181818181818,
+            "redundancy_fraction": 0.519090909090909,
+            "n_redundant_rows": 2855,
+            "largest_class_size": 1035,
+            "largest_class_share": 0.18818181818181817,
+            "largest_class_signature": "f315124e67272fbfcbfdadf1dd37e7be",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 15.199999999999932,
+              "100": 1035.0
+            },
+            "mean_class_size": 2.0793950850661624,
+            "all_classes": {
+              "clean_only": 2317,
+              "poison_only": 287,
+              "mixed": 41,
+              "clean_only_member_rows": 2838,
+              "poison_only_member_rows": 287,
+              "mixed_member_rows": 2375,
+              "mixed_class_poison_rows": 213,
+              "mixed_class_clean_rows": 2162
+            },
+            "repeated_classes": {
+              "clean_only": 238,
+              "poison_only": 0,
+              "mixed": 41,
+              "clean_only_member_rows": 759,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2375
+            },
+            "poison_rows_sharing_class_with_clean": 213,
+            "poison_obstruction_fraction": 0.426
+          },
+          {
+            "stage": "final_60_vector",
+            "n_rows": 5500,
+            "n_unique_classes": 2645,
+            "n_repeated_classes": 279,
+            "n_repeated_member_rows": 3134,
+            "repeated_member_fraction": 0.5698181818181818,
+            "redundancy_fraction": 0.519090909090909,
+            "n_redundant_rows": 2855,
+            "largest_class_size": 1035,
+            "largest_class_share": 0.18818181818181817,
+            "largest_class_signature": "56471b75d85a974bb49adf1373fd497c",
+            "repeated_class_size_quantiles": {
+              "5": 2.0,
+              "25": 2.0,
+              "50": 2.0,
+              "75": 3.0,
+              "95": 15.199999999999932,
+              "100": 1035.0
+            },
+            "mean_class_size": 2.0793950850661624,
+            "all_classes": {
+              "clean_only": 2317,
+              "poison_only": 287,
+              "mixed": 41,
+              "clean_only_member_rows": 2838,
+              "poison_only_member_rows": 287,
+              "mixed_member_rows": 2375,
+              "mixed_class_poison_rows": 213,
+              "mixed_class_clean_rows": 2162
+            },
+            "repeated_classes": {
+              "clean_only": 238,
+              "poison_only": 0,
+              "mixed": 41,
+              "clean_only_member_rows": 759,
+              "poison_only_member_rows": 0,
+              "mixed_member_rows": 2375
+            },
+            "poison_rows_sharing_class_with_clean": 213,
+            "poison_obstruction_fraction": 0.426
+          }
+        ],
+        "earliest_merger_attribution": {
+          "stage_order": [
+            "raw_payload",
+            "supported_payload_record",
+            "binary_mask",
+            "filtration_images",
+            "unscaled_diagrams",
+            "scaled_diagrams",
+            "feature_blocks",
+            "final_60_vector"
+          ],
+          "n_final_repeated_member_rows": 3134,
+          "monotonicity_violations": 0,
+          "rows": [
+            {
+              "stage": "raw_payload",
+              "n_newly_merged_classes": 504,
+              "member_rows": 1617,
+              "clean_rows": 1560,
+              "poison_rows": 57,
+              "mixed_class_poison_rows": 57,
+              "share_of_final_repeated_member_mass": 0.5159540523292916
+            },
+            {
+              "stage": "supported_payload_record",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "binary_mask",
+              "n_newly_merged_classes": 164,
+              "member_rows": 1444,
+              "clean_rows": 1288,
+              "poison_rows": 156,
+              "mixed_class_poison_rows": 156,
+              "share_of_final_repeated_member_mass": 0.46075303126994255
+            },
+            {
+              "stage": "filtration_images",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "unscaled_diagrams",
+              "n_newly_merged_classes": 32,
+              "member_rows": 73,
+              "clean_rows": 73,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.023292916400765796
+            },
+            {
+              "stage": "scaled_diagrams",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "feature_blocks",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            },
+            {
+              "stage": "final_60_vector",
+              "n_newly_merged_classes": 0,
+              "member_rows": 0,
+              "clean_rows": 0,
+              "poison_rows": 0,
+              "mixed_class_poison_rows": 0,
+              "share_of_final_repeated_member_mass": 0.0
+            }
+          ],
+          "attribution_sums_to_final_repeated_mass": true
+        },
+        "stage_transitions": [
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "raw_payload",
+            "to": "supported_payload_record"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 169,
+            "n_rows_in_newly_merged_classes": 2689,
+            "n_mixed_classes_first_created_here": 29,
+            "largest_newly_merged_class": {
+              "size": 890,
+              "n_upstream_classes": 302,
+              "signature": "4f1b6a6f82dd3fb196fa16888ede32d2",
+              "example_row_indices": [
+                1,
+                7,
+                14
+              ],
+              "example_upstream_signatures": [
+                "98e7da204ebba6ffd09b8669f029da8a",
+                "0fd4173be4a8e7ebc253342a80a86b74",
+                "d342987418a1e6edb50ad6f68cd673ff"
+              ]
+            },
+            "from": "supported_payload_record",
+            "to": "binary_mask"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "binary_mask",
+            "to": "filtration_images"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 46,
+            "n_rows_in_newly_merged_classes": 1545,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 1035,
+              "n_upstream_classes": 36,
+              "signature": "cbe4a41720bae7be2907c28f6f3a3b30",
+              "example_row_indices": [
+                0,
+                1,
+                7
+              ],
+              "example_upstream_signatures": [
+                "30499bc25f57a045b977ce1e87346f79",
+                "8af86cc68a30fb20cf2e3a204a20e0c9",
+                "8af86cc68a30fb20cf2e3a204a20e0c9"
+              ]
+            },
+            "from": "filtration_images",
+            "to": "unscaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "unscaled_diagrams",
+            "to": "scaled_diagrams"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "scaled_diagrams",
+            "to": "feature_blocks"
+          },
+          {
+            "n_downstream_classes_merging_multiple_upstream_classes": 0,
+            "n_rows_in_newly_merged_classes": 0,
+            "n_mixed_classes_first_created_here": 0,
+            "largest_newly_merged_class": {
+              "size": 0,
+              "n_upstream_classes": 0,
+              "signature": null,
+              "example_row_indices": [],
+              "example_upstream_signatures": []
+            },
+            "from": "feature_blocks",
+            "to": "final_60_vector"
+          }
+        ],
+        "padding_characterisation_of_raw_collisions": {
+          "n_raw_repeated_member_rows": 1617,
+          "n_all_zero_payload_rows": 0,
+          "all_zero_share_of_raw_repeated_mass": 0.0,
+          "support_end_of_raw_repeated_rows": {
+            "n": 1617,
+            "mean": 139.12615955473098,
+            "min": 1,
+            "max": 1460,
+            "quantiles": {
+              "0": 1.0,
+              "5": 6.0,
+              "25": 29.0,
+              "50": 44.0,
+              "75": 80.0,
+              "95": 1448.0,
+              "100": 1460.0
+            }
+          },
+          "support_end_of_raw_singleton_rows": {
+            "n": 3883,
+            "mean": 427.51094514550607,
+            "min": 1,
+            "max": 1500,
+            "quantiles": {
+              "0": 1.0,
+              "5": 22.0,
+              "25": 29.0,
+              "50": 107.0,
+              "75": 709.0,
+              "95": 1460.0,
+              "100": 1500.0
+            }
+          },
+          "foreground_count_of_raw_repeated_rows": {
+            "n": 1617,
+            "mean": 27.192949907235622,
+            "min": 0,
+            "max": 1460,
+            "quantiles": {
+              "0": 0.0,
+              "5": 0.0,
+              "25": 0.0,
+              "50": 5.0,
+              "75": 8.0,
+              "95": 46.79999999999927,
+              "100": 1460.0
+            }
+          },
+          "note": "(support_end, row[:support_end]) determines the whole zero-padded row, so the supported-payload record is a bijection with the raw row and merges nothing. Its attribution row is expected to be 0 and serves as a self-check."
+        },
+        "per_filtration_ablation": {
+          "blocks": [
+            {
+              "filtration": "height_0_1",
+              "n_unique_classes": 1764,
+              "repeated_member_fraction": 0.7056363636363636,
+              "redundancy_fraction": 0.6792727272727273,
+              "largest_class_size": 1036,
+              "n_block_classes_merging_multiple_binary_classes": 96,
+              "n_rows_merged_relative_to_binary": 3766,
+              "n_block_classes_merging_multiple_raw_classes": 107,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 747
+            },
+            {
+              "filtration": "height_1_0",
+              "n_unique_classes": 2523,
+              "repeated_member_fraction": 0.5947272727272728,
+              "redundancy_fraction": 0.5412727272727272,
+              "largest_class_size": 1042,
+              "n_block_classes_merging_multiple_binary_classes": 105,
+              "n_rows_merged_relative_to_binary": 2395,
+              "n_block_classes_merging_multiple_raw_classes": 176,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 137
+            },
+            {
+              "filtration": "radial_0_50",
+              "n_unique_classes": 2513,
+              "repeated_member_fraction": 0.5976363636363636,
+              "redundancy_fraction": 0.5430909090909091,
+              "largest_class_size": 1040,
+              "n_block_classes_merging_multiple_binary_classes": 109,
+              "n_rows_merged_relative_to_binary": 2406,
+              "n_block_classes_merging_multiple_raw_classes": 182,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 153
+            },
+            {
+              "filtration": "radial_0_25",
+              "n_unique_classes": 2517,
+              "repeated_member_fraction": 0.5963636363636363,
+              "redundancy_fraction": 0.5423636363636364,
+              "largest_class_size": 1042,
+              "n_block_classes_merging_multiple_binary_classes": 106,
+              "n_rows_merged_relative_to_binary": 2399,
+              "n_block_classes_merging_multiple_raw_classes": 179,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 146
+            },
+            {
+              "filtration": "radial_30_0",
+              "n_unique_classes": 2514,
+              "repeated_member_fraction": 0.594,
+              "redundancy_fraction": 0.5429090909090909,
+              "largest_class_size": 1042,
+              "n_block_classes_merging_multiple_binary_classes": 88,
+              "n_rows_merged_relative_to_binary": 1834,
+              "n_block_classes_merging_multiple_raw_classes": 160,
+              "n_rows_repeated_in_this_block_but_singleton_at_final": 133
+            }
+          ],
+          "final_repeated_member_fraction": 0.5698181818181818,
+          "most_collision_prone_block": "height_0_1",
+          "note": "Diagnostic only. Q3 does not select, reweight, or drop any filtration on the basis of this table."
+        }
+      },
+      "elapsed_seconds": 91.5
+    }
+  },
+  "five_seed_summary": {
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      1024
+    ],
+    "raw_repeated_member_fraction": {
+      "per_seed": [
+        0.29,
+        0.28654545454545455,
+        0.276,
+        0.2843636363636364,
+        0.294
+      ],
+      "mean": 0.2861818181818182,
+      "sd_pop": 0.006046650599387581
+    },
+    "raw_redundancy_fraction": {
+      "per_seed": [
+        0.2010909090909091,
+        0.198,
+        0.188,
+        0.19563636363636364,
+        0.20236363636363636
+      ],
+      "mean": 0.19701818181818181,
+      "sd_pop": 0.005086491589908989
+    },
+    "binary_repeated_member_fraction": {
+      "per_seed": [
+        0.5569090909090909,
+        0.5510909090909091,
+        0.5370909090909091,
+        0.5438181818181819,
+        0.5565454545454546
+      ],
+      "mean": 0.5490909090909091,
+      "sd_pop": 0.00764847524371486
+    },
+    "binary_redundancy_fraction": {
+      "per_seed": [
+        0.49927272727272726,
+        0.4938181818181818,
+        0.4832727272727273,
+        0.49054545454545456,
+        0.5001818181818182
+      ],
+      "mean": 0.4934181818181818,
+      "sd_pop": 0.006186522274367036
+    },
+    "final_repeated_member_fraction": {
+      "per_seed": [
+        0.5701818181818182,
+        0.5636363636363636,
+        0.5516363636363636,
+        0.5610909090909091,
+        0.5698181818181818
+      ],
+      "mean": 0.5632727272727273,
+      "sd_pop": 0.0067952341101370824
+    },
+    "final_redundancy_fraction": {
+      "per_seed": [
+        0.518,
+        0.513090909090909,
+        0.502,
+        0.5118181818181818,
+        0.519090909090909
+      ],
+      "mean": 0.5128,
+      "sd_pop": 0.006071311756637185
+    },
+    "largest_final_class_size": {
+      "per_seed": [
+        1043.0,
+        1094.0,
+        1001.0,
+        1090.0,
+        1035.0
+      ],
+      "mean": 1052.6,
+      "sd_pop": 35.148826438445994
+    },
+    "largest_final_class_share": {
+      "per_seed": [
+        0.18963636363636363,
+        0.1989090909090909,
+        0.182,
+        0.19818181818181818,
+        0.18818181818181817
+      ],
+      "mean": 0.19138181818181818,
+      "sd_pop": 0.0063906957160810894
+    },
+    "mixed_final_class_poison_obstruction": {
+      "per_seed": [
+        0.406,
+        0.436,
+        0.402,
+        0.444,
+        0.426
+      ],
+      "mean": 0.42280000000000006,
+      "sd_pop": 0.016424372134118237
+    },
+    "poison_unclustered_fraction": {
+      "per_seed": [
+        0.584,
+        0.556,
+        0.58,
+        0.548,
+        0.544
+      ],
+      "mean": 0.5624,
+      "sd_pop": 0.0165118139524402
+    },
+    "clean_unclustered_fraction": {
+      "per_seed": [
+        0.3698,
+        0.3744,
+        0.383,
+        0.3804,
+        0.3706
+      ],
+      "mean": 0.37564000000000003,
+      "sd_pop": 0.0052511332110316946
+    },
+    "exact_purity_capture_pct": {
+      "per_seed": [
+        2.1999999999999997,
+        2.1999999999999997,
+        2.1999999999999997,
+        1.0,
+        1.4000000000000001
+      ],
+      "mean": 1.8,
+      "sd_pop": 0.5059644256269406
+    },
+    "failure_decomposition_pct": {
+      "captured_in_100pct_poison_non_noise_cluster": {
+        "per_seed": [
+          2.2,
+          2.2,
+          2.2,
+          1.0,
+          1.4
+        ],
+        "mean": 1.8,
+        "sd_pop": 0.5059644256269408
+      },
+      "label_minus_1_unclustered": {
+        "per_seed": [
+          58.4,
+          55.6,
+          58.0,
+          54.8,
+          54.4
+        ],
+        "mean": 56.239999999999995,
+        "sd_pop": 1.6511813952440237
+      },
+      "non_noise_and_shares_exact_final_vector_with_a_clean_row": {
+        "per_seed": [
+          37.2,
+          40.6,
+          37.8,
+          41.8,
+          40.0
+        ],
+        "mean": 39.480000000000004,
+        "sd_pop": 1.7278888853164132
+      },
+      "non_noise_distinct_vector_but_assigned_to_a_mixed_cluster": {
+        "per_seed": [
+          2.2,
+          1.6,
+          2.0,
+          2.4,
+          4.2
+        ],
+        "mean": 2.4800000000000004,
+        "sd_pop": 0.8997777503361595
+      },
+      "residual_unexplained": {
+        "per_seed": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean": 0.0,
+        "sd_pop": 0.0
+      }
+    },
+    "raw_first_merger_share": {
+      "per_seed": [
+        0.5086096938775511,
+        0.5083870967741936,
+        0.5003295978905735,
+        0.5068049254698639,
+        0.5159540523292916
+      ],
+      "mean": 0.5080170732682948,
+      "sd_pop": 0.004980970450915087
+    }
+  },
+  "elapsed_seconds": 451.2
+}

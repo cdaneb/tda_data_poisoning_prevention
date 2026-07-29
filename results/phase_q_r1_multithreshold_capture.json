@@ -1,0 +1,4986 @@
+{
+  "phase": "Q-R1",
+  "preregistration": {
+    "recorded_before_results": true,
+    "attack_substrate": "same support-restricted, guaranteed-nontrivial attack realization for both arms",
+    "control": {
+      "thresholds": [
+        0.4
+      ],
+      "n_features": 60
+    },
+    "repair": {
+      "thresholds": [
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9
+      ],
+      "n_features": 540,
+      "global_scale": "1/sqrt(9), fixed dimension compensation"
+    },
+    "held_fixed": [
+      "5000-row seed-specific UNSW sample",
+      "500 appended poison rows",
+      "30x50 raster",
+      "two Height and three Radial filtrations",
+      "CubicalPersistence and Scaler",
+      "PersistenceEntropy plus five Amplitude summaries",
+      "OPTICS(min_samples=5, max_eps=2.0)"
+    ],
+    "distance_scale_control": "the concatenated stack is divided by sqrt(9), so nine identical blocks would preserve the control Euclidean distance scale under fixed OPTICS parameters",
+    "primary_evaluation": "poison removal at matched clean false-removal cost; exact-purity capture is also reported",
+    "prediction": "the stack reduces binary/feature identity and may improve poison removal, but an improvement counts only when it does not buy recall by increasing clean removal",
+    "oracle_warning": "cluster poison purity uses ground truth for retrospective evaluation and is not a deployable cluster-labeling rule"
+  },
+  "runs": {
+    "transpositions": {
+      "42": {
+        "seed": 42,
+        "family": "transpositions",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 107.364,
+          "median": 116.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 299.8109152317047,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.5574421882629395,
+          "n_clusters": 134,
+          "n_unclustered": 2269,
+          "duplicate_with_any_clean_fraction": 0.036,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.84,
+              "clean_unclustered_fraction": 0.3698
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.84,
+              "clean_unclustered_fraction": 0.3698
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.84,
+              "clean_unclustered_fraction": 0.3698
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.84,
+              "clean_unclustered_fraction": 0.3698
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 25,
+              "true_poison_removed": 18,
+              "clean_removed": 7,
+              "poison_removal_rate": 0.036,
+              "clean_false_removal_rate": 0.0014,
+              "removal_precision": 0.72,
+              "poison_unclustered_fraction": 0.84,
+              "clean_unclustered_fraction": 0.3698
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.238166332244873,
+          "n_clusters": 101,
+          "n_unclustered": 3221,
+          "duplicate_with_any_clean_fraction": 0.002,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0014,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.036,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5448
+            },
+            "poison_removal_rate_delta": -0.036
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T21:32:38.052590+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "123": {
+        "seed": 123,
+        "family": "transpositions",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 109.032,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 289.61759853363037,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.447918653488159,
+          "n_clusters": 147,
+          "n_unclustered": 2268,
+          "duplicate_with_any_clean_fraction": 0.032,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3662
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3662
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3662
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3662
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 6,
+              "true_poison_removed": 4,
+              "clean_removed": 2,
+              "poison_removal_rate": 0.008,
+              "clean_false_removal_rate": 0.0004,
+              "removal_precision": 0.6666666666666666,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3662
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.225595712661743,
+          "n_clusters": 112,
+          "n_unclustered": 3175,
+          "duplicate_with_any_clean_fraction": 0.0,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0004,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.008,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5362
+            },
+            "poison_removal_rate_delta": -0.008
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T21:37:38.575257+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "456": {
+        "seed": 456,
+        "family": "transpositions",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 109.884,
+          "median": 116.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 291.49426078796387,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.453195333480835,
+          "n_clusters": 144,
+          "n_unclustered": 2318,
+          "duplicate_with_any_clean_fraction": 0.032,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3762
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3762
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3762
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3762
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 10,
+              "true_poison_removed": 6,
+              "clean_removed": 4,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0008,
+              "removal_precision": 0.6,
+              "poison_unclustered_fraction": 0.874,
+              "clean_unclustered_fraction": 0.3762
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.028814554214478,
+          "n_clusters": 100,
+          "n_unclustered": 3302,
+          "duplicate_with_any_clean_fraction": 0.004,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0008,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.012,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": -0.012
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T21:42:40.791016+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "789": {
+        "seed": 789,
+        "family": "transpositions",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 107.604,
+          "median": 117.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 291.2943694591522,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.4707252979278564,
+          "n_clusters": 140,
+          "n_unclustered": 2326,
+          "duplicate_with_any_clean_fraction": 0.042,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3796
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3796
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3796
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3796
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 11,
+              "true_poison_removed": 6,
+              "clean_removed": 5,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.001,
+              "removal_precision": 0.5454545454545454,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3796
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.29151439666748,
+          "n_clusters": 112,
+          "n_unclustered": 3226,
+          "duplicate_with_any_clean_fraction": 0.004,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.001,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.012,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.992,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": -0.012
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T21:47:43.069141+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "1024": {
+        "seed": 1024,
+        "family": "transpositions",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 109.244,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 302.7065188884735,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.4656002521514893,
+          "n_clusters": 144,
+          "n_unclustered": 2232,
+          "duplicate_with_any_clean_fraction": 0.034,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.816,
+              "clean_unclustered_fraction": 0.3648
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.816,
+              "clean_unclustered_fraction": 0.3648
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.816,
+              "clean_unclustered_fraction": 0.3648
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.816,
+              "clean_unclustered_fraction": 0.3648
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 22,
+              "true_poison_removed": 13,
+              "clean_removed": 9,
+              "poison_removal_rate": 0.026,
+              "clean_false_removal_rate": 0.0018,
+              "removal_precision": 0.5909090909090909,
+              "poison_unclustered_fraction": 0.816,
+              "clean_unclustered_fraction": 0.3648
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.286584615707397,
+          "n_clusters": 116,
+          "n_unclustered": 3187,
+          "duplicate_with_any_clean_fraction": 0.004,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0018,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.026,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.984,
+              "clean_unclustered_fraction": 0.539
+            },
+            "poison_removal_rate_delta": -0.026
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T21:52:56.759208+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      }
+    },
+    "block_reversal": {
+      "42": {
+        "seed": 42,
+        "family": "block_reversal",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 108.388,
+          "median": 118.0,
+          "min": 4,
+          "max": 120
+        },
+        "feature_extraction_time_s": 292.83538699150085,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.514180898666382,
+          "n_clusters": 131,
+          "n_unclustered": 2269,
+          "duplicate_with_any_clean_fraction": 0.048,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.836,
+              "clean_unclustered_fraction": 0.3702
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.836,
+              "clean_unclustered_fraction": 0.3702
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.836,
+              "clean_unclustered_fraction": 0.3702
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 6,
+              "true_poison_removed": 5,
+              "clean_removed": 1,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0002,
+              "removal_precision": 0.8333333333333334,
+              "poison_unclustered_fraction": 0.836,
+              "clean_unclustered_fraction": 0.3702
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 32,
+              "true_poison_removed": 21,
+              "clean_removed": 11,
+              "poison_removal_rate": 0.042,
+              "clean_false_removal_rate": 0.0022,
+              "removal_precision": 0.65625,
+              "poison_unclustered_fraction": 0.836,
+              "clean_unclustered_fraction": 0.3702
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.501548528671265,
+          "n_clusters": 101,
+          "n_unclustered": 3224,
+          "duplicate_with_any_clean_fraction": 0.0,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0002,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.01,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": -0.01
+          },
+          {
+            "clean_cost_budget": 0.0022,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.042,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": -0.042
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T21:58:00.813177+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "123": {
+        "seed": 123,
+        "family": "block_reversal",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 110.412,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 292.7656216621399,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.452960252761841,
+          "n_clusters": 147,
+          "n_unclustered": 2276,
+          "duplicate_with_any_clean_fraction": 0.034,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.906,
+              "clean_unclustered_fraction": 0.3646
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.906,
+              "clean_unclustered_fraction": 0.3646
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.906,
+              "clean_unclustered_fraction": 0.3646
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.906,
+              "clean_unclustered_fraction": 0.3646
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.906,
+              "clean_unclustered_fraction": 0.3646
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.2040114402771,
+          "n_clusters": 113,
+          "n_unclustered": 3183,
+          "duplicate_with_any_clean_fraction": 0.004,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            },
+            "poison_removal_rate_delta": 0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            },
+            "poison_removal_rate_delta": 0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            },
+            "poison_removal_rate_delta": 0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            },
+            "poison_removal_rate_delta": 0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.538
+            },
+            "poison_removal_rate_delta": 0.01
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:03:04.420967+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "456": {
+        "seed": 456,
+        "family": "block_reversal",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 110.924,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 290.72580075263977,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.536332845687866,
+          "n_clusters": 146,
+          "n_unclustered": 2330,
+          "duplicate_with_any_clean_fraction": 0.042,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.876,
+              "clean_unclustered_fraction": 0.3784
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.876,
+              "clean_unclustered_fraction": 0.3784
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.876,
+              "clean_unclustered_fraction": 0.3784
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.876,
+              "clean_unclustered_fraction": 0.3784
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 5,
+              "true_poison_removed": 3,
+              "clean_removed": 2,
+              "poison_removal_rate": 0.006,
+              "clean_false_removal_rate": 0.0004,
+              "removal_precision": 0.6,
+              "poison_unclustered_fraction": 0.876,
+              "clean_unclustered_fraction": 0.3784
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 7.932514905929565,
+          "n_clusters": 101,
+          "n_unclustered": 3297,
+          "duplicate_with_any_clean_fraction": 0.0,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.01
+          },
+          {
+            "clean_cost_budget": 0.0004,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.006,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.004
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:08:05.898428+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "789": {
+        "seed": 789,
+        "family": "block_reversal",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 109.404,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 294.49873518943787,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.488239288330078,
+          "n_clusters": 138,
+          "n_unclustered": 2310,
+          "duplicate_with_any_clean_fraction": 0.046,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3764
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3764
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3764
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3764
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 5,
+              "true_poison_removed": 3,
+              "clean_removed": 2,
+              "poison_removal_rate": 0.006,
+              "clean_false_removal_rate": 0.0004,
+              "removal_precision": 0.6,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3764
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.3681321144104,
+          "n_clusters": 112,
+          "n_unclustered": 3220,
+          "duplicate_with_any_clean_fraction": 0.004,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0004,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.006,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.5452
+            },
+            "poison_removal_rate_delta": -0.006
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:13:11.496285+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "1024": {
+        "seed": 1024,
+        "family": "block_reversal",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 109.42,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 303.00242376327515,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.512385368347168,
+          "n_clusters": 142,
+          "n_unclustered": 2282,
+          "duplicate_with_any_clean_fraction": 0.046,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3708
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3708
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3708
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3708
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 5,
+              "true_poison_removed": 4,
+              "clean_removed": 1,
+              "poison_removal_rate": 0.008,
+              "clean_false_removal_rate": 0.0002,
+              "removal_precision": 0.8,
+              "poison_unclustered_fraction": 0.856,
+              "clean_unclustered_fraction": 0.3708
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.488552570343018,
+          "n_clusters": 117,
+          "n_unclustered": 3171,
+          "duplicate_with_any_clean_fraction": 0.002,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": 0.012
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": 0.012
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": 0.012
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": 0.012
+          },
+          {
+            "clean_cost_budget": 0.0002,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.008,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 6,
+              "true_poison_removed": 6,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.976,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": 0.004
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:18:25.724136+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      }
+    },
+    "block_swap": {
+      "42": {
+        "seed": 42,
+        "family": "block_swap",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 109.66,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 293.20949125289917,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.5497794151306152,
+          "n_clusters": 137,
+          "n_unclustered": 2267,
+          "duplicate_with_any_clean_fraction": 0.036,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.842,
+              "clean_unclustered_fraction": 0.3692
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.842,
+              "clean_unclustered_fraction": 0.3692
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.842,
+              "clean_unclustered_fraction": 0.3692
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.842,
+              "clean_unclustered_fraction": 0.3692
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 15,
+              "true_poison_removed": 10,
+              "clean_removed": 5,
+              "poison_removal_rate": 0.02,
+              "clean_false_removal_rate": 0.001,
+              "removal_precision": 0.6666666666666666,
+              "poison_unclustered_fraction": 0.842,
+              "clean_unclustered_fraction": 0.3692
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.63663363456726,
+          "n_clusters": 101,
+          "n_unclustered": 3224,
+          "duplicate_with_any_clean_fraction": 0.002,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.001,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.02,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": -0.02
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:23:30.436759+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "123": {
+        "seed": 123,
+        "family": "block_swap",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 110.196,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 295.3494453430176,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.585469961166382,
+          "n_clusters": 147,
+          "n_unclustered": 2271,
+          "duplicate_with_any_clean_fraction": 0.034,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.884,
+              "clean_unclustered_fraction": 0.3658
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.884,
+              "clean_unclustered_fraction": 0.3658
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.884,
+              "clean_unclustered_fraction": 0.3658
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.884,
+              "clean_unclustered_fraction": 0.3658
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 13,
+              "true_poison_removed": 9,
+              "clean_removed": 4,
+              "poison_removal_rate": 0.018,
+              "clean_false_removal_rate": 0.0008,
+              "removal_precision": 0.6923076923076923,
+              "poison_unclustered_fraction": 0.884,
+              "clean_unclustered_fraction": 0.3658
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.634325981140137,
+          "n_clusters": 111,
+          "n_unclustered": 3181,
+          "duplicate_with_any_clean_fraction": 0.0,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0008,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.018,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.5366
+            },
+            "poison_removal_rate_delta": -0.018
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:28:37.225279+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "456": {
+        "seed": 456,
+        "family": "block_swap",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 111.38,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 294.3314108848572,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.461599111557007,
+          "n_clusters": 148,
+          "n_unclustered": 2296,
+          "duplicate_with_any_clean_fraction": 0.04,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3722
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3722
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3722
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3722
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 10,
+              "true_poison_removed": 6,
+              "clean_removed": 4,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.0008,
+              "removal_precision": 0.6,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3722
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 7.8186469078063965,
+          "n_clusters": 100,
+          "n_unclustered": 3302,
+          "duplicate_with_any_clean_fraction": 0.0,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0008,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.012,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.998,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": -0.012
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:33:42.057217+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "789": {
+        "seed": 789,
+        "family": "block_swap",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 110.264,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 291.72736263275146,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.4364943504333496,
+          "n_clusters": 137,
+          "n_unclustered": 2351,
+          "duplicate_with_any_clean_fraction": 0.044,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.894,
+              "clean_unclustered_fraction": 0.3808
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.894,
+              "clean_unclustered_fraction": 0.3808
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.894,
+              "clean_unclustered_fraction": 0.3808
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.894,
+              "clean_unclustered_fraction": 0.3808
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 7,
+              "true_poison_removed": 4,
+              "clean_removed": 3,
+              "poison_removal_rate": 0.008,
+              "clean_false_removal_rate": 0.0006,
+              "removal_precision": 0.5714285714285714,
+              "poison_unclustered_fraction": 0.894,
+              "clean_unclustered_fraction": 0.3808
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.338735818862915,
+          "n_clusters": 112,
+          "n_unclustered": 3224,
+          "duplicate_with_any_clean_fraction": 0.004,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0006,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.008,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.546
+            },
+            "poison_removal_rate_delta": -0.008
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:38:44.868172+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "1024": {
+        "seed": 1024,
+        "family": "block_swap",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 110.304,
+          "median": 118.0,
+          "min": 2,
+          "max": 120
+        },
+        "feature_extraction_time_s": 300.4381785392761,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.4968671798706055,
+          "n_clusters": 143,
+          "n_unclustered": 2260,
+          "duplicate_with_any_clean_fraction": 0.042,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.854,
+              "clean_unclustered_fraction": 0.3666
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.854,
+              "clean_unclustered_fraction": 0.3666
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.854,
+              "clean_unclustered_fraction": 0.3666
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.854,
+              "clean_unclustered_fraction": 0.3666
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 15,
+              "true_poison_removed": 9,
+              "clean_removed": 6,
+              "poison_removal_rate": 0.018,
+              "clean_false_removal_rate": 0.0012,
+              "removal_precision": 0.6,
+              "poison_unclustered_fraction": 0.854,
+              "clean_unclustered_fraction": 0.3666
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.43537163734436,
+          "n_clusters": 116,
+          "n_unclustered": 3173,
+          "duplicate_with_any_clean_fraction": 0.002,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0012,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.018,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.536
+            },
+            "poison_removal_rate_delta": -0.018
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:43:56.460871+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      }
+    },
+    "cyclic_shift": {
+      "42": {
+        "seed": 42,
+        "family": "cyclic_shift",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 534.716,
+          "median": 290.5,
+          "min": 12,
+          "max": 1460
+        },
+        "feature_extraction_time_s": 294.2316851615906,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.4481022357940674,
+          "n_clusters": 130,
+          "n_unclustered": 2301,
+          "duplicate_with_any_clean_fraction": 0.024,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3732
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3732
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3732
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3732
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 11,
+              "true_poison_removed": 6,
+              "clean_removed": 5,
+              "poison_removal_rate": 0.012,
+              "clean_false_removal_rate": 0.001,
+              "removal_precision": 0.5454545454545454,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3732
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.280012845993042,
+          "n_clusters": 101,
+          "n_unclustered": 3223,
+          "duplicate_with_any_clean_fraction": 0.0,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.001,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.012,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.996,
+              "clean_unclustered_fraction": 0.545
+            },
+            "poison_removal_rate_delta": -0.012
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:49:01.635600+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "123": {
+        "seed": 123,
+        "family": "cyclic_shift",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 585.888,
+          "median": 360.0,
+          "min": 21,
+          "max": 1460
+        },
+        "feature_extraction_time_s": 294.2954378128052,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.457793951034546,
+          "n_clusters": 148,
+          "n_unclustered": 2255,
+          "duplicate_with_any_clean_fraction": 0.022,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3624
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3624
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3624
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3624
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 7,
+              "true_poison_removed": 4,
+              "clean_removed": 3,
+              "poison_removal_rate": 0.008,
+              "clean_false_removal_rate": 0.0006,
+              "removal_precision": 0.5714285714285714,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3624
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.192134141921997,
+          "n_clusters": 111,
+          "n_unclustered": 3186,
+          "duplicate_with_any_clean_fraction": 0.0,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0006,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.008,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5378
+            },
+            "poison_removal_rate_delta": -0.008
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:54:06.777050+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "456": {
+        "seed": 456,
+        "family": "cyclic_shift",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 594.996,
+          "median": 367.5,
+          "min": 6,
+          "max": 1460
+        },
+        "feature_extraction_time_s": 295.7802245616913,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.4230806827545166,
+          "n_clusters": 140,
+          "n_unclustered": 2310,
+          "duplicate_with_any_clean_fraction": 0.028,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3734
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3734
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3734
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3734
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 14,
+              "true_poison_removed": 10,
+              "clean_removed": 4,
+              "poison_removal_rate": 0.02,
+              "clean_false_removal_rate": 0.0008,
+              "removal_precision": 0.7142857142857143,
+              "poison_unclustered_fraction": 0.886,
+              "clean_unclustered_fraction": 0.3734
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 7.938751697540283,
+          "n_clusters": 100,
+          "n_unclustered": 3300,
+          "duplicate_with_any_clean_fraction": 0.002,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0008,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.02,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.994,
+              "clean_unclustered_fraction": 0.5606
+            },
+            "poison_removal_rate_delta": -0.02
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T22:59:13.140173+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "789": {
+        "seed": 789,
+        "family": "cyclic_shift",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 559.4,
+          "median": 347.0,
+          "min": 22,
+          "max": 1460
+        },
+        "feature_extraction_time_s": 289.6076126098633,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.452099084854126,
+          "n_clusters": 139,
+          "n_unclustered": 2336,
+          "duplicate_with_any_clean_fraction": 0.03,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3802
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3802
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3802
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3802
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 7,
+              "true_poison_removed": 4,
+              "clean_removed": 3,
+              "poison_removal_rate": 0.008,
+              "clean_false_removal_rate": 0.0006,
+              "removal_precision": 0.5714285714285714,
+              "poison_unclustered_fraction": 0.87,
+              "clean_unclustered_fraction": 0.3802
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.244600057601929,
+          "n_clusters": 111,
+          "n_unclustered": 3229,
+          "duplicate_with_any_clean_fraction": 0.004,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.0,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            },
+            "poison_removal_rate_delta": 0.0
+          },
+          {
+            "clean_cost_budget": 0.0006,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.008,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.988,
+              "clean_unclustered_fraction": 0.547
+            },
+            "poison_removal_rate_delta": -0.008
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T23:04:13.657285+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      },
+      "1024": {
+        "seed": 1024,
+        "family": "cyclic_shift",
+        "n_clean": 5000,
+        "n_poison": 500,
+        "raw_noop_count": 0,
+        "positions_changed": {
+          "mean": 565.25,
+          "median": 318.0,
+          "min": 8,
+          "max": 1460
+        },
+        "feature_extraction_time_s": 302.58217906951904,
+        "control": {
+          "n_features": 60,
+          "cluster_time_s": 2.467491865158081,
+          "n_clusters": 141,
+          "n_unclustered": 2287,
+          "duplicate_with_any_clean_fraction": 0.026,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.862,
+              "clean_unclustered_fraction": 0.3712
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.862,
+              "clean_unclustered_fraction": 0.3712
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.862,
+              "clean_unclustered_fraction": 0.3712
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 5,
+              "true_poison_removed": 5,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.01,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": 1.0,
+              "poison_unclustered_fraction": 0.862,
+              "clean_unclustered_fraction": 0.3712
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 20,
+              "true_poison_removed": 15,
+              "clean_removed": 5,
+              "poison_removal_rate": 0.03,
+              "clean_false_removal_rate": 0.001,
+              "removal_precision": 0.75,
+              "poison_unclustered_fraction": 0.862,
+              "clean_unclustered_fraction": 0.3712
+            }
+          ]
+        },
+        "repair": {
+          "n_features": 540,
+          "cluster_time_s": 8.584228992462158,
+          "n_clusters": 115,
+          "n_unclustered": 3185,
+          "duplicate_with_any_clean_fraction": 0.002,
+          "removal_curve": [
+            {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            },
+            {
+              "purity_threshold": 0.95,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            },
+            {
+              "purity_threshold": 0.9,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            },
+            {
+              "purity_threshold": 0.8,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            },
+            {
+              "purity_threshold": 0.5,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            }
+          ]
+        },
+        "matched_clean_cost": [
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 1.0,
+            "control_poison_removal_rate": 0.01,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            },
+            "poison_removal_rate_delta": -0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.95,
+            "control_poison_removal_rate": 0.01,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            },
+            "poison_removal_rate_delta": -0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.9,
+            "control_poison_removal_rate": 0.01,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            },
+            "poison_removal_rate_delta": -0.01
+          },
+          {
+            "clean_cost_budget": 0.0,
+            "control_purity_threshold": 0.8,
+            "control_poison_removal_rate": 0.01,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            },
+            "poison_removal_rate_delta": -0.01
+          },
+          {
+            "clean_cost_budget": 0.001,
+            "control_purity_threshold": 0.5,
+            "control_poison_removal_rate": 0.03,
+            "repair_best": {
+              "purity_threshold": 1.0,
+              "n_removed": 0,
+              "true_poison_removed": 0,
+              "clean_removed": 0,
+              "poison_removal_rate": 0.0,
+              "clean_false_removal_rate": 0.0,
+              "removal_precision": null,
+              "poison_unclustered_fraction": 0.986,
+              "clean_unclustered_fraction": 0.5384
+            },
+            "poison_removal_rate_delta": -0.03
+          }
+        ],
+        "env": {
+          "python_version": "3.12.3",
+          "packages": {
+            "giotto-tda": "0.6.2",
+            "scikit-learn": "1.3.2",
+            "numpy": "1.26.4",
+            "scipy": "1.17.1",
+            "pandas": "3.0.5",
+            "joblib": "1.5.3"
+          },
+          "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+          "git_dirty": true,
+          "hostname": "780e9dfb3b16",
+          "utc_timestamp": "2026-07-28T23:09:27.495204+00:00",
+          "git_diffstat": "",
+          "git_untracked_or_staged": "?? results/phase_q_r1_multithreshold_capture.json\n?? tools/phase_q_r1_summarize.py"
+        }
+      }
+    }
+  },
+  "artifact_created_env": {
+    "python_version": "3.12.3",
+    "packages": {
+      "giotto-tda": "0.6.2",
+      "scikit-learn": "1.3.2",
+      "numpy": "1.26.4",
+      "scipy": "1.17.1",
+      "pandas": "3.0.5",
+      "joblib": "1.5.3"
+    },
+    "git_head": "26650a74ec65279871206ac810cdabdb573bb58c",
+    "git_dirty": false,
+    "hostname": "780e9dfb3b16",
+    "utc_timestamp": "2026-07-28T21:27:27.146772+00:00"
+  }
+}

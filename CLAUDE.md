@@ -241,7 +241,7 @@ artifact and saved cluster records. The output is
 for the provenance and interpretation record. M8 does not establish the source
 study's cluster configuration or recover the original frame of noise Cell N.
 
-### Phase Q multithreshold repair — DIAGNOSTIC COMPLETE, CAPTURE PENDING
+### Phase Q multithreshold repair — R1 COMPLETE; repair FALSIFIED as a detector
 
 Phase Q changes only the binarization representation: threshold 0.4 / 60
 features versus the fixed `{0.1, ..., 0.9}` stack / 540 concatenated features,
@@ -261,9 +261,110 @@ already change the binary image, all five diagrams, and the 60-vector, but 0/200
 per family exceed the clean-clean 95th percentile in vector displacement. The
 stack drives exact binary and feature identity to 0/200, yet also yields 0/200
 above that clean reference and lowers the median attack/clean distance ratio.
-Therefore it is **not trivially blind but not yet more discriminating**. Do not
-claim improved detection unless the frozen matched-clean-cost R1 run establishes
-it. See `docs/PHASE_Q_MULTITHRESHOLD_REPORT.md`.
+Therefore it is **not trivially blind but not more discriminating**.
+
+**R1 (completed 2026-07-28, WIRE, full UNSW CSV, 102 min, 20 cells, 5 seeds
+`[42,123,456,789,1024]`) settles the capture question, and the answer is
+negative.** Artifact `results/phase_q_r1_multithreshold_capture.json`, log
+`results/phase_q_wire_run.log`, summarizer `tools/phase_q_r1_summarize.py`.
+Every cell: `n_clean=5000`, `n_poison=500`, `raw_noop=0`, control 60 feats,
+repair 540 feats. Five-seed means +/- population SD:
+
+- **Algebraic repair CONFIRMED.** Exact-duplicate-with-clean fraction drops
+  ~13-20x (0.026-0.043 -> 0.002-0.003), all families, all seeds. The
+  single-cutoff bit-identity mechanism is closed on the tested frame.
+- **Downstream detection FALSIFIED.** Matched-clean-cost poison-removal delta
+  (repair minus control) at operationally clean budgets (exact 1.0 .. >0.80):
+  transpositions +0.0000, block swap +0.0000, cyclic shift -0.0020, block
+  reversal +0.0064 +/- 0.0053 (one ~5-packet 100%-poison cluster on 3/5 seeds).
+  At the loosest budget >0.50 **all four families go negative** (-0.006 to
+  -0.019): where the control catches a little poison, the repair catches less.
+- **The gains are fragmentation, not separation.** The stack pushes poison
+  unclustered 0.85-0.87 -> ~0.99, clean unclustered ~0.37 -> ~0.55, cluster
+  count ~140 -> ~108. Repair clean false-removal is 0.0000 everywhere because
+  almost everything is unclustered. Consistent across all five seeds; not
+  one-seed-driven; no family truly improves.
+
+**The simple equally-weighted threshold-stack repair is falsified as a
+detector.** It closes the exact single-cutoff identity mechanism but does not
+convert that into matched-clean-cost removal. No threshold selection, block
+weighting, feature selection, OPTICS tuning, attack resampling, or seed deletion
+was performed (each would be a new preregistration). See
+`docs/PHASE_Q_MULTITHRESHOLD_REPORT.md` for the five-seed tables.
+
+### Phase Q2 — source-coverage reconciliation: NOT RECONCILED
+
+`docs/PHASE_Q2_RECONCILIATION_REPORT.md`. Figure 14's ~100% row sum **can be
+reproduced by** dropping label `-1` and renormalizing; the source's actual noise
+handling remains unknown. The `Red share = poison_rate x capture` identity
+**supports** a 10% poisoning proportion and the paper's all-sample Red-share
+denominator, but says nothing about packet selection, class composition, or
+deduplication. The literal `1 x 1500` raster raises capture +3.32 +/- 1.29 pp
+but cannot support the **claimed nontrivial H1-dependent feature map** (it
+computes a 60-column vector; the 30 H1 columns are identically constant).
+`min_samples=2` reaches 11.68 +/- 1.75% via ~599 micro-clusters of median size 2.
+None of these closes the 40-70% gap.
+
+### Phase Q3 — collision provenance: MIXED CAUSE, topology exonerated
+
+**Completed 2026-07-29, WIRE, five seeds `[42,123,456,789,1024]`, 451 s.**
+Artifact `results/phase_q3_collision_audit.json`, report
+`docs/PHASE_Q3_COLLISION_REPORT.md`, validator `tools/phase_q3_summarize.py`.
+Diagnostic only: no filtering, deduplication, representation change, or OPTICS
+tuning. Additive instrumented pipeline; its 60-vector is **bitwise equal** to
+`extract_tda_features()` on all five seeds.
+
+**Q2's "51.8% exact duplicate rows" was the redundancy fraction**
+`(n_rows - n_unique_classes)/n_rows = 2849/5500`. The **repeated-member
+fraction** (rows in a class of size >= 2) is **57.02%**. Never write "duplicate
+fraction" without saying which. Both reproduce exactly on the frozen frame, as
+does the 1043-row block (share 0.1896); seed-42 input/poison/feature hashes match
+the Q2 artifact.
+
+**Earliest-merger attribution** (mutually exclusive; monotonicity violations 0;
+five-seed mean +/- population SD):
+
+| Earliest merger stage | Share of collision mass | Poison rows |
+|---|---:|---:|
+| raw padded payload | **0.5080 +/- 0.0050** | 57.6 +/- 6.8 |
+| binarization (threshold 0.4) | **0.4668 +/- 0.0046** | 153.2 +/- 3.2 |
+| unscaled cubical diagrams | **0.0252 +/- 0.0031** | 0.6 +/- 0.8 |
+| support record, filtration images, Scaler, summaries, concatenation | **0.0000** | 0 |
+
+- **~97.5% of collision mass is created at or before binarization.** The
+  filtration images, Scaler, six persistence summaries, and final concatenation
+  merge **exactly zero rows on any seed**. The diagram step merges 2.5% and
+  creates **zero** new clean/poison mixed classes. **The topological feature map
+  is effectively exonerated as a source of clean/poison confusion.**
+- **The padding/empty-payload hypothesis is refuted:** 0 all-zero payload rows,
+  all seeds. Raw-repeated rows are short (mean `support_end` ~157 vs ~428) but
+  carry real bytes. The support record is a bijection with the raw row and
+  merges nothing -- that row is a self-check, and it passed.
+- **The 1043-block funnels 406 raw -> 34 binary -> 1 diagram signatures.** It is
+  **mixed**: 950 clean + 93 poison at seed 42, so it is Yellow and unremovable
+  at any purity. Only 6 of the 93 poison members are raw-identical to their own
+  clean source, but **all 93 are binary-identical** to it -- Claim 1 as a
+  measured fact, not an inference.
+- **Strict-purity failure decomposition** (exhaustive, residual empty, five-seed):
+  captured **1.80 +/- 0.51%**; label `-1` **56.24 +/- 1.65%**; shares an exact
+  60-vector with a clean row **39.48 +/- 1.73%**; distinct vector but mixed
+  cluster 2.48 +/- 0.90%. Capture per seed `[2.2, 2.2, 2.2, 1.0, 1.4]` matches
+  the §6 Test B transpositions row exactly.
+- **Coordinate-class obstruction 0.4228 +/- 0.0164.** It binds under this fit (0
+  captured rows are in a mixed exact class, all seeds), but **`1 - obstruction`
+  is NOT an algorithm-independent ceiling**: no exact class ever spans two real
+  clusters, yet OPTICS does separate identical twins by leaving one at `-1`
+  (0-6 classes per seed). Claim it only at the scope of the standing
+  `OPTICS(min_samples=5, max_eps=2.0)` fit.
+- **Collisions are load-bearing but not dominant.** `-1` assignment (56.2%)
+  exceeds exact collision obstruction (42.3%).
+
+**Next preregistered single-variable test (NOT run):** deduplicate the clean
+subsample on the exact 1500-byte payload before attack generation, holding
+everything else fixed. Capture on a deduplicated frame is **not** comparable to
+the 2.2000% gate and must not be reported as a reproduction improvement. A
+drafted author question about source-side filtering/deduplication is in §8 of
+the Q3 report, **unsent**.
 
 ### Final MathFest code gate
 

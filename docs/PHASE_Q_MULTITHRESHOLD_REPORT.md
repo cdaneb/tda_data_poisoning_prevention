@@ -97,6 +97,81 @@ purity thresholds `{1.0, >0.95, >0.90, >0.80, >0.50}`.
 Cluster purity uses ground truth retrospectively.  It is an evaluation
 instrument, not a deployable rule for labeling clusters.
 
+## R1 result: complete five-seed grid (status: COMPLETE)
+
+The full 20-cell grid (four families x seeds `42, 123, 456, 789, 1024`) ran on
+WIRE against the full UNSW-NB15 CSV in 102 minutes.  Every cell has
+`n_clean=5000`, `n_poison=500`, `raw_noop_count=0`, a 60-feature control block,
+a 540-feature repair stack, five frozen removal-curve points per arm, five
+matched-clean-cost records, and a provenance block; no interpretation field is
+NaN or infinite.  Artifact:
+`results/phase_q_r1_multithreshold_capture.json`.  All values below are
+five-seed means +/- population SD (`ddof=0`).
+
+### Primary metric: matched-clean-cost poison-removal delta (repair minus control)
+
+At every clean-cost budget where the control removes no clean data (exact 1.0
+through `>0.80`), the repair delivers no material gain:
+
+| Family | delta @1.0 | delta @>0.95 | delta @>0.90 | delta @>0.80 | delta @>0.50 |
+|---|---:|---:|---:|---:|---:|
+| Transpositions | +0.0000 | +0.0000 | +0.0000 | +0.0000 | **-0.0188** |
+| Block reversal | +0.0064 | +0.0064 | +0.0064 | +0.0044 | **-0.0060** |
+| Block swap | +0.0000 | +0.0000 | +0.0000 | +0.0000 | **-0.0152** |
+| Cyclic shift | -0.0020 | -0.0020 | -0.0020 | -0.0020 | **-0.0156** |
+
+The single nonzero positive is block reversal, `+0.0064 +/- 0.0053` at the
+strict budgets: on 3/5 seeds the stack removes one 100%-poison cluster of
+~5 packets (~1% of poison) that the control does not; on 2/5 seeds it removes
+none.  This is at the floor of measurement, not a robust detector gain.  At the
+loosest budget `>0.50` — where the control begins to catch a small amount of
+poison at nonzero clean cost — every family goes **negative**: the repair's best
+feasible point removes *less* poison than the control.
+
+### Supporting metrics (five-seed mean +/- population SD)
+
+| Family | exact-purity removal (ctl / rep) | clean unclustered (ctl / rep) | poison unclustered (ctl / rep) | n_clusters (ctl / rep) | exact-dup-with-clean (ctl / rep) |
+|---|---|---|---|---|---|
+| Transpositions | 0.000 / 0.000 | 0.371+/-0.006 / 0.545+/-0.009 | 0.852+/-0.022 / 0.991+/-0.005 | 141.8+/-4.5 / 108.2+/-6.5 | 0.035+/-0.004 / 0.003+/-0.002 |
+| Block reversal | 0.000 / 0.006+/-0.005 | 0.372+/-0.005 / 0.545+/-0.009 | 0.866+/-0.024 / 0.987+/-0.007 | 140.8+/-5.8 / 108.8+/-6.6 | 0.043+/-0.005 / 0.002+/-0.002 |
+| Block swap | 0.000 / 0.000 | 0.371+/-0.005 / 0.545+/-0.009 | 0.869+/-0.019 / 0.993+/-0.005 | 142.4+/-4.7 / 108.0+/-6.4 | 0.039+/-0.004 / 0.002+/-0.002 |
+| Cyclic shift | 0.002+/-0.004 / 0.000 | 0.372+/-0.006 / 0.546+/-0.008 | 0.875+/-0.010 / 0.992+/-0.004 | 139.6+/-5.7 / 107.6+/-6.0 | 0.026+/-0.003 / 0.002+/-0.002 |
+
+Clean false-removal is 0.0000 for the repair at every purity point and every
+family; the control only reaches nonzero clean false-removal (~0.001) at `>0.50`.
+
+### Reading, along the three-level distinction
+
+1. **Algebraic repair — CONFIRMED.** The stack drives exact-duplicate-with-clean
+   frequency down ~13-20x (0.026-0.043 to 0.002-0.003) across all families and
+   all five seeds.  The single-cutoff same-bin identity mechanism is closed on
+   the tested frame, consistent with the D1-D4 whole-stack-identity result.
+
+2. **Statistical separation — NOT ESTABLISHED.** Consistent with D1-D4, closing
+   identity does not translate into usable separation.  The stack instead pushes
+   nearly everything to the unclustered bin: poison unclustered rises from
+   ~0.85-0.87 to ~0.99, clean unclustered from ~0.37 to ~0.55, and the cluster
+   count falls from ~140 to ~108.  The block-reversal `+0.0064` sits inside this
+   fragmentation regime and is not usable separation.
+
+3. **Downstream detection (matched-clean-cost OPTICS removal) — FALSIFIED.**
+   Three of four families show exactly zero matched-cost delta at operationally
+   clean budgets; block reversal shows a negligible `+0.6%` on 3/5 seeds; and all
+   four go negative at `>0.50`.  The result is consistent across all five seeds
+   (small population SD on every fragmentation metric) — it is not driven by one
+   seed — and no family shows a real improvement while another worsens.
+
+**Conclusion.** The simple equally-weighted, unweighted threshold-stack repair
+is falsified as a detector: it closes the exact single-cutoff bit-identity
+mechanism but does not convert that into matched-clean-cost poison removal, and
+the small "exactness" gains are purchased through heavier fragmentation (higher
+unclustered fractions, fewer clusters), not through cluster separation.  This is
+the D1-D4 "not trivially blind but not more discriminating" outcome, now
+confirmed at the R1 capture level rather than the displacement level.  Threshold
+selection, block weighting, feature selection, OPTICS tuning, attack resampling,
+and seed deletion were **not** performed; any of them would be a new experiment
+requiring new preregistration.
+
 ## Reproduction
 
 Windows quick checks:
@@ -110,9 +185,16 @@ Windows quick checks:
 WIRE full R1 grid:
 
 ```bash
-cd ~/projects/tda_data_poisoning_prevention
+cd ~/beels_tda/tda_data_poisoning_prevention
 TDA_DATA_DIR=~/wire/DataSets/PayloadByte_UNSW \
+TDA_RESULTS_DIR=$PWD/results \
   venv312/bin/python run_phase_q_experiment.py --family all --seed all
+```
+
+Summarize the completed artifact (read-only, population SD, no tuning):
+
+```bash
+venv312/bin/python tools/phase_q_r1_summarize.py
 ```
 
 The R1 artifact is written after every completed family/seed and skips existing
@@ -123,4 +205,5 @@ Artifacts:
 
 - `results/phase_q_d0_support_audit.json`
 - `results/phase_q_d1_d4_diagnostics.json`
-- `results/phase_q_r1_multithreshold_capture.json` after the full R1 run
+- `results/phase_q_r1_multithreshold_capture.json` — complete 20-cell R1 grid
+- `results/phase_q_wire_run.log` — R1 runtime log

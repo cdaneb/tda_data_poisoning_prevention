@@ -31,6 +31,14 @@ results/*
 # making any negation inert — so exclude the *contents* and re-include by name.
 !results/phase_m_*.json
 !results/phase_q_*.json
+# Phase Q2 artifacts are tracked deliverables too. Needs its own rule: the
+# `phase_q_*` pattern above requires a literal underscore after `q`, so it does
+# not match `phase_q2_`.
+!results/phase_q2_*.json
+# Phase Q3 collision audit. Same reason the `phase_q2_` rule needs to exist:
+# `phase_q_*` requires a literal underscore after `q`, so it does not match
+# `phase_q3_`.
+!results/phase_q3_*.json
 
 # Log files
 *.log
@@ -57,3 +65,7 @@ docs/*
 !docs/*.md
 CLAUDE.md
 PHASE_V_INSTRUCTIONS.md
+
+# Phase Q2 machine-local feature cache (regenerable; hashes are published in
+# the tracked JSON so the cache is never required to audit a result).
+.q2_cache/

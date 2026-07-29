@@ -1,0 +1,1623 @@
+{
+  "phase": "Q2-A",
+  "description": "OPTICS noise-accounting audit on the standing R60/seed-42 arm. One fit, three display conventions, no parameter search.",
+  "generated_utc": "2026-07-29T00:14:30Z",
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-5.15.0-181-generic-x86_64-with-glibc2.39",
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "scikit_learn": "1.3.2",
+    "giotto_tda": "0.6.2"
+  },
+  "source_facts": {
+    "prose_section": "6.5",
+    "prose_capture_pct": 60.3,
+    "prose_color_shares_pct": [
+      47.54,
+      45.83,
+      6.03,
+      0.59
+    ],
+    "fig14_126feat_n_clusters": 7,
+    "fig14_126feat_red_share_of_poison_pct": 56.1,
+    "fig14_72feat_n_entries": 8,
+    "fig14_72feat_red_share_of_poison_pct": 64.1,
+    "note": "one cluster identifier is duplicated in the 72-feature row of Figure 14"
+  },
+  "source_arithmetic_audit": {
+    "printed_shares_sum_pct": 99.99,
+    "printed_shares_sum_is_100_within_0.05": true,
+    "red_share_identity": {
+      "definition": "red_share_of_all_samples = poison_rate * capture_fraction, valid when Red clusters are exactly 100% poisoned",
+      "by_poison_rate": {
+        "poison_rate_0.05": {
+          "implied_red_share_of_all_samples_pct": 3.015,
+          "matching_printed_share": null
+        },
+        "poison_rate_0.10": {
+          "implied_red_share_of_all_samples_pct": 6.03,
+          "matching_printed_share": 6.03
+        },
+        "poison_rate_0.20": {
+          "implied_red_share_of_all_samples_pct": 12.06,
+          "matching_printed_share": null
+        },
+        "poison_rate_0.30": {
+          "implied_red_share_of_all_samples_pct": 18.09,
+          "matching_printed_share": null
+        }
+      }
+    },
+    "fig14_vs_prose_capture": {
+      "prose_pct": 60.3,
+      "fig14_126feat_pct": 56.1,
+      "fig14_72feat_pct": 64.1,
+      "prose_equals_either_fig14_row": false,
+      "prose_within_fig14_range": true
+    }
+  },
+  "realization": {
+    "seed": 42,
+    "dataset": "UNSW-NB15 Payload-Byte",
+    "attack": "malicious_random_attack",
+    "n_swaps": 60,
+    "poison_rate": 0.1,
+    "max_samples": 5000,
+    "n_total": 5500,
+    "n_clean": 5000,
+    "n_poison": 500,
+    "attack_validity_pct": 100.0,
+    "subsample_index_hash": "b5cc86ee44668444",
+    "input_hash": "fce036c2424196ef",
+    "poison_mask_hash": "8f8ee5534151e4fe"
+  },
+  "feature_map": {
+    "geometry": "legacy_30x50",
+    "centers": [
+      [
+        0,
+        50
+      ],
+      [
+        0,
+        25
+      ],
+      [
+        30,
+        0
+      ]
+    ],
+    "threshold": 0.4,
+    "shape": [
+      5500,
+      60
+    ],
+    "feature_hash": "ffce38eb0cd462df",
+    "extraction_seconds": 35.78726625442505
+  },
+  "optics": {
+    "requested_params": {
+      "min_samples": 5,
+      "max_eps": 2.0
+    },
+    "fit_seconds": 2.630237102508545,
+    "internals": {
+      "params": {
+        "algorithm": "auto",
+        "cluster_method": "xi",
+        "eps": null,
+        "leaf_size": 30,
+        "max_eps": 2.0,
+        "memory": null,
+        "metric": "minkowski",
+        "metric_params": null,
+        "min_cluster_size": null,
+        "min_samples": 5,
+        "n_jobs": -1,
+        "p": 2,
+        "predecessor_correction": true,
+        "xi": 0.05
+      },
+      "ordering_hash": "f89622bd9874270d",
+      "reachability_hash": "ce8852d498dedd6f",
+      "core_distances_hash": "8853727d83b7d78a",
+      "predecessor_hash": "015ee0e75b810d63",
+      "labels_hash": "04d00d42b1d96f77",
+      "n_reachability_infinite": 1210,
+      "n_reachability_finite": 4290,
+      "reachability_finite_quantiles": {
+        "5": 0.0,
+        "25": 0.0,
+        "50": 0.0,
+        "75": 0.32012290300942153,
+        "95": 1.4087727376364045
+      },
+      "n_core_distance_infinite": 1282,
+      "n_core_distance_finite": 4218,
+      "core_distance_finite_quantiles": {
+        "5": 0.0,
+        "25": 0.0,
+        "50": 0.0,
+        "75": 0.24902939042552852,
+        "95": 1.3968885021325603
+      },
+      "n_core_distance_within_max_eps": 4218,
+      "fraction_core_distance_within_max_eps": 0.7669090909090909
+    },
+    "structure": {
+      "n_clusters": 127,
+      "n_unclustered": 2141,
+      "unclustered_fraction": 0.38927272727272727,
+      "largest_cluster_size": 1044,
+      "largest_cluster_share": 0.18981818181818183,
+      "median_cluster_size": 9.0,
+      "min_cluster_size_observed": 5,
+      "cluster_size_quantiles": {
+        "5": 5.0,
+        "25": 6.0,
+        "50": 9.0,
+        "75": 13.0,
+        "95": 49.49999999999983
+      },
+      "labels_hash": "04d00d42b1d96f77"
+    }
+  },
+  "feature_diagnostics": {
+    "shape": [
+      5500,
+      60
+    ],
+    "feature_hash": "ffce38eb0cd462df",
+    "n_zero_variance_features": 0,
+    "variance_quantiles": {
+      "0": 0.04441543700721103,
+      "5": 0.053572492230338144,
+      "25": 0.12227464664494758,
+      "50": 2.188680275134788,
+      "75": 101.50942662096668,
+      "95": 418.2851236737352,
+      "100": 471.86768446461906
+    },
+    "n_exact_duplicate_rows": 2849,
+    "max_duplicate_multiplicity": 1043,
+    "diagnostic_sample_size": 400,
+    "pairwise_distance_quantiles": {
+      "0": 0.0,
+      "5": 0.04110857463816681,
+      "25": 10.24644474649051,
+      "50": 21.910051296625394,
+      "75": 81.12565793631913,
+      "95": 285.9266625210673,
+      "100": 411.918955221824
+    },
+    "nn1_distance_quantiles": {
+      "0": 0.0,
+      "5": 0.0,
+      "25": 0.0,
+      "50": 0.13765066885698513,
+      "75": 2.173195204803554,
+      "95": 18.020063501644366,
+      "100": 55.00382952647212
+    },
+    "nn5_distance_quantiles": {
+      "0": 0.0,
+      "5": 0.0,
+      "25": 0.0,
+      "50": 0.8482431339444205,
+      "75": 4.0629354096277766,
+      "95": 32.00292732373985,
+      "100": 87.84123636176928
+    },
+    "n_nonfinite": 0
+  },
+  "distance_diagnostics": {
+    "clean_clean_quantiles": {
+      "5": 0.04110857463816681,
+      "25": 8.227848754089422,
+      "50": 19.56037378385428,
+      "75": 50.76241177503129,
+      "95": 215.52245267107628
+    },
+    "clean_poison_quantiles": {
+      "5": 1.2369339433804694,
+      "25": 9.611020524368291,
+      "50": 22.915169838531764,
+      "75": 65.55056316523417,
+      "95": 211.88058462120702
+    },
+    "median_ratio_poison_over_clean": 1.171509813245319
+  },
+  "accounting": {
+    "n_total": 5500,
+    "n_poison_total": 500,
+    "n_clustered": 3359,
+    "n_unclustered": 2141,
+    "views": {
+      "all_sample_denominator": {
+        "color_shares_pct": {
+          "Green": 15.454545454545455,
+          "Red": 0.2,
+          "Pink": 0.0,
+          "Yellow": 45.41818181818182,
+          "Noise": 38.92727272727273
+        },
+        "sum_pct": 100.0
+      },
+      "clustered_only_denominator": {
+        "color_shares_pct": {
+          "Green": 25.3051503423638,
+          "Red": 0.3274784161952962,
+          "Pink": 0.0,
+          "Yellow": 74.3673712414409
+        },
+        "sum_pct": 100.0
+      },
+      "noise_as_yellow_display": {
+        "color_shares_pct": {
+          "Green": 15.454545454545455,
+          "Red": 0.2,
+          "Pink": 0.0,
+          "Yellow": 84.34545454545454
+        },
+        "sum_pct": 100.0
+      }
+    },
+    "true_poison_capture_pct": 2.2,
+    "n_poison_in_red_clusters": 11,
+    "poison_unclustered_fraction": 0.584,
+    "clean_unclustered_fraction": 0.3698,
+    "clusters": [
+      {
+        "cluster_id": -1,
+        "color": "Noise",
+        "size": 2141,
+        "n_poisoned": 292,
+        "n_clean": 1849,
+        "poison_fraction": 0.13638486688463336,
+        "share_of_all_samples_pct": 38.92727272727273,
+        "share_of_all_poison_pct": 58.4
+      },
+      {
+        "cluster_id": 0,
+        "color": "Yellow",
+        "size": 268,
+        "n_poisoned": 18,
+        "n_clean": 250,
+        "poison_fraction": 0.06716417910447761,
+        "share_of_all_samples_pct": 4.872727272727273,
+        "share_of_all_poison_pct": 3.6
+      },
+      {
+        "cluster_id": 1,
+        "color": "Yellow",
+        "size": 285,
+        "n_poisoned": 19,
+        "n_clean": 266,
+        "poison_fraction": 0.06666666666666667,
+        "share_of_all_samples_pct": 5.181818181818182,
+        "share_of_all_poison_pct": 3.8
+      },
+      {
+        "cluster_id": 2,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 3,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 4,
+        "color": "Green",
+        "size": 14,
+        "n_poisoned": 0,
+        "n_clean": 14,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 5,
+        "color": "Green",
+        "size": 10,
+        "n_poisoned": 0,
+        "n_clean": 10,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.18181818181818182,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 6,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 7,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 8,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 9,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 10,
+        "color": "Green",
+        "size": 23,
+        "n_poisoned": 0,
+        "n_clean": 23,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.41818181818181815,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 11,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 12,
+        "color": "Yellow",
+        "size": 29,
+        "n_poisoned": 1,
+        "n_clean": 28,
+        "poison_fraction": 0.034482758620689655,
+        "share_of_all_samples_pct": 0.5272727272727272,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 13,
+        "color": "Yellow",
+        "size": 13,
+        "n_poisoned": 1,
+        "n_clean": 12,
+        "poison_fraction": 0.07692307692307693,
+        "share_of_all_samples_pct": 0.23636363636363636,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 14,
+        "color": "Green",
+        "size": 14,
+        "n_poisoned": 0,
+        "n_clean": 14,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 15,
+        "color": "Yellow",
+        "size": 6,
+        "n_poisoned": 1,
+        "n_clean": 5,
+        "poison_fraction": 0.16666666666666666,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 16,
+        "color": "Green",
+        "size": 8,
+        "n_poisoned": 0,
+        "n_clean": 8,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.14545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 17,
+        "color": "Yellow",
+        "size": 5,
+        "n_poisoned": 1,
+        "n_clean": 4,
+        "poison_fraction": 0.2,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 18,
+        "color": "Yellow",
+        "size": 12,
+        "n_poisoned": 1,
+        "n_clean": 11,
+        "poison_fraction": 0.08333333333333333,
+        "share_of_all_samples_pct": 0.21818181818181817,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 19,
+        "color": "Green",
+        "size": 10,
+        "n_poisoned": 0,
+        "n_clean": 10,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.18181818181818182,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 20,
+        "color": "Yellow",
+        "size": 7,
+        "n_poisoned": 1,
+        "n_clean": 6,
+        "poison_fraction": 0.14285714285714285,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 21,
+        "color": "Yellow",
+        "size": 5,
+        "n_poisoned": 1,
+        "n_clean": 4,
+        "poison_fraction": 0.2,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 22,
+        "color": "Yellow",
+        "size": 56,
+        "n_poisoned": 2,
+        "n_clean": 54,
+        "poison_fraction": 0.03571428571428571,
+        "share_of_all_samples_pct": 1.018181818181818,
+        "share_of_all_poison_pct": 0.4
+      },
+      {
+        "cluster_id": 23,
+        "color": "Yellow",
+        "size": 19,
+        "n_poisoned": 2,
+        "n_clean": 17,
+        "poison_fraction": 0.10526315789473684,
+        "share_of_all_samples_pct": 0.34545454545454546,
+        "share_of_all_poison_pct": 0.4
+      },
+      {
+        "cluster_id": 24,
+        "color": "Yellow",
+        "size": 30,
+        "n_poisoned": 3,
+        "n_clean": 27,
+        "poison_fraction": 0.1,
+        "share_of_all_samples_pct": 0.5454545454545454,
+        "share_of_all_poison_pct": 0.6
+      },
+      {
+        "cluster_id": 25,
+        "color": "Green",
+        "size": 19,
+        "n_poisoned": 0,
+        "n_clean": 19,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.34545454545454546,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 26,
+        "color": "Yellow",
+        "size": 383,
+        "n_poisoned": 25,
+        "n_clean": 358,
+        "poison_fraction": 0.06527415143603134,
+        "share_of_all_samples_pct": 6.963636363636364,
+        "share_of_all_poison_pct": 5.0
+      },
+      {
+        "cluster_id": 27,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 28,
+        "color": "Green",
+        "size": 8,
+        "n_poisoned": 0,
+        "n_clean": 8,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.14545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 29,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 30,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 31,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 32,
+        "color": "Yellow",
+        "size": 8,
+        "n_poisoned": 1,
+        "n_clean": 7,
+        "poison_fraction": 0.125,
+        "share_of_all_samples_pct": 0.14545454545454545,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 33,
+        "color": "Green",
+        "size": 8,
+        "n_poisoned": 0,
+        "n_clean": 8,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.14545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 34,
+        "color": "Green",
+        "size": 8,
+        "n_poisoned": 0,
+        "n_clean": 8,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.14545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 35,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 36,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 37,
+        "color": "Yellow",
+        "size": 9,
+        "n_poisoned": 1,
+        "n_clean": 8,
+        "poison_fraction": 0.1111111111111111,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 38,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 39,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 40,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 41,
+        "color": "Green",
+        "size": 11,
+        "n_poisoned": 0,
+        "n_clean": 11,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 42,
+        "color": "Yellow",
+        "size": 94,
+        "n_poisoned": 7,
+        "n_clean": 87,
+        "poison_fraction": 0.07446808510638298,
+        "share_of_all_samples_pct": 1.709090909090909,
+        "share_of_all_poison_pct": 1.4
+      },
+      {
+        "cluster_id": 43,
+        "color": "Yellow",
+        "size": 54,
+        "n_poisoned": 2,
+        "n_clean": 52,
+        "poison_fraction": 0.037037037037037035,
+        "share_of_all_samples_pct": 0.9818181818181818,
+        "share_of_all_poison_pct": 0.4
+      },
+      {
+        "cluster_id": 44,
+        "color": "Yellow",
+        "size": 29,
+        "n_poisoned": 3,
+        "n_clean": 26,
+        "poison_fraction": 0.10344827586206896,
+        "share_of_all_samples_pct": 0.5272727272727272,
+        "share_of_all_poison_pct": 0.6
+      },
+      {
+        "cluster_id": 45,
+        "color": "Yellow",
+        "size": 13,
+        "n_poisoned": 2,
+        "n_clean": 11,
+        "poison_fraction": 0.15384615384615385,
+        "share_of_all_samples_pct": 0.23636363636363636,
+        "share_of_all_poison_pct": 0.4
+      },
+      {
+        "cluster_id": 46,
+        "color": "Red",
+        "size": 11,
+        "n_poisoned": 11,
+        "n_clean": 0,
+        "poison_fraction": 1.0,
+        "share_of_all_samples_pct": 0.2,
+        "share_of_all_poison_pct": 2.2
+      },
+      {
+        "cluster_id": 47,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 48,
+        "color": "Green",
+        "size": 16,
+        "n_poisoned": 0,
+        "n_clean": 16,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 49,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 50,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 51,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 52,
+        "color": "Green",
+        "size": 13,
+        "n_poisoned": 0,
+        "n_clean": 13,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.23636363636363636,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 53,
+        "color": "Green",
+        "size": 14,
+        "n_poisoned": 0,
+        "n_clean": 14,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 54,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 55,
+        "color": "Yellow",
+        "size": 9,
+        "n_poisoned": 1,
+        "n_clean": 8,
+        "poison_fraction": 0.1111111111111111,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 56,
+        "color": "Green",
+        "size": 13,
+        "n_poisoned": 0,
+        "n_clean": 13,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.23636363636363636,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 57,
+        "color": "Green",
+        "size": 26,
+        "n_poisoned": 0,
+        "n_clean": 26,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.4727272727272727,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 58,
+        "color": "Yellow",
+        "size": 39,
+        "n_poisoned": 2,
+        "n_clean": 37,
+        "poison_fraction": 0.05128205128205128,
+        "share_of_all_samples_pct": 0.7090909090909091,
+        "share_of_all_poison_pct": 0.4
+      },
+      {
+        "cluster_id": 59,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 60,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 61,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 62,
+        "color": "Green",
+        "size": 23,
+        "n_poisoned": 0,
+        "n_clean": 23,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.41818181818181815,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 63,
+        "color": "Green",
+        "size": 11,
+        "n_poisoned": 0,
+        "n_clean": 11,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 64,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 65,
+        "color": "Green",
+        "size": 8,
+        "n_poisoned": 0,
+        "n_clean": 8,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.14545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 66,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 67,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 68,
+        "color": "Green",
+        "size": 12,
+        "n_poisoned": 0,
+        "n_clean": 12,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.21818181818181817,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 69,
+        "color": "Green",
+        "size": 15,
+        "n_poisoned": 0,
+        "n_clean": 15,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2727272727272727,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 70,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 71,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 72,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 73,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 74,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 75,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 76,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 77,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 78,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 79,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 80,
+        "color": "Green",
+        "size": 10,
+        "n_poisoned": 0,
+        "n_clean": 10,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.18181818181818182,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 81,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 82,
+        "color": "Green",
+        "size": 16,
+        "n_poisoned": 0,
+        "n_clean": 16,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 83,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 84,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 85,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 86,
+        "color": "Green",
+        "size": 13,
+        "n_poisoned": 0,
+        "n_clean": 13,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.23636363636363636,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 87,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 88,
+        "color": "Green",
+        "size": 12,
+        "n_poisoned": 0,
+        "n_clean": 12,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.21818181818181817,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 89,
+        "color": "Yellow",
+        "size": 12,
+        "n_poisoned": 1,
+        "n_clean": 11,
+        "poison_fraction": 0.08333333333333333,
+        "share_of_all_samples_pct": 0.21818181818181817,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 90,
+        "color": "Yellow",
+        "size": 8,
+        "n_poisoned": 1,
+        "n_clean": 7,
+        "poison_fraction": 0.125,
+        "share_of_all_samples_pct": 0.14545454545454545,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 91,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 92,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 93,
+        "color": "Green",
+        "size": 13,
+        "n_poisoned": 0,
+        "n_clean": 13,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.23636363636363636,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 94,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 95,
+        "color": "Green",
+        "size": 14,
+        "n_poisoned": 0,
+        "n_clean": 14,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 96,
+        "color": "Green",
+        "size": 8,
+        "n_poisoned": 0,
+        "n_clean": 8,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.14545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 97,
+        "color": "Green",
+        "size": 8,
+        "n_poisoned": 0,
+        "n_clean": 8,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.14545454545454545,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 98,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 99,
+        "color": "Yellow",
+        "size": 7,
+        "n_poisoned": 1,
+        "n_clean": 6,
+        "poison_fraction": 0.14285714285714285,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 100,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 101,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 102,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 103,
+        "color": "Yellow",
+        "size": 13,
+        "n_poisoned": 1,
+        "n_clean": 12,
+        "poison_fraction": 0.07692307692307693,
+        "share_of_all_samples_pct": 0.23636363636363636,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 104,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 105,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 106,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 107,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 108,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 109,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 110,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 111,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 112,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 113,
+        "color": "Green",
+        "size": 13,
+        "n_poisoned": 0,
+        "n_clean": 13,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.23636363636363636,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 114,
+        "color": "Yellow",
+        "size": 5,
+        "n_poisoned": 1,
+        "n_clean": 4,
+        "poison_fraction": 0.2,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 115,
+        "color": "Yellow",
+        "size": 7,
+        "n_poisoned": 1,
+        "n_clean": 6,
+        "poison_fraction": 0.14285714285714285,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 116,
+        "color": "Yellow",
+        "size": 1044,
+        "n_poisoned": 93,
+        "n_clean": 951,
+        "poison_fraction": 0.08908045977011494,
+        "share_of_all_samples_pct": 18.98181818181818,
+        "share_of_all_poison_pct": 18.6
+      },
+      {
+        "cluster_id": 117,
+        "color": "Green",
+        "size": 12,
+        "n_poisoned": 0,
+        "n_clean": 12,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.21818181818181817,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 118,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 119,
+        "color": "Green",
+        "size": 5,
+        "n_poisoned": 0,
+        "n_clean": 5,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.09090909090909091,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 120,
+        "color": "Green",
+        "size": 11,
+        "n_poisoned": 0,
+        "n_clean": 11,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 121,
+        "color": "Green",
+        "size": 9,
+        "n_poisoned": 0,
+        "n_clean": 9,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.16363636363636364,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 122,
+        "color": "Green",
+        "size": 7,
+        "n_poisoned": 0,
+        "n_clean": 7,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.12727272727272726,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 123,
+        "color": "Yellow",
+        "size": 23,
+        "n_poisoned": 2,
+        "n_clean": 21,
+        "poison_fraction": 0.08695652173913043,
+        "share_of_all_samples_pct": 0.41818181818181815,
+        "share_of_all_poison_pct": 0.4
+      },
+      {
+        "cluster_id": 124,
+        "color": "Green",
+        "size": 6,
+        "n_poisoned": 0,
+        "n_clean": 6,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.0
+      },
+      {
+        "cluster_id": 125,
+        "color": "Yellow",
+        "size": 6,
+        "n_poisoned": 1,
+        "n_clean": 5,
+        "poison_fraction": 0.16666666666666666,
+        "share_of_all_samples_pct": 0.10909090909090909,
+        "share_of_all_poison_pct": 0.2
+      },
+      {
+        "cluster_id": 126,
+        "color": "Green",
+        "size": 16,
+        "n_poisoned": 0,
+        "n_clean": 16,
+        "poison_fraction": 0.0,
+        "share_of_all_samples_pct": 0.2909090909090909,
+        "share_of_all_poison_pct": 0.0
+      }
+    ]
+  },
+  "source_comparison": {
+    "source_prose_red_share_of_all_samples_pct": 6.03,
+    "source_prose_capture_pct": 60.3,
+    "ours_red_share_all_sample_denominator_pct": 0.2,
+    "ours_red_share_clustered_only_denominator_pct": 0.3274784161952962,
+    "ours_true_capture_pct": 2.2,
+    "renormalization_gain_factor": 1.637392080976481,
+    "red_share_gap_factor_vs_source": 18.413427272727272,
+    "capture_gap_factor_vs_source": 27.409090909090907,
+    "does_denominator_choice_explain_100pct_sum": true,
+    "does_denominator_choice_change_true_capture": false
+  },
+  "removal_curve": [
+    {
+      "purity_threshold": 1.0,
+      "n_removed": 11,
+      "true_poison_removed": 11,
+      "clean_removed": 0,
+      "poison_removal_rate": 0.022,
+      "clean_false_removal_rate": 0.0,
+      "removal_precision": 1.0,
+      "poison_unclustered_fraction": 0.584,
+      "clean_unclustered_fraction": 0.3698
+    },
+    {
+      "purity_threshold": 0.95,
+      "n_removed": 11,
+      "true_poison_removed": 11,
+      "clean_removed": 0,
+      "poison_removal_rate": 0.022,
+      "clean_false_removal_rate": 0.0,
+      "removal_precision": 1.0,
+      "poison_unclustered_fraction": 0.584,
+      "clean_unclustered_fraction": 0.3698
+    },
+    {
+      "purity_threshold": 0.9,
+      "n_removed": 11,
+      "true_poison_removed": 11,
+      "clean_removed": 0,
+      "poison_removal_rate": 0.022,
+      "clean_false_removal_rate": 0.0,
+      "removal_precision": 1.0,
+      "poison_unclustered_fraction": 0.584,
+      "clean_unclustered_fraction": 0.3698
+    },
+    {
+      "purity_threshold": 0.8,
+      "n_removed": 11,
+      "true_poison_removed": 11,
+      "clean_removed": 0,
+      "poison_removal_rate": 0.022,
+      "clean_false_removal_rate": 0.0,
+      "removal_precision": 1.0,
+      "poison_unclustered_fraction": 0.584,
+      "clean_unclustered_fraction": 0.3698
+    },
+    {
+      "purity_threshold": 0.5,
+      "n_removed": 11,
+      "true_poison_removed": 11,
+      "clean_removed": 0,
+      "poison_removal_rate": 0.022,
+      "clean_false_removal_rate": 0.0,
+      "removal_precision": 1.0,
+      "poison_unclustered_fraction": 0.584,
+      "clean_unclustered_fraction": 0.3698
+    }
+  ],
+  "elapsed_seconds": 44.979182720184326
+}
