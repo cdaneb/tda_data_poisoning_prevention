@@ -45,7 +45,7 @@ ATTACK = np.array([
 POISON = np.array([[0.48, 0.57], [0.57, 0.67], [0.62, 0.58]])
 
 
-def setup_panel(ax, title, subtitle):
+def setup_panel(ax, title):
     ax.set_xlim(0.0, 1.0)
     ax.set_ylim(0.0, 1.0)
     ax.set_aspect("equal")
@@ -54,9 +54,7 @@ def setup_panel(ax, title, subtitle):
     for side in ax.spines.values():
         side.set_color(GRID)
         side.set_linewidth(0.9)
-    ax.set_title(title, fontsize=11.5, fontweight="bold", color=INK, pad=20)
-    ax.text(0.5, 1.015, subtitle, transform=ax.transAxes, ha="center", va="bottom",
-            fontsize=8.3, color=INK_MUTED)
+    ax.set_title(title, fontsize=13.0, fontweight="bold", color=INK, pad=8)
 
 
 def scatter_training(ax, poisoned=False):
@@ -85,66 +83,51 @@ def render(out_path=None):
         "pdf.fonttype": 42,
     })
 
-    fig, axes = plt.subplots(1, 3, figsize=(7.5, 3.45))
-    fig.subplots_adjust(left=0.045, right=0.985, top=0.73, bottom=0.245, wspace=0.20)
+    fig, axes = plt.subplots(1, 3, figsize=(7.5, 2.72))
+    fig.subplots_adjust(left=0.035, right=0.99, top=0.88, bottom=0.24, wspace=0.16)
 
     # Clean baseline: attacks lie above the learned boundary and are alerted.
     ax = axes[0]
-    setup_panel(ax, "Clean training", "labels reflect packet behavior")
+    setup_panel(ax, "Clean training")
     scatter_training(ax)
     boundary(ax, 1.15, INK)
-    ax.text(0.78, 0.16, "benign\nallow", ha="center", va="center", fontsize=8.2,
-            color=INK_SECONDARY, bbox={"facecolor": PALE_BLUE, "edgecolor": "none", "pad": 2.8})
-    ax.text(0.20, 0.82, "attack\nalert", ha="center", va="center", fontsize=8.2,
-            color=INK_SECONDARY, bbox={"facecolor": PALE_ORANGE, "edgecolor": "none", "pad": 2.8})
 
     # Poisoned training: attack-derived samples carry a benign label and the
     # fitted boundary moves toward the attack population.
     ax = axes[1]
-    setup_panel(ax, "Poisoned training", "attack packets injected with benign labels")
+    setup_panel(ax, "Poisoned training")
     scatter_training(ax, poisoned=True)
     boundary(ax, 1.15, INK_MUTED, style="--")
     boundary(ax, 1.47, INK)
-    ax.annotate("poisoned labels", xy=(0.57, 0.64), xytext=(0.13, 0.88),
-                fontsize=8.0, color=INK_SECONDARY, ha="left", va="center",
-                arrowprops={"arrowstyle": "-", "color": ORANGE, "lw": 1.2,
-                            "connectionstyle": "arc3,rad=-0.15"})
-    ax.annotate("boundary\nshifts", xy=(0.72, 0.78), xytext=(0.86, 0.39),
-                fontsize=8.0, color=INK_SECONDARY, ha="center", va="center",
-                arrowprops={"arrowstyle": "-", "color": INK, "lw": 1.1})
+    ax.annotate("shift", xy=(0.72, 0.78), xytext=(0.87, 0.38),
+                fontsize=9.4, color=INK, fontweight="bold", ha="center", va="center",
+                arrowprops={"arrowstyle": "-", "color": INK, "lw": 1.3})
 
     # Deployment: hold the traffic distribution fixed but apply the shifted
     # boundary.  The circled attacks below it now become false negatives.
     ax = axes[2]
-    setup_panel(ax, "Deployment impact", "shifted model applied to new traffic")
+    setup_panel(ax, "Deployment")
     scatter_training(ax)
     boundary(ax, 1.47, INK)
     missed = ATTACK[(ATTACK[:, 1] < -0.95 * ATTACK[:, 0] + 1.47)]
     ax.scatter(missed[:, 0], missed[:, 1], s=115, facecolors="none", edgecolors=ORANGE,
                linewidths=1.45, zorder=6)
-    ax.annotate("attacks accepted\nas benign", xy=(0.68, 0.70), xytext=(0.24, 0.14),
-                fontsize=8.2, color=ORANGE, fontweight="bold", ha="center", va="center",
+    ax.annotate("missed attacks", xy=(0.68, 0.70), xytext=(0.25, 0.13),
+                fontsize=9.2, color=ORANGE, fontweight="bold", ha="center", va="center",
                 arrowprops={"arrowstyle": "-", "color": ORANGE, "lw": 1.3,
                             "connectionstyle": "arc3,rad=0.12"})
 
     legend = [
         Line2D([0], [0], marker="o", color="none", markerfacecolor=BLUE,
-               markeredgecolor="white", markersize=6.5, label="benign packet"),
+               markeredgecolor="white", markersize=7.5, label="benign"),
         Line2D([0], [0], marker="^", color="none", markerfacecolor=ORANGE,
-               markeredgecolor="white", markersize=7, label="attack packet"),
+               markeredgecolor="white", markersize=8, label="attack"),
         Line2D([0], [0], marker="^", color="none", markerfacecolor=BLUE,
                markeredgecolor=ORANGE, markeredgewidth=1.2, markersize=7,
-               label="poisoned training label"),
-        Line2D([0], [0], color=INK, lw=2, label="learned boundary"),
+               label="attack labeled benign"),
     ]
-    fig.legend(handles=legend, loc="lower center", ncol=2, frameon=False,
-               fontsize=8.2, handlelength=1.8, columnspacing=1.8, bbox_to_anchor=(0.5, 0.025))
-
-    fig.text(0.035, 0.965, "Data Poisoning in a NIDS",
-             fontsize=13.3, fontweight="bold", color=INK, ha="left", va="top")
-    fig.text(0.035, 0.910,
-             "Mislabeling allows for malicious data to pass undetected",
-             fontsize=8.7, color=INK_MUTED, ha="left", va="top")
+    fig.legend(handles=legend, loc="lower center", ncol=3, frameon=False,
+               fontsize=9.2, handlelength=1.3, columnspacing=1.6, bbox_to_anchor=(0.5, 0.025))
 
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     out = Path(out_path) if out_path else FIGURES_DIR / "figure_v5_nids_poisoning.pdf"

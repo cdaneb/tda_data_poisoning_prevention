@@ -1,48 +1,26 @@
-% =====================================================================
-%  MathFest 2026 Poster -- 36 in x 36 in
-%  "What Can a Persistence Diagram See?"
-%  Christian Dane Beels, advised by Dr. Joseph Dorta
-%  Template base: Sofia Jijon (https://sjijon.github.io)
-%
-%  LAYOUT (revised): outer columns 0.66 / 0.34.
-%    - 0.66 column = subcolumns (Motivation etc. | Methods I+II), with the
-%      References block BELOW them so it spans two subcolumns only.
-%    - 0.34 column runs to the bottom and ends with Contact, so Contact and
-%      References sit side by side along the bottom edge.
-%
-%  SPACING -- measured, not guessed.  colspace and subcolspace have DIFFERENT
-%  offsets in tikzposter: the subcolumn gutter is roughly subcolspace + 0.61in,
-%  while the outer gutter is roughly colspace - 24pt.  Hence the asymmetric
-%  values below, which were tuned by compiling and measuring block edges:
-%      subcolspace=12pt -> 0.78 in gutter   (left | middle)
-%      colspace=84pt    -> 0.75 in gutter   (middle | right)
-%  innermargin has NO measurable effect on either gutter -- it was the previous
-%  suspect and is not the cause.  Do not "fix" it.
-% =====================================================================
+%================================================================
+% MathFest 2026 Poster -- 36 in x 36 in
+% Christian Dane Beels, advised by Dr. Joseph Dorta
+%================================================================
 
-\documentclass[a0paper,portrait,margin=0mm,colspace=84pt,subcolspace=12pt,blockverticalspace=40pt,innermargin=0pt]{tikzposter}
+\documentclass[a0paper,portrait,margin=0mm,colspace=52pt,blockverticalspace=34pt,innermargin=0pt]{tikzposter}
 \geometry{paperwidth=36in,paperheight=36in,margin=0mm}
 
 \usepackage[latin9]{inputenc}
 \usepackage{amsmath,amssymb}
 \usepackage{enumitem}
 \usepackage{multicol}
-% \usepackage[colalign]{aligncolsatbottom}
-% ^ DISABLED (Phase V6): aligncolsatbottom is not on CTAN and is not in the
-% MiKTeX package database, so this line is a hard build failure, not the
-% "untested interaction" the original header anticipated. Its only effect was
-% cosmetic bottom-alignment of columns. Restore only if you obtain the .sty.
+\usepackage{relsize}
 
-\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=1pt,parsep=0pt,partopsep=0pt}
+\setlist[itemize]{leftmargin=*,itemsep=3pt,topsep=2pt,parsep=0pt,partopsep=0pt}
 
-% Body font for block text. tikzposter's a0 \normalsize is 24.88pt/30pt, which
-% overflowed the bottom margin in the right column (measured: content reached
-% 35.60 in against a 35.20 in limit). 22.8pt/27.4pt was found by compiling and
-% measuring: it fills the page and leaves References and Contact bottoms within
-% 0.15 in of each other. Change in ONE place to trade text against figure size.
 \newcommand{\bodyfont}{\fontsize{22.8}{27.4}\selectfont}
+\newcommand{\smallbody}{\fontsize{19.4}{23.4}\selectfont}
+\newcommand{\captionfont}{\fontsize{16.8}{20.2}\selectfont}
+\newcommand{\referencefont}{\fontsize{14.8}{18.0}\selectfont}
 
-%......................................................................
+%................................................................
+
 \tikzposterlatexaffectionproofoff
 \usetikzlibrary{shapes.geometric,arrows.meta,positioning}
 
@@ -74,181 +52,272 @@
     \colorlet{notebgcolor}{ColorTwo!20}
     \colorlet{notefgcolor}{ColorTwo}
     \colorlet{notefrcolor}{ColorTwo}
- }
+}
 
 \usecolorstyle{MyStyle2016}
+
+\newcommand{\blocksubheading}[1]{%
+    \par\vspace{0.35cm}
+    {\color{MyTerracotta}
+     \fontsize{38}{34}\selectfont
+     \bfseries #1\par}
+    \vspace{0.15cm}
+}
 %......................................................................
-\title{\parbox{0.92\linewidth}{\centering What Can a Persistence Diagram See?\\[0.3cm]
-{\Large Invariance Structure and the Detectability of Data Poisoning}}}
+\title{\parbox{\linewidth}{\centering A Blind Spot in Topological Data Analysis-Based Data Poisoning Detection}}
 
 \author{\underline{Christian Dane Beels}, Dr.\ Joseph Dorta}
 
-\institute{Department of Mathematical Sciences\\United States Military Academy, West Point, NY.}
+\institute{Department of Mathematical Sciences\\United States Military Academy, West Point, NY}
 
 %......................................................................
 \begin{document}
 
-\maketitle[width=0.96\linewidth,titletoblockverticalspace=24pt,linewidth=0,roundedcorners=10]
+\maketitle[width=0.96\linewidth,titletoblockverticalspace=22pt,linewidth=0,roundedcorners=10]
 
 \begin{columns}
-%======================================================================
-%  WIDE LEFT COLUMN (0.66) -- two subcolumns, then the References strip
-%======================================================================
-\column{0.66}
-
-\begin{subcolumns}
-%----------------------------------------------------------------------
-\subcolumn{0.49}
+% =====================================================================
+% LEFT: problem, TDA background, and pipeline under investigation
+% =====================================================================
+\column{0.27}
 
 \block[titleleft,roundedcorners=16]{Motivation}{
-	\bodyfont\raggedright
-	\begin{itemize}
-		\item Modern Network Intrusion Detection Systems (NIDS) rely on ML models vulnerable to \textbf{data poisoning}: a cyber attack in which adversaries inject biased data to degrade model accuracy / performance.
-		\item Defenses must run \textbf{before training}, so clustering is unsupervised --- there are no labels to use.
-		\item Monkam et al.\ [1] use TDA as a filter to detect presence of data poisoning in training data, but fail to isolate a significant fraction of poisoned data.
-        \item \textbf{Gap}: What perturbations can their TDA lens see?
-	\end{itemize}
-}
+    \bodyfont\raggedright
+    \begin{itemize}
+        \item Network intrusion detectors learn from traffic data which is labeled during training.
+        \item \textbf{Data poisoning} can inject attack-derived packets with benign labels, shifting the learned decision boundary before deployment.
+    \end{itemize}
 
-\block[titleleft,roundedcorners=16]{Background: Topological Data Analysis}{
-	\bodyfont\raggedright
-	\begin{itemize}
-        \item TDA uses concepts from topology to study the global "shape" of data (connections and clusters between data points)
-        \item Persistent homology tracks topological features (connected components = $H_0$, loops = $H_1$) as a radius parameter is increased - features that persist over longer ranges are more significant
-	\end{itemize}
+
     \begin{center}
-  \includegraphics[width=\linewidth]{Figures/figure_v1_tda_background}
-\end{center}
+        \includegraphics[width=0.99\linewidth]{Figures/figure_v5_nids_poisoning}
+    \end{center}
+    \captionfont\raggedright\smallbody
+    \textbf{Figure 1.} Mislabeled attacks move the fitted boundary, allowing later attacks to fall on the benign side.
+
+    \vspace{0.20cm}
+    \bodyfont\raggedright
+    \begin{itemize}
+        \item Monkam et al.\ [1] develop a pre-training defense that represents packet payloads with persistent homology and clusters those vectors with OPTICS.
+        \item Their methods, using byte permutations, creates a blind spot where certain types of data poisoning attacks are guaranteed to go undetected.
+    \end{itemize}
+
 }
 
-\block[titleleft,roundedcorners=16]{Research Question}{
-	\raggedright
-	\innerblock{}{
-		\centering
-		\textbf{What determines a data poisoning attack's topological detectability --- and can a more sophisticated attack lead to less detectable topological signatures?}
-	}
+\block[titleleft,roundedcorners=16]{Persistent Homology}{
+    \bodyfont\raggedright
+    Persistent homology follows connected components ($H_0$) and loops ($H_1$)
+    as a scale parameter changes; long intervals encode durable shape.
+
+    \begin{center}
+        \includegraphics[width=\linewidth]{Figures/figure_v1_tda_background}
+    \end{center}
+    \captionfont\raggedright\smallbody
+    \textbf{Figure 2.} Point-clouds and barcode plots demonstrating persistence in an example 2D dataset.
 }
 
-%----------------------------------------------------------------------
-\subcolumn{0.51}
+\block[titleleft,roundedcorners=16]{TDA Pipeline}{
+    \smallbody
+    Per network packet:
+    \innerblock{}{
+        \centering
+        1,500 payload bytes
+        $\longrightarrow$ 30 $\times$ 50 raster
+        $\longrightarrow \mathrm{Bin}_t$\\[0.12cm]
+        $\longrightarrow$ 5 filtrations
+        $\longrightarrow (H_0,H_1)$
+        $\longrightarrow$ 60 features
+        $\longrightarrow$ OPTICS
+    }
+    \raggedright
+    Two height and three radial filtrations feed cubical persistence, scaling,
+    persistence entropy, and five amplitude summaries. A packet is captured
+    only when OPTICS places it in a non-noise cluster that is 100\% poison.
 
-\block[titleleft,roundedcorners=16]{The Argument}{
-	\bodyfont\centering
-	\begin{tikzpicture}[>=Latex, node distance=0.48cm,
-		proof/.style={draw=MyFadedNavy, rounded corners=5pt, fill=MyIvory, align=center, minimum height=1.05cm, text width=.85\linewidth},
-		annot/.style={draw=MyTerracotta, rounded corners=4pt, fill=MyTerracotta!10, align=center, font=\small, text width=.85\linewidth}]
-		\node[proof] (perm) {$x \xrightarrow{\ \sigma\in S_{1500}\ } x\circ\sigma$\\[-1pt]\small Reorder byte positions only};
-		\node[proof, below=of perm] (bin) {$b(x\circ\sigma)=b(x)\circ\sigma$\\[-1pt]\small Pointwise binarization commutes with reordering};
-		\node[proof, below=of bin] (count) {$\displaystyle\sum_{i=1}^{1500}b\big((x\circ\sigma)_i\big)=\sum_{i=1}^{1500}b(x_i)$\\[-1pt]\small A bijection only reorders the summands};
-		\node[annot, below=of count] (note) {\textbf{Equivariance:} the binarized image moves.\quad \textbf{Invariance:} the foreground count does not.};
-		\draw[->, very thick, MyFadedNavy] (perm) -- (bin);
-		\draw[->, very thick, MyFadedNavy] (bin) -- (count);
-	\end{tikzpicture}
+    \[\]
 
-	\raggedright
-	\begin{itemize}
-		\item Holds for \emph{every} permutation, not merely the attacks tested.
-		\item Count-derived features are \textbf{provably insensitive} to reordering.
-		\item The data-dependent threshold uses a batch maximum; maxima are permutation-invariant and this was verified in code.
-	\end{itemize}
+    \blocksubheading{Controlled Comparison}
 
-	\begin{center}
-	\includegraphics[width=\linewidth]{Figures/figure_v2_binarized_triptych}
-	\end{center}
+    \[\]
 
-	\innerblock{}{\centering\textbf{Residual capture must come from outside the count channel.}}
+    \smallbody\raggedright
+    \begin{itemize}
+        \item 5,000 clean $+$ 500 poison packets in every cell.
+        \item Four permutation families: 
+        \begin{itemize}
+            \item Transpositions (Swap 60 pairs of random bytes)
+            \item Block Reversal (Mirror 120-byte block)
+            \item Block Swap (Swap two 60-byte blocks)
+            \item Cyclic Shift (Rotate every row by 1 index)
+        \end{itemize}
+        \item Five fixed seeds; attacks are required to change the raw byte vector.
+        \item $\pm$ values are population standard deviation (SD). Ground-truth labels are
+        used for scoring only.
+    \end{itemize}
+    
 }
 
-\block[titleleft,roundedcorners=16]{Experimental Design}{
-	\centering
-	\begin{tikzpicture}[>=Latex,
-		card/.style={draw=MyFadedNavy, line width=1.2pt, rounded corners=8pt,
-			align=center, minimum width=18.2cm, minimum height=1.95cm,
-			text width=17.8cm, inner sep=4pt},
-		arrow/.style={->, very thick, MyTerracotta}]
-		% Explicit coordinates prevent poster-scale font sizes from collapsing the flow.
-		\node[card, fill=MyTerracotta!16] (data) at (0,0)
-			{\fontsize{19}{22}\selectfont\textbf{1. Data} \quad 5,000 UNSW-NB15 packets \quad $10\%$ poison \quad 5 seeds};
-		\node[card, fill=MyIvory] (image) at (0,-2.70)
-			{\fontsize{19}{22}\selectfont\textbf{2. Encode} \quad 1,500 payload bytes $\longrightarrow$ $30\times50$ image};
-		\node[card, fill=MyFadedNavy!12] (tda) at (0,-5.40)
-			{\fontsize{19}{22}\selectfont\textbf{3. Topologize} \quad binarize $\longrightarrow$ 5 filtrations $\longrightarrow$ cubical persistence ($H_0,H_1$)};
-		\node[card, fill=MyIvory] (features) at (0,-8.10)
-			{\fontsize{19}{22}\selectfont\textbf{4. Vectorize} \quad 5 filtrations $\times$ 6 summaries $\times$ 2 dimensions $=$ 60 features};
-		\node[card, fill=MyTerracotta!16] (cluster) at (0,-10.80)
-			{\fontsize{19}{22}\selectfont\textbf{5. Cluster} \quad OPTICS \quad $\Rightarrow$ capture = poison in a $100\%$-pure cluster};
-		\draw[arrow] (data.south) -- (image.north);
-		\draw[arrow] (image.south) -- (tda.north);
-		\draw[arrow] (tda.south) -- (features.north);
-		\draw[arrow] (features.south) -- (cluster.north);
-	\end{tikzpicture}
 
-	\raggedright\small
-	Four multiset-preserving reordering families; Gaussian noise is the positive control. Reported $\pm$ values are population SD across five seeds.
-}
-
-\end{subcolumns}
-%----------------------------------------------------------------------
-%  REFERENCES -- spans the two subcolumns above, not the right column.
-%  Sits at bottom-left, opposite the Contact block at bottom-right.
-%----------------------------------------------------------------------
-\block[titleleft,roundedcorners=16]{References}{
-\small
-\begin{multicols}{2}
-\begin{itemize}[itemsep=2pt,leftmargin=*]
-	\item[{[1]}] G. F. Monkam, M. J. De Lucia, and N. D. Bastian, ``A topological data analysis approach for detecting data poisoning attacks against machine learning based network intrusion detection systems,'' \emph{Computers \& Security}, vol.\ 144, art.\ no.\ 103929, Sep.\ 2024.
-	\item[{[2]}] M. Ferrara, ``Modeling by topological data analysis and game theory for analyzing data poisoning phenomena,'' \emph{AIMS Mathematics}, vol.\ 10, no.\ 7, pp.\ 15457--15475, Jul.\ 2025.
-	\item[{[3]}] D. Cohen-Steiner, H. Edelsbrunner, and J. Harer, ``Stability of persistence diagrams,'' in \emph{Proc.\ 21st Annu.\ Symp.\ Computational Geometry (SCG '05)}, Pisa, Italy, Jun.\ 2005, pp.\ 263--271.
-	\item[{[4]}] M. G. Bergomi, P. Frosini, D. Giorgi, and N. Quercioli, ``Towards a topological--geometrical theory of group equivariant non-expansive operators for data analysis and machine learning,'' \emph{Nature Machine Intelligence}, vol.\ 1, pp.\ 423--433, 2019.
-	\item[{[5]}] A. Garin and G. Tauzin, ``A topological reading lesson: Classification of MNIST using TDA,'' arXiv:1910.08345, 2019.
-\end{itemize}
-\end{multicols}
-}
-
-%======================================================================
-%  RIGHT COLUMN (0.34) -- runs to the bottom, ending with Contact
-%======================================================================
-\column{0.34}
+% =====================================================================
+% CENTER: the dominant result and its evidence
+% =====================================================================
+\column{0.46}
 
 \block[titleleft,roundedcorners=16]{Results}{
-	\bodyfont\centering
-	\begin{center}
-	\includegraphics[width=\linewidth]{Figures/figure_v3_four_families}
-	\end{center}
+    \centering
+    \innerblock{}{
+        \centering
+        {\fontsize{34}{40}\selectfont
+        \textbf{92--96\% Fewer Poisoned-Clean Vector Collisions} \\ using a multiple-threshold approach.}\\[0.18cm]
+    }
 
-	\innerblock{}{\centering\textbf{$0/1{,}600$ count changes.} Same invariance class; capture spans $0$--$6.28\%$.}
+    \vspace{0.28cm}
+    \includegraphics[width=0.98\linewidth]{Figures/figure_v6_representation_repair}
 
-	\begin{center}
-	\includegraphics[width=\linewidth]{Figures/figure_v4_guidance_shift}
-	\end{center}
-	\small\raggedright
-\textbf{Companion result.} Guidance raises capture over random swaps, but an unguided cyclic shift reaches the same level; spatial disruption matters more than sophistication.
+    \captionfont\raggedright\smallbody
+    \textbf{Figure 3.} Five-seed means $\pm$ population SD for paired attacks.
+    Multiple thresholds reduce exact poison--clean feature-vector collisions in
+    all four families.
+
+    \[\]
+
+    \vspace{0.20cm}
+    \innerblock{}{
+        \centering
+        {\smallbody\bfseries Paired Source Identity}\\[0.05cm]
+        {\fontsize{30}{36}\selectfont\bfseries
+        32/800$\ \longrightarrow\ $0/800}\\[-0.02cm]
+        \small Number of attacked packets producing the same topological signature as their source (undetectable) using singular threshold $\longrightarrow$ using multiple thresholds
+    }
+
+    \bodyfont\raggedright
+    An audit of the original single-threshold frame located the
+    source of collisions upstream of the persistence summaries. \textbf{47\% of packet vector collisions occurred due to binarization.}
+
+    \begin{center}
+        \includegraphics[width=0.98\linewidth]{Figures/figure_v7_collision_origin}
+    \end{center}
+    \captionfont\raggedright\smallbody
+    \textbf{Figure 4.} In the legacy single-threshold R60 frame, $97.5\%$ of
+    repeated-vector collision mass begins at or before binarization (five-seed
+    means $\pm$ population SD). This localizes the repair target; it does not
+    imply that persistence is generally injective.
+
+    \[\]
+
+    \blocksubheading{Limitations}
+
+    \vspace{0.28cm}
+    \begin{center}
+        \includegraphics[width=0.5\linewidth]{Figures/figure_v8_detector_outcome}
+    \end{center}
+
+    \captionfont\raggedright\smallbody
+    \textbf{Figure 5.} Five-seed mean $\pm$ population SD for repair-minus-control poison removal at matched clean-removal cost and strict purity. Only block reversal is positive ($0.64\pm0.53$ percentage points). Threshold stack does not necessarily improve detection.
+
 }
 
-\block[titleleft,roundedcorners=16]{Discussion and Conclusion}{
-	\bodyfont\raggedright
-	\begin{itemize}
-		\item \textbf{A feature-map blind spot can be read from the algebra before experimentation.}
-		\item \textbf{Insensitive is not undetectable:} detectability belongs to the \emph{attack--detector pair}, not to permutation invariance alone.
-		\item Guidance increases capture over random swaps, yet does not outperform a trivial shift: \textbf{spatial disruption matters more than sophistication.}
-		\item \textbf{Next:} isolate the residual signal by filtration. Guidance does not replicate on CICIDS2017 ($-0.60\pm3.03$).
-	\end{itemize}
 
-	\innerblock{}{
-		\small
-		\textbf{Scope.} Proof: any fixed-threshold pipeline. Empirics: one reconstruction, five seeds, one primary dataset; cross-dataset guidance did not replicate.
-	}
+\begin{subcolumns}
+\subcolumn{0.55}
+\block[titleleft,roundedcorners=16]{References}{
+    \captionfont\raggedright
+    [1] G. F. Monkam, M. J. De Lucia, and N. D. Bastian, ``A topological data analysis approach for detecting data poisoning attacks against machine learning based network intrusion detection systems,'' \emph{Computers \&
+    Security}, vol.\ 144, 103929, 2024.\\[0.10cm]
+    [2] D. Cohen-Steiner, H. Edelsbrunner, and J. Harer, ``Stability of persistence diagrams,'' \emph{Proc.\ SCG}, pp.\ 263--271, 2005.
 }
 
-% Contact moved here (was bottom of the left subcolumn) so that it sits at
-% bottom-right, opposite the References strip at bottom-left.
+\subcolumn{0.45}
 \block[titleleft,roundedcorners=16]{Contact}{
-	\small
-	\raggedright
-	\textbf{Christian Dane Beels} \quad christian.beels@westpoint.edu\\
-	github.com/cdaneb/ \quad linkedin.com/in/christiandanebeels/\\
-	Dept.\ of Mathematical Sciences, USMA West Point
+    \centering
+    \includegraphics[width=0.47\linewidth]{Figures/Github_QR.png}\hfill
+    \includegraphics[width=0.47\linewidth]{Figures/Linkedin_QR.png}
 }
+\end{subcolumns}
+
+% =====================================================================
+% RIGHT: the former Argument, now the multithreshold Methods
+% =====================================================================
+\column{0.27}
+
+\block[titleleft,roundedcorners=16]{Methods}{
+    \bodyfont\raggedright
+    Let $\mathlarger{z_i=x_i/M}$ be a payload byte normalized by the fitted batch maximum. \textbf{Byte permutations preserve $\mathlarger{M}$ because they preserve the batch byte multiset.} Define a binarizer as
+    \[
+    \mathlarger{\mathlarger{
+                \mathrm{Bin}_t(z)_i =
+                \begin{cases}
+                1, & z_i > t,\\
+                0, & z_i \leq t
+                \end{cases}
+                }}
+    \]
+    \textbf{Blind-spot}: one cutoff creates two intensity classes.
+    If $C_0$ and $C_1$ are the positions not exceeding and exceeding $t=0.4$,
+    respectively, then every permutation within either class leaves the binary
+    image fixed:
+    \[
+        \mathlarger{\mathlarger{
+        \operatorname{Stab}\!\left(\mathrm{Bin}_{0.4}(z)\right)
+        \cong S_{|C_0|}\times S_{|C_1|}.
+        }}
+    \]
+    Thus, whenever either class contains multiple positions, nonidentity byte permutations exist that the pipeline cannot distinguish before any filtration is computed. 
+
+    \[\]
+    
+    \textbf{Solution: nine thresholds refine two classes into ten
+    ordered bands.}
+    For $T=\{0.1,0.2,\ldots,0.9\}$, define the nested signature
+    \[
+        \mathlarger{\mathlarger{
+        Q_T(z)_i=\bigl(\mathrm{Bin}_t(z)_i\bigr)_{t\in T}.
+        }}
+    \]
+    If $C_0,\ldots,C_9$ are the ten resulting intensity bands, then
+    \[
+        \mathlarger{\mathlarger{
+        \operatorname{Stab}\!\left(Q_T(z)\right)
+        \cong \prod_{k=0}^{9} S_{|C_k|}
+        \subseteq \operatorname{Stab}\!\left(\mathrm{Bin}_{0.4}(z)\right).
+        }}
+    \]
+
+    \raggedright
+    The stack repairs the single-threshold blind spot by shrinking its guaranteed-invisible group. It still cannot distinguish permutations within one band, and persistence
+    is not injective, so the argument does not guarantee universal detection.
+}
+
+\block[titleleft,roundedcorners=16]{Implementation}{
+    \bodyfont\raggedright
+    \textbf{Control}
+    \[
+        \mathlarger{\mathlarger{
+        F_{0.4}(x)\in\mathbb{R}^{60}.
+        }}
+    \]
+    \textbf{Repair}
+    \[
+        \mathlarger{\mathlarger{
+        F_T(x)=\frac{1}{\sqrt{9}}
+        \bigl(F_{0.1}(x),\ldots,F_{0.9}(x)\bigr)
+        \in\mathbb{R}^{540}.
+        }}
+    \]
+    Each $\mathlarger{F_t}$ is the unchanged $60$-feature pipeline. Division by $\mathlarger{\sqrt{9} = 3}$
+    preserves scale in the reference case where all nine blocks are identical. All other variables (filtrations, rasterized image, OPTICS specifications) kept constant.
+}
+
+\block[titleleft,roundedcorners=16]{Conclusion and Future Work}{
+    \bodyfont\raggedright
+    \begin{itemize}
+        \item The threshold stack preserves permutation-induced changes that one singular threshold erases.
+        \item  Under the current pipeline, even with multiple thresholds, clustering-based poisoning removal does not materially improve.
+    \end{itemize}
+    $\therefore$ Future work must address discrepancies in the local geometry to assist clustering and improve actual poisoning detection.
+}
+
+
 
 \end{columns}
 \end{document}
