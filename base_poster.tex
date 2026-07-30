@@ -11,7 +11,7 @@
 \makeatletter
 \setlength{\TP@innermargin}{8mm}
 \setlength{\TP@colspace}{8mm}
-\setlength{\TP@blockverticalspace}{5mm}
+\setlength{\TP@blockverticalspace}{8mm}
 \setlength{\TP@visibletextwidth}{\textwidth-2\TP@innermargin}
 \setlength{\TP@visibletextheight}{\textheight-2\TP@innermargin}
 \makeatother
@@ -25,9 +25,10 @@
 \setlist[itemize]{leftmargin=*,itemsep=4pt,topsep=3pt,parsep=0pt,partopsep=0pt}
 
 \newcommand{\bodyfont}{\fontsize{25.5}{30.5}\selectfont}
-\newcommand{\smallbody}{\fontsize{25}{30}\selectfont}
+\newcommand{\smallbody}{\fontsize{25}{30.5}\selectfont}
 \newcommand{\captionfont}{\fontsize{21.5}{25.5}\selectfont}
 \newcommand{\referencefont}{\fontsize{18}{21.5}\selectfont}
+\newcommand{\theorybody}{\fontsize{26}{32}\selectfont}
 
 %.................................................................
 
@@ -65,26 +66,40 @@
 }
 
 \usecolorstyle{MyStyle2016}
-\useblockstyle[titleinnersep=4mm,bodyinnersep=4.5mm,roundedcorners=12]{Default}
-\useinnerblockstyle[titleinnersep=5pt,bodyinnersep=7pt]{Default}
+\useblockstyle[
+    titleinnersep=4mm,
+    bodyinnersep=4.5mm,
+    roundedcorners=12
+]{Default}
+\useinnerblockstyle[
+    titleinnersep=5pt,
+    bodyinnersep=7pt
+]{Default}
 
 \newcommand{\blocksubheading}[1]{%
     \par\vspace{0.18cm}
-    {\color{MyTerracotta}\fontsize{31}{34}\selectfont\bfseries #1\par}
+    {\color{MyTerracotta}
+     \fontsize{31}{34}\selectfont
+     \bfseries #1\par}
     \vspace{0.10cm}
 }
 
 %.................................................................
 
 \title{\parbox{\linewidth}{\centering
-    A Binarization Blind Spot in a Reconstructed TDA--OPTICS Poisoning Detector}}
+    Addressing a Blind Spot in a
+    Topological Data Analysis--Based Data Poisoning Detector}}
+
 \author{\underline{Christian Dane Beels}, Joseph Dorta, Ph.D.}
-\institute{Department of Mathematical Sciences, United States Military Academy, West Point, NY}
+
+\institute{Department of Mathematical Sciences,
+United States Military Academy, West Point, NY}
 
 \makeatletter
 \renewcommand{\TP@maketitle}{%
     \centering\color{titlefgcolor}
-    {\fontsize{48}{53}\selectfont\bfseries\scshape \@title\par}
+    {\fontsize{48}{53}\selectfont
+     \bfseries\scshape \@title\par}
     \vspace{0.12cm}
     {\fontsize{28}{33}\selectfont \@author\par}
     \vspace{0.08cm}
@@ -96,42 +111,59 @@
 
 \begin{document}
 
-\maketitle[width=0.97\linewidth,innersep=4mm,titletotopverticalspace=4mm,
-titletoblockverticalspace=4mm,linewidth=0,roundedcorners=10]
+\maketitle[
+    width=0.97\linewidth,
+    innersep=4mm,
+    titletotopverticalspace=4mm,
+    titletoblockverticalspace=4mm,
+    linewidth=0,
+    roundedcorners=10
+]
 
 \begin{columns}
 
 %=================================================================
 % LEFT: visual background and compact controlled design
 %=================================================================
+
 \column{0.30}
 
 \block[titleleft,roundedcorners=12]{Motivation}{
     \smallbody\raggedright
-    Training-set poisoning can insert attack-derived traffic with benign labels,
-    shifting a learned decision boundary before deployment. Monkam et al.\ [1]
-    propose an upstream TDA--OPTICS filter to identify poisoned packets before
-    model fitting.
+
+    Data poisoning can insert attack-derived traffic with benign
+    labels, shifting a learned decision boundary before deployment.
+    Monkam et al.\ [1] propose an upstream TDA--OPTICS filter to identify
+    poisoned packets before model fitting.
 
     \vspace{0.08cm}
+
     {\centering
-        \includegraphics[width=0.82\linewidth]{figures/figure_v5_nids_poisoning}\par
+        \includegraphics[
+            width=0.92\linewidth
+        ]{Figures/figure_v5_nids_poisoning}\par
     }
+
     \captionfont\raggedright
-    \textbf{Figure 1.} Conceptual motivation only: mislabeled attacks can shift
-    a learned boundary. The experiments below evaluate the upstream filter, not
-    classifier retraining.
+    \textbf{Figure 1.} Data poisoning can cause mislabeling, which can
+    shift a learned boundary and degrade model performance.
 }
 
 \block[titleleft,roundedcorners=12]{Persistent Homology}{
     \smallbody\raggedright
-    Persistent homology tracks connected components $(H_0)$ and loops $(H_1)$
-    across filtration scales; long intervals encode durable structure.
+
+    Persistent homology tracks connected components $(H_0)$ and loops
+    $(H_1)$ across filtration scales; long intervals encode durable
+    structure.
 
     \vspace{0.08cm}
+
     {\centering
-        \includegraphics[width=0.84\linewidth]{figures/figure_v1_tda_background}\par
+        \includegraphics[
+            width=0.92\linewidth
+        ]{Figures/figure_v1_tda_background}\par
     }
+
     \captionfont\raggedright
     \textbf{Figure 2.} Point-cloud neighborhoods and the corresponding
     $H_0$/$H_1$ barcode as the scale $\varepsilon$ increases.
@@ -139,93 +171,117 @@ titletoblockverticalspace=4mm,linewidth=0,roundedcorners=10]
 
 \block[titleleft,roundedcorners=12]{Reconstruction and Controlled Test}{
     \smallbody\raggedright
+
     \textbf{Data:} UNSW-NB15 Payload-Byte [2].
+
     \innerblock{}{
         \centering
-        1,500 bytes $\to$ 30 $\times$ 50 raster $\to \mathrm{Bin}_t$
-        $\to$ 2 height $+$ 3 radial filtrations\\[0.04cm]
-        $\to$ cubical persistence $(H_0,H_1)$ $\to \mathbb{R}^{60}$ $\to$ OPTICS
+        1,500 bytes
+        $\to$ 30 $\times$ 50 raster
+        $\to \mathrm{Bin}_t$
+        $\to$ 2 height $+$ 3 radial filtrations
+        $\to$ cubical persistence $(H_0,H_1)$
+        $\to \mathbb{R}^{60}$
+        $\to$ OPTICS
     }
 
     \begin{itemize}
         \item Four probe families $\times$ five fixed seeds; each cell has
-        5,000 clean $+$ 500 poison packets. Values are means $\pm$ population SD.
-        \item Probes use 60 disjoint transpositions, one 120-byte reversal, two
-        swapped 60-byte blocks, or a nonzero prefix rotation.
-        \item Every probe changes the raw vector and preserves its byte multiset.
-        Only the threshold representation changes; packet pairs and downstream
-        settings are fixed.
-    \end{itemize}
+        5,000 clean $+$ 500 poison packets. Values $=$ means
+        $\pm$ population SD.
 
-    \textbf{Retrospective capture:} poison assigned to a non-noise cluster
-    containing no clean packet. Ground-truth labels are unavailable to a
-    deployed filter.
+        \item 4 permutation families: Transpositions (Swap 60 pairs of random bytes), Block Reversal (Mirror 120-byte block), Block Swap (Swap two 60-byte blocks), Cyclic Shift (Rotate every row by 1 index).
+
+        \item Every probe changes the raw vector and preserves its byte multiset.
+        \item Ground-truth labels are used for scoring only.
+    \end{itemize}
 }
 
 %=================================================================
 % CENTER: dominant empirical result and compact footer
 %=================================================================
+
 \column{0.42}
 
-\block[titleleft,roundedcorners=12]{Main Result}{
+\block[titleleft,roundedcorners=12]{TDA Pipeline}{
+    \centering
+
+    \includegraphics[
+        width=0.97\linewidth
+    ]{Figures/figure_v9_tda_pipeline}
+
+
+}
+
+\block[titleleft,roundedcorners=12]{Results}{
+    \centering
+
     \centering
     \innerblock{}{
         \centering
-        {\fontsize{25.5}{30.5}\selectfont\bfseries
-        Does shrinking the representation blind spot improve poisoning removal?}\\[0.08cm]
-        {\fontsize{31}{36}\selectfont\bfseries
-        Exact Collisions Fall; Matched-Cost Removal Does Not Improve}\\[0.08cm]
-        {\fontsize{27}{32}\selectfont
-        92--96\% fewer poison--clean vector matches, but no material
-        matched-cost capture gain.}
+        {\fontsize{34}{39}\selectfont
+        \textbf{92–96\%} Fewer Poisoned-Clean Vector Collisions using a multiple-threshold approach.}\\[0.10cm]
+        {\fontsize{28}{33}\selectfont}
     }
 
     \vspace{0.15cm}
-    \includegraphics[width=0.95\linewidth]{figures/figure_v6_representation_repair}
+
+    \includegraphics[
+        width=0.95\linewidth
+    ]{Figures/figure_v6_representation_repair}
 
     \captionfont\raggedright
-    \textbf{Figure 3.} Five-seed Phase Q means for 5,000 clean $+$ 500
-    raw-changing poison packets per cell. Exact poison--clean matches fall by
-    92--96\%.
-
-    {\centering
-        \includegraphics[width=0.96\linewidth]{figures/figure_v7_collision_origin}\par
-    }
-    \captionfont\raggedright
-    \textbf{Figure 4.} Separate legacy-R60 audit: 97.5\% of repeated-vector
-    collision mass first merges at raw payload or binarization. This is not the
-    Phase Q population.
+    \textbf{Figure 3.} Means over five seeds; 5,000 clean $+$ 500 poison
+    packets per cell. Every probe changes the raw byte vector, so each
+    collision counted here is one that binarization could in principle
+    repair. Nine thresholds cut exact poison--clean matches by 92--96\%.
 
     {\centering
-        \includegraphics[width=0.58\linewidth]{figures/figure_v8_detector_outcome}\par
+        \includegraphics[
+            width=0.96\linewidth
+        ]{Figures/figure_v7_collision_origin}\par
     }
+
     \captionfont\raggedright
-    \textbf{Figure 5.} Repair-minus-control matched-cost capture under
-    retrospective strict-purity scoring. Only block reversal is slightly
-    positive, $+0.64\pm0.53$ percentage points.
+    \textbf{Figure 4.} Where collisions originate, from a separate audit of
+    the single-threshold $\mathbb{R}^{60}$ pipeline. Half the collision mass
+    is already present in the raw payload and is unreachable by any
+    thresholding scheme; the 46.7\% introduced at binarization is the share
+    Figure 3 targets.
+
 }
 
 \block[titleleft,roundedcorners=12]{References and Contact}{
-    \begin{minipage}[c]{0.64\linewidth}
+    \begin{minipage}[c]{0.63\linewidth}
         \referencefont\raggedright
+
         [1] G. F. Monkam, M. J. De Lucia, and N. D. Bastian,
         \emph{Computers \& Security} 144, 103929, 2024.\\[0.04cm]
-        [2] N. Moustafa and J. Slay, ``UNSW-NB15,'' \emph{MilCIS}, 2015.\\[0.04cm]
-        [3] M. Ankerst et al., ``OPTICS,'' \emph{SIGMOD}, pp.\ 49--60, 1999.
+
+        [2] N. Moustafa and J. Slay,
+        ``UNSW-NB15,'' \emph{MilCIS}, 2015.\\[0.04cm]
+
+        [3] M. Ankerst et al.,
+        ``OPTICS,'' \emph{SIGMOD}, pp.\ 49--60, 1999.
     \end{minipage}
     \hfill
     \begin{minipage}[c]{0.34\linewidth}
         \centering
+
         \begin{minipage}{0.48\linewidth}
             \centering
-            \includegraphics[width=1.05in]{figures/Github_QR.png}\\[-0.03cm]
-            \fontsize{15.5}{18}\selectfont GitHub
+            \includegraphics[
+                width=2.2in
+            ]{Figures/Github_QR.png}\\[-0.03cm]
+            \fontsize{15.5}{18}\selectfont
         \end{minipage}
         \hfill
         \begin{minipage}{0.48\linewidth}
             \centering
-            \includegraphics[width=1.05in]{figures/Linkedin_QR.png}\\[-0.03cm]
-            \fontsize{15.5}{18}\selectfont LinkedIn
+            \includegraphics[
+                width=2.2in
+            ]{Figures/Linkedin_QR.png}\\[-0.03cm]
+            \fontsize{15.5}{18}\selectfont
         \end{minipage}
     \end{minipage}
 }
@@ -233,74 +289,86 @@ titletoblockverticalspace=4mm,linewidth=0,roundedcorners=10]
 %=================================================================
 % RIGHT: mathematical mechanism, controlled change, and scope
 %=================================================================
+
 \column{0.28}
 
 \block[titleleft,roundedcorners=12]{Why One Cutoff Loses Information}{
-    \smallbody\raggedright
-    Let $z=x/M$, and let $S_n$ permute byte positions. Permutations preserve
-    the fitted maximum $M$, so thresholding
-    $\mathrm{Bin}_t(z)_i=\mathbf{1}\{z_i>t\}$ is equivariant. At $t=0.4$, let
-    $A^-=\{i:z_i\leq0.4\}$ and $A^+=\{i:z_i>0.4\}$. Then
+    \theorybody\raggedright
+
+    One network packet (Payload Byte) from UNSW-NB15 is represented by $x\in\{0,\ldots,255\}^{n}$, $n=1{,}500$. \\ The maximum byte value
+    $M$ is defined as $\max_i x_i = 255$; each byte is then normalized $z=x/M\in[0,1]^{n}$. \\ Define the binarizer at threshold $t$ by
+    \[
+        \mathrm{Bin}_t(z)_i=
+        \begin{cases}
+            1, & z_i>t,\\[0.06cm]
+            0, & z_i\leq t.
+        \end{cases}
+    \]
+    Let $\sigma\in S_n$ permute byte positions. Since $\sigma$ preserves the
+    byte multiset it fixes $M$, so $\sigma z=(\sigma x)/M$ and
+    \[
+        \mathrm{Bin}_t(\sigma z)=\sigma\,\mathrm{Bin}_t(z).
+    \]
+
+    Original pipeline uses a single cutoff, $t=0.4$:
+    \[
+        A^-=\{i:z_i\leq0.4\},
+        \qquad
+        A^+=\{i:z_i>0.4\}.
+    \]
+    Any permutation that acts within these two classes leaves the
+    binarization unchanged, so the stabilizer of $z$ is contained in the
+    stabilizer of its binarization:
     \[
         G_z:=\operatorname{Stab}(z)
-        \leq
-        G_{0.4}:=\operatorname{Stab}(\mathrm{Bin}_{0.4}(z))
-        =S(A^-)\times S(A^+).
+        \;\leq\;
+        G_{0.4}:=\operatorname{Stab}\bigl(\mathrm{Bin}_{0.4}(z)\bigr)
+        \;=\;S(A^-)\times S(A^+).
     \]
-    The meaningful blind spot is $G_{0.4}\setminus G_z$: raw-changing
-    permutations erased by the cutoff. It is nonempty precisely when one
-    threshold class contains two distinct byte values.
+    \begin{center}
+        \textbf{Blind spot}: $G_{0.4}\setminus G_z$.
+    \end{center}
 
-    \vspace{0.08cm}
-    For $T=\{0.1,\ldots,0.9\}$, define
-    $Q_T(z)_i=(\mathrm{Bin}_t(z)_i)_{t\in T}$. If
-    $B_0,\ldots,B_9$ are the induced bands, then
+    Solution: nine thresholds $T=\{0.1,\ldots,0.9\}$. Stack the binarizers
+    into a per-position signature
+    \[
+        Q_T(z)_i=\bigl(\mathrm{Bin}_t(z)_i\bigr)_{t\in T}\in\{0,1\}^{9},
+    \]
+    and let $B_k$ collect the positions whose signature has exactly $k$
+    ones, so $z_i\in\bigl(\tfrac{k}{10},\tfrac{k+1}{10}\bigr]$. The
+    stabilizer shrinks to
     \[
         G_z
-        \leq
-        G_T:=\operatorname{Stab}(Q_T(z))
-        =\prod_{k=0}^{9}S(B_k)
-        \leq G_{0.4}.
+        \;\leq\;
+        G_T:=\operatorname{Stab}\bigl(Q_T(z)\bigr)
+        \;=\;\prod_{k=0}^{9}S(B_k)
+        \;\leq\;G_{0.4}.
     \]
-    The final containment is strict when an occupied $0.4$ class spans multiple
-    bands. Within-band permutations and later noninjective maps can still create
-    collisions. Thus the stack reduces representation invariance; it does not
-    guarantee detection.
 
-    \vspace{0.08cm}
-    \innerblock{Controlled representation change}{
-        \captionfont\raggedright
-        \[
-            \begin{aligned}
-            \text{Control: }&F_{0.4}(x)\in\mathbb{R}^{60},\\
-            \text{Repair: }&F_T(x)=\frac{1}{\sqrt{9}}
-            \bigl(F_{0.1}(x),\ldots,F_{0.9}(x)\bigr)\in\mathbb{R}^{540}.
-            \end{aligned}
-        \]
-        Each $F_t$ uses the same 60-feature pipeline. The same packet pairs enter
-        both arms; $1/\sqrt{9}$ matches a single-block Euclidean distance only
-        when all nine blockwise differences are identical.
-    }
+    \vspace{0.12cm}
+
+    {\color{MyTerracotta}\bfseries
+    \begin{center}
+        Reducing representation invariance does not guarantee detection, but probability decreases substantially.
+    \end{center}\par}
 }
 
 \block[titleleft,roundedcorners=12]{Conclusion and Scope}{
     \smallbody\raggedright
-    \begin{itemize}
-        \item Nine thresholds reduce exact poison--clean collisions by 92--96\%.
-        \item Matched-cost capture does \textbf{not} materially improve.
-        \item The repair mainly fragments OPTICS output: poison assigned the
-        noise label $-1$ rises from 85--87\% to about 99\%, clean assigned $-1$
-        from 37\% to 55\%, and mean cluster count falls from about 140 to 108.
-        \item Next work should improve attack separation relative to ordinary
-        clean variation before retuning or replacing OPTICS.
-    \end{itemize}
 
-    \captionfont\raggedright
-    \textbf{Scope.} We evaluate a 60-feature reconstruction ([1] reports 72) on
-    UNSW-NB15 using four synthetic byte-permutation probes over five seeds.
-    Protocol validity and retained attack functionality were not tested. Cluster
-    purity uses ground truth retrospectively and is not deployable. The proof
-    establishes reduced representation invariance, not universal detection.
+    \begin{itemize}
+        \item Nine thresholds reduce exact poison--clean collisions by
+        92--96\% among raw-changing poison packets, confirming that the
+        single-cutoff blind spot is real and closable.
+
+        \item Closing it does \textbf{not} improve detection. The
+        540-dimensional representation mainly fragments the OPTICS
+        clustering, so poison packets are labeled noise rather than
+        recovered as a cluster.
+
+        \item Future work should improve attack separation relative to
+        ordinary clean variation before retuning or replacing OPTICS.
+    \end{itemize}
 }
 
 \end{columns}
