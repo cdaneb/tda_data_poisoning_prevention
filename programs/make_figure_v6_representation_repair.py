@@ -4,8 +4,8 @@ The chart is intentionally sparse: explanatory prose belongs in the poster's
 LaTeX caption, while this file owns the exact artifact-to-mark mapping.
 
 Usage:
-    python make_figure_v6_representation_repair.py --render
-    python make_figure_v6_representation_repair.py --render --out figures/figure_v6_representation_repair.png
+    python programs/make_figure_v6_representation_repair.py --render
+    python programs/make_figure_v6_representation_repair.py --render --out figures/figure_v6_representation_repair.png
 """
 
 from __future__ import annotations

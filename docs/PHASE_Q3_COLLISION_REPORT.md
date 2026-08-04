@@ -443,7 +443,7 @@ result was rerun or changed), `CLAUDE.md`, `README.md`.
 ## 10. Verification performed
 
 ```
-python verify_env.py                            PASSED
+python programs/verify_env.py                   PASSED
 python -m unittest tools.test_phase_q            6 tests OK
 python -m unittest tools.test_phase_q2          32 tests OK
 python -m unittest tools.test_phase_q3          39 tests OK

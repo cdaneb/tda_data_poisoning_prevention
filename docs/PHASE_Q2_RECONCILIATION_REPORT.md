@@ -605,8 +605,8 @@ export TDA_DATA_DIR="$HOME/wire/DataSets/PayloadByte_UNSW"
 export TDA_RESULTS_DIR="$PWD/results"
 
 python tools/phase_q2_accounting_audit.py                          # Q2-A
-python run_phase_q2_geometry.py --threshold-arm --confirm-seeds    # Q2-B
-python run_phase_q2_optics_sensitivity.py                          # Q2-C
+python programs/run_phase_q2_geometry.py --threshold-arm --confirm-seeds    # Q2-B
+python programs/run_phase_q2_optics_sensitivity.py                          # Q2-C
 
 python -m unittest tools.test_phase_q2 -v
 python tools/repro_check.py --expect 2.2000                        # legacy gate

@@ -12,8 +12,8 @@ used only retrospectively, for composition and attribution; every stage
 signature is built label-free by ``phase_q3_stage_pipeline``.
 
 Usage:
-    python run_phase_q3_collision_audit.py                # full audit
-    python run_phase_q3_collision_audit.py --seeds 42     # seed 42 only
+    python programs/run_phase_q3_collision_audit.py                # full audit
+    python programs/run_phase_q3_collision_audit.py --seeds 42     # seed 42 only
 """
 from __future__ import annotations
 
@@ -26,8 +26,10 @@ from pathlib import Path
 import numpy as np
 from sklearn.cluster import OPTICS
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, str(Path(__file__).resolve().parent / "tools"))
+PROGRAMS_DIR = Path(__file__).resolve().parent
+REPO_ROOT = PROGRAMS_DIR.parent
+sys.path.insert(0, str(PROGRAMS_DIR))
+sys.path.insert(0, str(REPO_ROOT))
 
 from clustering import classify_clusters
 from phase_q3_collisions import (
@@ -50,7 +52,7 @@ from tools.phase_q2_common import (
 )
 
 OPTICS_PARAMS = {"min_samples": 5, "max_eps": 2.0}
-OUT_PATH = Path(__file__).resolve().parent / "results" / "phase_q3_collision_audit.json"
+OUT_PATH = REPO_ROOT / "results" / "phase_q3_collision_audit.json"
 
 # Q2 recorded these for the legacy 30x50 / threshold-0.4 arm at seed 42.
 Q2_REFERENCE = {

@@ -14,6 +14,7 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "programs"))
 sys.path.insert(0, str(ROOT))
 
 from phase_q3_collisions import (  # noqa: E402

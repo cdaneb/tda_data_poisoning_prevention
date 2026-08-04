@@ -26,7 +26,7 @@ implementations (A4). Output goes to a Phase M artifact, leaving Phase P's
 committed results/test_b_diagnostics.json alone.
 
 Usage:
-    python test_b_diagnostics.py            # run A14 + P4 + M6 + P5, report,
+    python programs/test_b_diagnostics.py   # run A14 + P4 + M6 + P5, report,
                                               # exit nonzero if a gate fails
 """
 import sys

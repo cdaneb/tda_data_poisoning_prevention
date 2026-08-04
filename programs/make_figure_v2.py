@@ -24,8 +24,8 @@ re-derives the same quantities under the stricter single-fit discipline so the
 two can be compared; agreement is reported as a gate, not assumed.
 
 Usage:
-    python make_figure_v2.py --check     # population gates + sample selection
-    python make_figure_v2.py --render    # gates, then write the PDF
+    python programs/make_figure_v2.py --check     # population gates + sample selection
+    python programs/make_figure_v2.py --render    # gates, then write the PDF
 """
 import argparse
 import sys

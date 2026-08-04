@@ -19,7 +19,9 @@ import sys
 import time
 import numpy as np
 
-sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent))
+ROOT = __import__("pathlib").Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "programs"))
+sys.path.insert(0, str(ROOT))
 
 from data_loader import load_unsw
 from adversarial_attack import malicious_random_attack

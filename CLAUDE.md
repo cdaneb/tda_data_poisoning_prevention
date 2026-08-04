@@ -234,10 +234,10 @@ purity; unclustered ceilings apply at every threshold.
 | Cyclic shift | 6.28 | 12.36 | 33.72 +/- 1.70 | structurally below 40% |
 | Noise (orphaned N) | 4.96 | 7.52 | 27.72 +/- 2.00 | structurally below 40% |
 
-Reproduce with `python run_m8_purity_sweep.py`; its inputs are the committed M7
+Reproduce with `python programs/run_m8_purity_sweep.py`; its inputs are the committed M7
 artifact and saved cluster records. The output is
 `results/phase_m_m8_purity_sweep.json`; render the diagnostic with
-`python make_figure_m8_purity_sweep.py`. See `docs/PHASE_M_A19_A23_REPORT.md`
+`python programs/make_figure_m8_purity_sweep.py`. See `docs/PHASE_M_A19_A23_REPORT.md`
 for the provenance and interpretation record. M8 does not establish the source
 study's cluster configuration or recover the original frame of noise Cell N.
 

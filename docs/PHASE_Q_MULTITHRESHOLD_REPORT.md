@@ -178,8 +178,8 @@ Windows quick checks:
 
 ```powershell
 .\venv312\Scripts\python.exe -m unittest tools.test_phase_q -v
-.\venv312\Scripts\python.exe run_phase_q_support_audit.py
-.\venv312\Scripts\python.exe run_phase_q_diagnostics.py --n-diag 200 --family all --include-stack
+.\venv312\Scripts\python.exe programs\run_phase_q_support_audit.py
+.\venv312\Scripts\python.exe programs\run_phase_q_diagnostics.py --n-diag 200 --family all --include-stack
 ```
 
 WIRE full R1 grid:
@@ -188,7 +188,7 @@ WIRE full R1 grid:
 cd ~/beels_tda/tda_data_poisoning_prevention
 TDA_DATA_DIR=~/wire/DataSets/PayloadByte_UNSW \
 TDA_RESULTS_DIR=$PWD/results \
-  venv312/bin/python run_phase_q_experiment.py --family all --seed all
+  venv312/bin/python programs/run_phase_q_experiment.py --family all --seed all
 ```
 
 Summarize the completed artifact (read-only, population SD, no tuning):

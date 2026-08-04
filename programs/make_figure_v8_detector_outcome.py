@@ -3,7 +3,7 @@
 The figure reports the preregistered matched-clean-cost removal delta.
 
 Usage:
-    python make_figure_v8_detector_outcome.py --render
+    python programs/make_figure_v8_detector_outcome.py --render
 """
 
 from __future__ import annotations

@@ -22,7 +22,7 @@ Two protocols, strictly separated:
 The selection rule below is fixed in source before any cell is run.
 
 Usage:
-    python run_phase_q2_optics_sensitivity.py
+    python programs/run_phase_q2_optics_sensitivity.py
 """
 from __future__ import annotations
 

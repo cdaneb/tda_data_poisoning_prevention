@@ -26,7 +26,7 @@ _PINNED = ["giotto-tda", "scikit-learn", "numpy", "scipy", "pandas", "joblib"]
 def _git(*args):
     try:
         return subprocess.run(["git", *args], capture_output=True, text=True,
-                              cwd=__import__("pathlib").Path(__file__).resolve().parent,
+                              cwd=__import__("pathlib").Path(__file__).resolve().parent.parent,
                               timeout=15).stdout.strip()
     except Exception as e:  # git absent / not a repo — record the failure, don't crash a run
         return f"<git-error: {e.__class__.__name__}>"

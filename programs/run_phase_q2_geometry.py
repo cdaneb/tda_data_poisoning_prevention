@@ -22,9 +22,9 @@ geometry effect large enough to matter is re-run on all five seeds with
 population SD before it is described as an effect at all.
 
 Usage:
-    python run_phase_q2_geometry.py                  # geometry arm at 0.4, seed 42
-    python run_phase_q2_geometry.py --threshold-arm  # additionally 0.4 vs 0.3
-    python run_phase_q2_geometry.py --threshold-arm --confirm-seeds   # + 5 seeds
+    python programs/run_phase_q2_geometry.py                  # geometry arm at 0.4, seed 42
+    python programs/run_phase_q2_geometry.py --threshold-arm  # additionally 0.4 vs 0.3
+    python programs/run_phase_q2_geometry.py --threshold-arm --confirm-seeds   # + 5 seeds
 """
 from __future__ import annotations
 

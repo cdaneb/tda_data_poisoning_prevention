@@ -131,6 +131,9 @@ See `docs/PHASE_Q3_COLLISION_REPORT.md`.
 
 ## Repo layout
 
+Python source files live under `programs/`; paths below are relative to that
+directory unless another directory is shown explicitly.
+
 ```
 paths.py                    # DATA_DIR/RESULTS_DIR/MODELS_DIR/FIGURES_DIR, env-var overridable
 data_loader.py               # load_unsw() / load_cicids() -- Payload-Byte CSVs -> (N,1500) bytes + labels
@@ -221,13 +224,13 @@ On WIRE the repo lives at `~/projects/tda_data_poisoning_prevention`. Do **not**
 which is the read-only view of the same NFS share. `local_scratch` is exfat (no symlinks, no POSIX
 modes, may not survive rescheduling) — disposable intermediates only.
 
-All data/results/models/figures paths are resolved by `paths.py`, repo-relative by default and
+All data/results/models/figures paths are resolved by `programs/paths.py`, repo-relative by default and
 overridable via `TDA_DATA_DIR` / `TDA_RESULTS_DIR` / `TDA_MODELS_DIR` / `TDA_FIGURES_DIR` -- copy
 `.env.example` to `.env.wire` and fill in machine-specific paths (e.g. WIRE's NFS mounts), then
 `set -a; source .env.wire; set +a` before running a driver script. Nothing loads it automatically.
 
 ```bash
-python verify_env.py
+python programs/verify_env.py
 ```
 
 ## Datasets
@@ -268,9 +271,9 @@ for "does this environment/these path changes still reproduce the recorded numbe
 Keep these files together in version control:
 
 ```text
-run_m8_purity_sweep.py
+programs/run_m8_purity_sweep.py
 results/phase_m_m8_purity_sweep.json
-make_figure_m8_purity_sweep.py
+programs/make_figure_m8_purity_sweep.py
 figures/figure_m8_purity_sweep.pdf
 docs/PHASE_M_A19_A23_REPORT.md
 ```
@@ -278,8 +281,8 @@ docs/PHASE_M_A19_A23_REPORT.md
 To regenerate the saved-cluster rescore and diagnostic figure:
 
 ```bash
-python run_m8_purity_sweep.py
-python make_figure_m8_purity_sweep.py
+python programs/run_m8_purity_sweep.py
+python programs/make_figure_m8_purity_sweep.py
 ```
 
 ## Combined-fit rule
@@ -319,31 +322,31 @@ is a diagnostic artifact and is not poster evidence.
 
 ```bash
 # Count-invariance gate + Test B diagnostics (cheap; run first)
-python test_b_diagnostics.py
+python programs/test_b_diagnostics.py
 
 # Test B: four permutation families across 5 seeds, all clustering algorithms
-python run_test_b_capture.py
+python programs/run_test_b_capture.py
 
 # Attribution ladder: legacy vs. magnitude-matched-random vs. surrogate-guided attacks
-python run_lens4_baseline.py
+python programs/run_lens4_baseline.py
 
 # Original baseline / iterative-filter / multi-seed drivers (still runnable, unmodified)
-python run_baseline.py
-python run_iterative.py
-python run_multi_seed.py            # long-running (~hours), both datasets
+python programs/run_baseline.py
+python programs/run_iterative.py
+python programs/run_multi_seed.py            # long-running (~hours), both datasets
 
 # Poster figures
-python make_figure_v2.py
-python make_figure_v3.py
+python programs/make_figure_v2.py
+python programs/make_figure_v3.py
 
 # Saved-cluster M8 diagnostic (not a new experiment)
-python run_m8_purity_sweep.py
-python make_figure_m8_purity_sweep.py
+python programs/run_m8_purity_sweep.py
+python programs/make_figure_m8_purity_sweep.py
 
 # Downstream classifier evaluation + figures
-python classifier_eval.py
-python visualize.py
-python visualize_comparison.py
+python programs/classifier_eval.py
+python programs/visualize.py
+python programs/visualize_comparison.py
 ```
 
 ## References

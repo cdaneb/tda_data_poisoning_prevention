@@ -23,7 +23,9 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "programs"))
+sys.path.insert(0, str(ROOT))
 
 from data_loader import load_unsw
 from adversarial_attack import malicious_random_attack
@@ -34,7 +36,7 @@ N_SWAPS = 60
 DISCOVERY_SEED = 42
 CONFIRMATION_SEEDS = (42, 123, 456, 789, 1024)
 
-CACHE_DIR = Path(__file__).resolve().parent.parent / ".q2_cache"
+CACHE_DIR = ROOT / ".q2_cache"
 
 
 # --------------------------------------------------------------------------

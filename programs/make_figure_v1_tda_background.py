@@ -6,8 +6,8 @@ components (H_0), loops (H_1), and persistence across a scale parameter without
 claiming that this is the packet-data computation.
 
 Usage:
-    python make_figure_v1_tda_background.py --render
-    python make_figure_v1_tda_background.py --render --out figures/figure_v1_tda_background.png
+    python programs/make_figure_v1_tda_background.py --render
+    python programs/make_figure_v1_tda_background.py --render --out figures/figure_v1_tda_background.png
 """
 
 import argparse

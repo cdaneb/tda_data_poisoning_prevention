@@ -133,7 +133,7 @@ test on this controlled reconstruction only.
 ## Reproduction and validation
 
 ```powershell
-venv312\Scripts\python.exe run_phase_q4_dedup_mechanism.py
+venv312\Scripts\python.exe programs\run_phase_q4_dedup_mechanism.py
 venv312\Scripts\python.exe -m unittest tools.test_phase_q4 -v
 venv312\Scripts\python.exe tools\phase_q4_summarize.py
 ```
@@ -144,4 +144,3 @@ control hashes, no-backfill counts, zero repeated clean payloads, unchanged
 attack and OPTICS parameters, bitwise instrumented/production feature equality,
 exhaustive failure categories, exact paired deltas, finite values, and
 population-standard-deviation summaries.
-

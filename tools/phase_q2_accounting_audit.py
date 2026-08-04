@@ -28,7 +28,9 @@ from pathlib import Path
 import numpy as np
 from sklearn.cluster import OPTICS
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "programs"))
+sys.path.insert(0, str(ROOT))
 
 from paths import RESULTS_DIR
 from tda_pipeline import extract_tda_features

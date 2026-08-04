@@ -5,8 +5,8 @@ The control is the completed Q3 artifact.  Q4 rebuilds the same seeded
 then runs the unchanged R60 attack, threshold-0.4 TDA pipeline, and OPTICS.
 
 Usage:
-    python run_phase_q4_dedup_mechanism.py
-    python run_phase_q4_dedup_mechanism.py --seeds 42
+    python programs/run_phase_q4_dedup_mechanism.py
+    python programs/run_phase_q4_dedup_mechanism.py --seeds 42
 """
 from __future__ import annotations
 
@@ -19,9 +19,10 @@ from pathlib import Path
 
 import numpy as np
 
-ROOT = Path(__file__).resolve().parent
+PROGRAMS_DIR = Path(__file__).resolve().parent
+ROOT = PROGRAMS_DIR.parent
+sys.path.insert(0, str(PROGRAMS_DIR))
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "tools"))
 
 from phase_q3_collisions import class_stats, earliest_merger_attribution, exact_hash
 from phase_q3_stage_pipeline import CHAIN_STAGES, extract_all_stages

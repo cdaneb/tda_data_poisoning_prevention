@@ -6,8 +6,8 @@ Binarizer cutoff becomes a fixed bank of nine cutoffs.  The per-threshold TDA
 map and OPTICS settings remain fixed.
 
 Usage:
-    python make_figure_v9_tda_pipeline.py --render
-    python make_figure_v9_tda_pipeline.py --render --out figures/figure_v9_tda_pipeline.png
+    python programs/make_figure_v9_tda_pipeline.py --render
+    python programs/make_figure_v9_tda_pipeline.py --render --out figures/figure_v9_tda_pipeline.png
 """
 
 from __future__ import annotations

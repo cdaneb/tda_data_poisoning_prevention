@@ -6,8 +6,8 @@ raises strict-purity capture above random swaps, but an unguided cyclic shift
 reaches essentially the same capture level.
 
 Usage:
-    python make_figure_v4_guidance_shift.py --check
-    python make_figure_v4_guidance_shift.py --render
+    python programs/make_figure_v4_guidance_shift.py --check
+    python programs/make_figure_v4_guidance_shift.py --render
 """
 import argparse
 import json

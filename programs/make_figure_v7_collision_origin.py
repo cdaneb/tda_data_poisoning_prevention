@@ -5,7 +5,7 @@ where final repeated-member collision mass first arose; it is not a Phase Q
 repair-arm result.
 
 Usage:
-    python make_figure_v7_collision_origin.py --render
+    python programs/make_figure_v7_collision_origin.py --render
 """
 
 from __future__ import annotations

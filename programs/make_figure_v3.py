@@ -20,8 +20,8 @@ checked against CLAUDE.md §6 before anything is drawn. A mismatch is a hard
 stop — `--check` exits nonzero and `--render` refuses to draw.
 
 Usage:
-    python make_figure_v3.py --check     # parse + verify, print the table
-    python make_figure_v3.py --render    # verify, then write the PDF
+    python programs/make_figure_v3.py --check     # parse + verify, print the table
+    python programs/make_figure_v3.py --render    # verify, then write the PDF
 """
 import argparse
 import json
