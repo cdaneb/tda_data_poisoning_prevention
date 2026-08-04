@@ -39,6 +39,8 @@ results/*
 # `phase_q_*` requires a literal underscore after `q`, so it does not match
 # `phase_q3_`.
 !results/phase_q3_*.json
+# Phase Q4 clean-frame deduplication mechanism test.
+!results/phase_q4_*.json
 
 # Log files
 *.log
