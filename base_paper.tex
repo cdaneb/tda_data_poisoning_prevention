@@ -4,6 +4,7 @@
 \usepackage{balance}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{multirow}
 \usepackage{microtype}
 \usepackage{url}
 
@@ -16,33 +17,36 @@ Analysis Pipeline for Network Data Poisoning Detection}
 \author{\IEEEauthorblockN{Christian Dane Beels}
 \IEEEauthorblockA{Department of Mathematical Sciences\\
 United States Military Academy\\
-West Point, New York, USA}}
+West Point, New York, USA}
+\thanks{Code, frozen specifications, and machine-readable result artifacts
+are available at
+\url{https://github.com/cdaneb/tda_data_poisoning_prevention}.}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Topological data analysis (TDA) has been proposed as an unsupervised defense
-against data poisoning in network intrusion detection, but an end-to-end
-failure does not reveal whether attack information was lost in the data,
-representation, topology, or clusterer. We perform a stage-wise audit of a
-controlled reconstruction on the packet-level UNSW-NB15 Payload-Byte dataset.
-In a five-seed provenance audit of the standing 60-transposition control,
-50.80\% of repeated final-vector members first coincide as raw payloads,
-46.68\% first coincide at a single binary threshold, and only 2.52\% first
-coincide during persistent homology; no later stage creates an exact merger. A
-preregistered repair comparison then evaluates four support-restricted
-byte-permutation families and replaces only the single threshold with a fixed
-nine-threshold stack. This reduces poisoned
-payloads that exactly match any clean feature vector from 2.6--4.3\% to
-0.2--0.3\%, yet produces no material improvement in poison removal at matched
-clean false-removal cost. Instead, the stack sends approximately 99\% of
-poisoned samples and 55\% of clean samples to OPTICS noise. A separate
-deduplication mechanism test likewise reduces feature degeneracy but worsens
-strict-purity capture. The principal result is therefore diagnostic: repairing
-an algebraic representation collision need not produce statistical separation
-or a better detector, and stage-resolved evaluation prevents those claims from
-being conflated.
+Reliable poisoning defenses require evidence that attack information survives
+each stage between a network payload and a detector decision. This study
+introduces a stage-wise audit of a controlled topological data analysis (TDA)
+pipeline on the packet-level UNSW-NB15 Payload-Byte dataset. Across five
+seeds, 50.80\% of repeated final-vector members first coincide as raw
+payloads, 46.68\% first coincide at the single binary threshold, and only
+2.52\% first coincide during persistent homology; no later stage creates an
+exact merger. An analysis-locked comparison then changes only the
+representation, replacing one threshold with a fixed nine-threshold stack for
+four support-restricted byte permutations. The stack reduces poisoned rows
+that exactly match a clean feature vector from 2.60--4.32\% to 0.16--0.28\%, a
+92.0--95.9\% reduction, confirming that the single-cutoff equality mechanism
+is real and closable. That gain does not improve poison removal at matched
+clean-data cost. Absolute removal is near the floor in both arms---0.00--0.20\%
+for the single threshold and 0.00--0.64\% for the stack at cluster-purity
+budgets of 0.80 and above---while poisoned rows assigned to OPTICS noise rise
+from 85--87\% to approximately 99\%. Eliminating exact coordinate collisions
+therefore exposes density-based cluster formation, rather than coordinate
+equality, as the binding downstream limitation, and yields a reproducible
+evaluation standard that reports representation, separation, and fixed-cost
+detector endpoints separately.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -79,21 +83,22 @@ representation collisions improve downstream poison removal?} The study makes
 three contributions. First, it defines a mutually exclusive
 \emph{earliest-merger} audit that attributes every repeated final-vector member
 to the first pipeline stage at which exact equality appears. Second, it tests a
-single preregistered representation intervention---a nine-threshold stack---
+single prespecified representation intervention---a nine-threshold stack---
 while holding the attack realizations, raster, topological features, and OPTICS
 settings fixed. Third, it separates three claims that are often treated as one:
 whether an algebraic blind spot is repaired, whether poisoned samples become
 unusual relative to clean traffic, and whether downstream removal improves at
 the same clean-data cost.
 
-The findings are deliberately conditional. They concern four fixed
-permutation families, one packet-level derivative of UNSW-NB15, and a
-controlled reconstruction whose recoverable implementation details do not
-justify calling it an exact reproduction of Ref.~\cite{monkam2024}. Within that
-scope, most exact degeneracy occurs before topology. The multithreshold stack
-repairs the targeted identity mechanism but does not create useful cluster
-separation; OPTICS noise, rather than exact coordinate sharing, becomes the
-dominant failure mode.
+The experiments localize 97.48\% of repeated-member collision mass to the raw
+payload or binary mask and reduce exact clean/poison coordinate matches by
+92.0--95.9\%. Neither representation, however, removes an appreciable share of
+poison at strict clean-data cost. That outcome relocates the limiting
+mechanism from coordinate equality to density-based cluster formation, which
+sharpens rather than obscures the downstream conclusion. These conditional
+findings concern four fixed permutation families, the packet-level
+Payload-Byte derivative, and a controlled reconstruction rather than an exact
+reproduction of Ref.~\cite{monkam2024}.
 
 \section{Background and Related Work}
 \subsection{Payload-based intrusion detection and poisoning}
@@ -106,14 +111,11 @@ and metadata. This distinction matters: exact equality of two padded packet
 payloads is not the same object as equality of two original UNSW-NB15 flow
 records.
 
-Poisoning evaluations must also distinguish an attack transformation from its
-realized effect. A byte permutation preserves the multiset of byte values. If
-it acts only on padding, swaps equal values, or maps all bytes within the same
-binarization bins, the intended attack may produce no change at the next
-pipeline stage. Counting such a case as evidence for or against a detector
-confounds attack validity with representation sensitivity. Our main comparison
-therefore rejection-samples attack parameters until every poisoned row differs
-from its source at the raw-byte level.
+Poisoning evaluations must distinguish an attack transformation from its
+realized effect. A permutation acting on padding, equal values, or bytes in the
+same bin can leave the next pipeline stage unchanged. The main comparison
+therefore redraws attack parameters until every poisoned row differs from its
+source at the raw-byte level.
 
 \subsection{Persistent homology as a machine-learning representation}
 For a scalar-valued filtration on an image, persistent homology records the
@@ -123,43 +125,49 @@ diagrams usable by conventional learning algorithms. Stability results explain
 why persistence can suppress small perturbations~\cite{cohensteiner2007}; that
 property is valuable for noise tolerance but is not injectivity. Distinct
 images may have the same persistence diagram, and distinct diagrams may have
-the same finite summary vector. We implement the image, cubical-persistence,
-and summary operations with \texttt{giotto-tda}~\cite{tauzin2021}.
+the same finite summary vector. The image, cubical-persistence,
+and summary operations are implemented with
+\texttt{giotto-tda}~\cite{tauzin2021}.
 
 The downstream clusterer is OPTICS, which orders observations by density and
-can designate sparse observations as noise~\cite{ankerst1999}. In a defense,
-noise is not automatically synonymous with poison: clean and poisoned samples
-can both be unclustered. Likewise, a cluster's poison purity is unavailable
-without ground truth. We use purity only as a retrospective scoring device,
-never as a deployable cluster-labeling rule.
+can designate sparse observations as noise~\cite{ankerst1999}. Because clean
+and poisoned samples can both be unclustered, poison purity is used only for
+retrospective scoring, not as a deployable cluster-labeling rule.
 
 Prior work establishes the feasibility of a TDA--clustering defense on network
-payloads~\cite{monkam2024}; our focus is different. Rather than proposing a new
-detector and optimizing it against a headline metric, we audit the information
-flow of a fixed reconstruction and conduct one controlled repair. This design
-allows a negative downstream result to remain informative: it identifies which
-mechanism was removed and which mechanism replaced it.
+payloads~\cite{monkam2024}. The present study instead audits information flow
+through a fixed reconstruction and conducts one controlled repair. This design
+identifies the mechanism removed by the intervention and the downstream
+mechanism that then limits performance.
 
 \section{Methods}
-\subsection{Controlled reconstruction and experimental frame}
-For the main control--repair comparison and each seed in
-$\{42,123,456,789,1024\}$, we draw the same 5,000-row sample from the
-Payload-Byte table and append 500 poisoned variants (10\%). Hereafter,
-\emph{clean} means an unmodified row in the experimental frame, not necessarily
-benign network traffic; poisoned sources are selected from rows bearing an
-attack label in the dataset. All results are means and population standard
-deviations over these five seeds.
+\subsection{Controlled reconstruction and experimental frames}
+For each seed in $\{42,123,456,789,1024\}$, the experiment draws the same
+5,000-row sample from the Payload-Byte table and appends 500 poisoned variants
+(10\%). Hereafter, \emph{clean} means an unmodified row in the experimental
+frame, not necessarily benign network traffic; poisoned sources are selected
+from rows bearing an attack label in the dataset. All results are means and
+population standard deviations over these five seeds unless stated otherwise.
+
+Two frames are used, and results do not transfer between them.
+\emph{Frame~A} is the legacy 60-transposition frame that carries the
+provenance audit; it accepts the attack realization as drawn, so some poisoned
+rows are byte-identical to their sources. \emph{Frame~B} is the
+common-eligibility substrate that carries the control--repair comparison;
+attack parameters are redrawn until every poisoned row differs from its source
+at the raw-byte level. Because Frame~B eliminates raw no-ops by construction,
+the Frame~A attribution of collision mass is a statement about Frame~A alone.
 
 Payload arrays are zero-padded to 1,500 bytes. Because zero may also be a valid
-payload byte, we define conservative support as one position beyond the last
+payload byte, conservative support is defined as one position beyond the last
 nonzero byte. It may omit legitimate trailing zeros but cannot include appended
-padding. Eligible sources have at least 120 supported bytes and a shared,
-deterministic attackability witness. The four prespecified families are:
+padding. In Frame~B, eligible sources have at least 120 supported bytes and a
+shared, deterministic attackability witness. The four prespecified families are:
 (i) 60 disjoint transpositions; (ii) reversal of one 120-byte block; (iii) a
 swap of two disjoint 60-byte blocks; and (iv) a nonzero cyclic shift of the
-supported prefix. All act entirely inside conservative support, and attack
-parameters are redrawn when the result would be byte-identical to its source.
-Thus all 20 family--seed cells contain exactly 500 raw-changing poisoned rows.
+supported prefix. All act entirely inside conservative support. In Frame~B all
+20 family--seed cells therefore contain exactly 500 raw-changing poisoned
+rows.
 
 The legacy control reshapes each payload into a $30\times50$ image and applies
 a fitted binary threshold $t=0.4$. The fitted maximum is 255, so the effective
@@ -173,26 +181,24 @@ filtration and a 60-dimensional concatenation. OPTICS is fixed at
 $\xi$-based extraction. No thresholds, block weights, filtrations, summaries,
 or clustering settings were selected after results were observed.
 
-\subsection{Stage-wise collision provenance}
-Before the repair comparison, we apply the provenance audit to the standing
-five-seed legacy control with 60-transposition poisoning. This evidence frame
-also contains 5,000 unmodified and 500 appended rows, but is distinct from the
-guaranteed-nontrivial, common-eligibility substrate used in the four-family
-comparison. For every row, we compute an exact canonical signature at the raw payload,
+\subsection{Stage-wise collision provenance (Frame~A)}
+Before the repair comparison, the provenance audit is applied to Frame~A, the
+standing five-seed legacy control with 60-transposition poisoning.
+For every row, an exact canonical signature is computed at the raw payload,
 support record, binary mask, five filtration images, unscaled persistence
 diagrams, scaled diagrams, 12-feature branch summaries, and final vector.
 Diagram points are sorted by homology dimension, birth, and death after
 excluding diagonal padding; no float is rounded before equality is declared.
 Because each stage is a deterministic function of the preceding stage,
-equality can be created but not destroyed. We assign a repeated final-vector
-member to the earliest stage at which its exact equivalence class first ceases
+equality can be created but not destroyed. A repeated final-vector member is
+assigned to the earliest stage at which its exact equivalence class first ceases
 to be a singleton. The resulting categories are mutually exclusive and sum to
 the final repeated-member collision mass. All five runs satisfy the required
 class-refinement monotonicity check.
 
 This denominator is important. A reported share such as 50.80\% means 50.80\%
 of \emph{rows belonging to repeated final-vector classes}; it is not the
-duplicate rate among all 5,500 rows. We separately report the
+duplicate rate among all 5,500 rows. The analysis separately reports the
 \emph{coordinate-class obstruction}: poisoned rows sharing an exact final
 feature vector with at least one clean row, divided by all poisoned rows.
 
@@ -204,9 +210,11 @@ $B_t(\vect{x})_j=\mathbf{1}\{x_j>255t\}$. Then
  \|B_t(P_\sigma\vect{x})\|_1=\|B_t(\vect{x})\|_1 .
  \label{eq:invariance}
 \end{equation}
-The foreground count is invariant, and if every moved byte remains in its old
-threshold bin, the entire binary image is unchanged. Position-dependent
-filtrations can respond when the mask changes, so (1) does not imply that all
+The cut $255t$ is fixed because a permutation preserves the byte multiset and
+therefore fixes the fitted maximum, which is 255 on this data. The foreground
+count is invariant, and if every moved byte remains in its old threshold bin,
+the entire binary image is unchanged. Position-dependent filtrations can
+respond when the mask changes, so~\eqref{eq:invariance} does not imply that all
 topological summaries are permutation-invariant. That question is measured by
 the downstream signatures rather than assumed.
 
@@ -242,45 +250,21 @@ discarding more unpoisoned data. Secondary outcomes include exact feature
 matches with clean, clean and poison noise fractions, cluster count, and
 strict-purity removal.
 
-After the main comparison was frozen, we ran one separately preregistered
-mechanism test: deduplicate the 5,000-row clean sample by all 1,500 payload
-bytes before poison generation, retain the first occurrence without using
-labels, and do not backfill. It holds the original 60-feature control, legacy
-60-transposition attack, 10\% poison rate, raster, feature map, and OPTICS
-settings fixed. This Q4 test
-asks whether raw clean-frame duplication is causal for poor strict-purity
-capture; it is not part of the multithreshold intervention.
-
 \subsection{Reproducibility and analysis lock}
-The experiment was specified before the full comparison was run. In
-particular, the dataset, five seeds, four attacks, threshold set, equal block
-weights, filtrations, vector summaries, OPTICS parameters, purity cutoffs, and
-matched-cost primary endpoint were fixed. After observing results, we did not
-select thresholds, add or remove filtrations, whiten features, learn block
-weights, resample attacks, delete seeds, or tune OPTICS. The later
-deduplication study had its own frozen question and endpoints and is reported
-separately.
-
-Several execution checks guard the causal interpretation. Each family--seed
-record asserts 5,000 unmodified and 500 appended rows, zero raw no-op attacks,
-60 control features, 540 stack features, finite outputs, and all five removal
-points. The $t=0.4$ block extracted during the stack run must equal the legacy
-pipeline output exactly, so implementation drift cannot explain an arm
-difference. The provenance instrumentation calls the production feature
-extractor unchanged, replays its already fitted internal stages, and requires
-the reconstructed final matrix to be bitwise identical. Exact-signature
-refinement is checked at every transition. For Q4, the replayed control input
-and poison-selection hashes must match the completed provenance run, while the
-deduplicated arm must contain zero repeated clean payloads and use no backfill.
-Machine-readable artifacts are written incrementally by seed and summarized
-with population, rather than sample, standard deviations. These checks do not
-remove external-validity limitations, but they narrow internal explanations
-for the observed differences to the declared intervention and consequent
-geometry.
+The dataset, seeds, attacks, thresholds, block weights, filtrations, summaries,
+OPTICS parameters, purity cutoffs, and matched-cost endpoint were fixed before
+the full comparison. No component was selected or tuned after observing the
+results. Each family--seed record verifies 5,000 unmodified and 500 appended
+rows, zero raw no-ops, 60 control features, 540 stack features, finite outputs,
+and all removal points. The extracted $t=0.4$ block must exactly equal the
+legacy output, the reconstructed provenance matrix must be bitwise identical
+to production output, and equivalence classes must refine monotonically across
+stages. Artifacts are saved by seed and summarized with population standard
+deviations.
 
 \section{Results}
-\subsection{Most exact collision mass appears before topology}
-In the five-seed legacy transposition provenance audit, the final 60-vector
+\subsection{Frame~A: the audit localizes exact collisions upstream}
+In the five-seed Frame~A provenance audit, the final 60-vector
 repeated-member fraction is
 $\meanstd{56.33}{0.68}$\%. Fig.~\ref{fig:provenance} partitions that mass by its
 first merger. Raw-identical padded payloads account for
@@ -318,48 +302,86 @@ $\meanstd{1.80}{0.51}$\% is removed in a 100\%-poison cluster. Exact collisions
 are therefore load-bearing under this fit, but the noise assignment affects a
 larger portion of poisoned rows.
 
-The strict-purity failure decomposition is exhaustive. Averaged over seeds,
-39.48\% of poison is non-noise but shares a final vector with clean, 2.48\% is
-non-noise and coordinate-distinct but lies in a mixed cluster, and the residual
-unexplained category is exactly zero. No exact coordinate class is split across
-two distinct non-noise OPTICS clusters. The only observed splits place some
-identical members in one real cluster and others at label $-1$. Thus exact
-coordinate sharing constrains this fit without being asserted as a universal,
-algorithm-independent capture ceiling.
+The strict-purity failure decomposition is exhaustive over all poisoned rows.
+Averaged over seeds, 39.48\% of poison is non-noise but shares a final vector
+with a clean row, 2.48\% is non-noise and coordinate-distinct but lies in a
+mixed cluster, and the residual category is exactly zero in every seed. Exact
+coordinate sharing thus constrains this fit without being treated as a
+universal capture ceiling.
 
-\subsection{The stack repairs identity but not detection}
-The main comparison uses common eligible sources and guarantees a raw-changing
-attack in every family--seed cell. Its control is therefore the matched
-single-threshold arm for this new substrate, not the legacy provenance frame.
-The nine-threshold representation sharply reduces the poisoned rows that
-exactly match any clean feature vector (Fig.~\ref{fig:repair}). The reduction
-is consistent across all four families and all five seeds: from 2.6--4.3\% in
-the control to 0.2--0.3\% in the repair, a 13--20-fold decrease. In a paired
-200-source diagnostic, the full stack also produces zero binary or 540-vector
-identity for every family. Thus the intended algebraic repair succeeds.
+\subsection{Frame~B: multithresholding repairs the representation}
+The control--repair comparison uses Frame~B, so its control is the matched
+single-threshold arm on that substrate rather than the Frame~A provenance
+control. The primary representation gain is a sharp reduction in poisoned rows
+that exactly match any clean feature vector (Fig.~\ref{fig:repair}). The
+reduction is consistent across all four families and all five seeds: family
+means fall from 2.60--4.32\% under the control to 0.16--0.28\% under the
+repair, a 92.0--95.9\% reduction. In absolute terms this is a fall from 13--24
+of 500 poisoned rows to 0--2 of 500; because the repair counts reach zero in
+8 of 20 cells, the reduction is reported as a percentage rather than as a
+ratio. The intervention therefore succeeds at its prespecified representation
+objective.
 
-That repair does not improve the primary endpoint. Table~\ref{tab:matched}
-shows mean stack-minus-control poison-removal deltas at the five matched clean
-costs. Through the $>0.80$ cutoffs, three families have exactly zero change;
-cyclic shift is $-0.20$ percentage points, and block reversal is only $+0.64$
-points, arising from one small cluster in three of five seeds. At the looser
-$>0.50$ cutoff, every family is worse than control. No positive result is both
-material and consistent across families.
+\subsection{Frame~B: detection does not follow, and both arms sit near the
+floor}
+Table~\ref{tab:matched} reports absolute poison removal for both arms
+alongside the matched-cost difference. At every purity budget of 0.80 and
+above, the single-threshold control removes 0.00--0.20\% of poison and the
+stack removes 0.00--0.64\%. The only positive strict-budget mean is block
+reversal's $+0.64$ points, produced by a single poison-only cluster of about
+five packets in three of five seeds. At the loosest budget, $>0.50$, the
+control reaches 1.24--1.88\% while the stack stays at 0.00--0.64\%, so every
+family is then worse than control.
+
+Clean false-removal is 0.0000 for the stack at every budget and for the
+control at every budget of 0.80 and above. The matched-cost constraint
+in~\eqref{eq:matchedcost} is therefore inactive through $q>0.80$ and binds
+only at $q>0.50$, where the control incurs a clean cost of 0.06--0.11\%.
+
+The downstream geometry accounts for this floor. From control to stack, poison
+noise rises from 85.2--87.5\% to 98.7--99.3\%, clean noise rises from about
+37.1\% to 54.5--54.6\%, and mean cluster count falls from 139.6--142.4 to
+107.6--108.8. The stack separates coordinates but fragments the population.
+
+Because both arms sit near zero at operational budgets, this comparison should
+not be read as a repaired representation failing to improve a working
+detector. Neither representation supports meaningful poison removal under the
+fixed clustering configuration. Eliminating exact coordinate collisions
+therefore does not resolve the limitation; it exposes density-based cluster
+formation, rather than coordinate equality, as the binding constraint.
 
 \begin{table}[t]
-\caption{Matched-clean-cost poison-removal delta (stack minus control)}
+\caption{Poison removed, in percentage points of all poisoned rows, at five
+retrospective cluster-purity budgets $q$. Five-seed means, Frame~B. $\Delta$
+is the matched-clean-cost difference of \eqref{eq:matchedcost}, not a simple
+row subtraction. Both arms sit near zero at every budget of $0.80$ and above.}
 \label{tab:matched}
 \centering
 \scriptsize
-\setlength{\tabcolsep}{3.1pt}
-\begin{tabular}{lrrrrr}
+\setlength{\tabcolsep}{3.4pt}
+\begin{tabular}{llrrrrr}
 \toprule
-Family & 1.0 & $>.95$ & $>.90$ & $>.80$ & $>.50$ \\
+Family & Arm & $1.0$ & $>.95$ & $>.90$ & $>.80$ & $>.50$ \\
 \midrule
-Transpositions & 0.000 & 0.000 & 0.000 & 0.000 & $-$.0188 \\
-Block reversal & .0064 & .0064 & .0064 & .0044 & $-$.0060 \\
-Block swap      & 0.000 & 0.000 & 0.000 & 0.000 & $-$.0152 \\
-Cyclic shift    & $-$.0020 & $-$.0020 & $-$.0020 & $-$.0020 & $-$.0156 \\
+\multirow{3}{*}{Transpositions}
+ & Control  & 0.00 & 0.00 & 0.00 & 0.00 & 1.88 \\
+ & Stack    & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+ & $\Delta$ & 0.00 & 0.00 & 0.00 & 0.00 & $-$1.88 \\
+\midrule
+\multirow{3}{*}{Block reversal}
+ & Control  & 0.00 & 0.00 & 0.00 & 0.20 & 1.24 \\
+ & Stack    & 0.64 & 0.64 & 0.64 & 0.64 & 0.64 \\
+ & $\Delta$ & $+$0.64 & $+$0.64 & $+$0.64 & $+$0.44 & $-$0.60 \\
+\midrule
+\multirow{3}{*}{Block swap}
+ & Control  & 0.00 & 0.00 & 0.00 & 0.00 & 1.52 \\
+ & Stack    & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+ & $\Delta$ & 0.00 & 0.00 & 0.00 & 0.00 & $-$1.52 \\
+\midrule
+\multirow{3}{*}{Cyclic shift}
+ & Control  & 0.20 & 0.20 & 0.20 & 0.20 & 1.56 \\
+ & Stack    & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+ & $\Delta$ & $-$0.20 & $-$0.20 & $-$0.20 & $-$0.20 & $-$1.56 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -367,164 +389,105 @@ Cyclic shift    & $-$.0020 & $-$.0020 & $-$.0020 & $-$.0020 & $-$.0156 \\
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/figure_v8_detector_outcome.pdf}
-  \caption{Primary matched-clean-cost result at the strict control budget.
-  Points are five-seed mean stack-minus-control poison-removal deltas; error
-  bars are population SD. The small block-reversal effect corresponds to one
-  poison-only cluster in three of five seeds.}
+  \caption{Primary matched-clean-cost result at the strict control budget
+  (Frame~B). Points are five-seed mean stack-minus-control poison-removal
+  deltas; error bars are population SD. Absolute removal is near zero in both
+  arms at this budget (Table~\ref{tab:matched}), so these differences separate
+  two floors rather than two working detectors. The small block-reversal
+  effect corresponds to one poison-only cluster in three of five seeds.}
   \label{fig:detector}
 \end{figure}
 
-The downstream geometry explains the mismatch. In the control, poison noise is
-85.2--87.5\% across families and clean noise is approximately 37.1--37.2\%.
-With the stack, poison noise rises to 98.7--99.3\% and clean noise to
-54.5--54.6\%; mean cluster count falls from 139.6--142.4 to 107.6--108.8.
-The intervention separates exact coordinates but fragments the population
-rather than forming removable poison-dominant clusters.
-
-A paired diagnostic makes the statistical failure visible before clustering.
-For 200 clean/source pairs per family, Table~\ref{tab:displacement} reports the
-median attack displacement divided by the median displacement of ordinary
-clean--clean pairings. Although the stack removes exact identity, its ratio is
-smaller for every family. Moreover, zero of 200 attack displacements in either
-representation exceed the corresponding clean--clean 95th percentile. The
-repair therefore creates additional coordinates without making the attacks
-unusual in the population metric used by OPTICS.
-
-\begin{table}[t]
-\caption{Attack-to-clean median displacement ratio}
-\label{tab:displacement}
-\centering
-\scriptsize
-\setlength{\tabcolsep}{4.2pt}
-\begin{tabular}{lrrc}
-\toprule
-Family & Control & Stack & Above clean 95th \\
-\midrule
-Transpositions & .176 & .122 & 0/200 \\
-Block reversal & .107 & .070 & 0/200 \\
-Block swap      & .125 & .087 & 0/200 \\
-Cyclic shift    & .139 & .107 & 0/200 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Deduplication changes degeneracy, not the conclusion}
-Exact-payload deduplication reduces the 5,000-row clean frames to
-$\meanstd{3974}{29}$ rows without backfill. As Table~\ref{tab:q4} shows, it
-changes the raw stage's share of collision mass from 50.80\% to 5.49\% and
-reduces final clean/poison coordinate obstruction by 5.34 percentage points.
-Nevertheless, strict-purity poison capture falls by 1.44 points, while clean
-and poison noise increase. Removing clean--clean raw repetition therefore does
-not recover poisoned samples; it shifts more failure into OPTICS noise.
-
-\begin{table}[t]
-\caption{Separate exact-payload deduplication mechanism test}
-\label{tab:q4}
-\centering
-\scriptsize
-\setlength{\tabcolsep}{3.3pt}
-\begin{tabular}{lrrr}
-\toprule
-Metric & Control & Deduplicated & $\Delta$ \\
-\midrule
-Raw collision-mass share & .5080 & .0549 & $-$.4531 \\
-Final-vector obstruction & .4228 & .3694 & $-$.0534 \\
-Poison noise             & .5624 & .6458 & +.0834 \\
-Clean noise              & .3756 & .4541 & +.0785 \\
-Strict-purity capture (\%) & 1.800 & .355 & $-$1.445 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-The label-free first-occurrence rule is not necessarily neutral: before
-deduplication, $\meanstd{117.2}{5.2}$ repeated payload classes per seed contain
-conflicting dataset labels. This supports treating Q4 only as a mechanism test,
-not as a recommended preprocessing step.
-
-The raw stage's collision-mass share is denominator-dependent. Deduplication
-removes a large clean--clean repeated-class population, so that share falls
-even though raw-no-op poison remains. Indeed, the poison rate whose earliest
-merger is raw payload changes from 11.52\% to 13.06\%, rather than falling. The
-intervention lowers final obstruction, but not in proportion to the 45.31-point
-change in collision-mass attribution. This divergence is direct evidence that
-population-level redundancy and poison-specific obstruction are different
-quantities.
+An exploratory single-seed diagnostic is consistent with this reading. On 200
+clean/source pairs per family at seed 42, the median attack displacement is
+10.7--17.6\% of the median displacement between arbitrary clean pairs under
+the control and 7.0--12.2\% under the stack, and no attack displacement in
+either representation exceeds the clean-pair 95th percentile. The ratio falls
+because the stack shrinks attack displacement---from 11.61 to 8.54 for
+transpositions, for instance---while raising the clean-pair reference from
+66.1 to 70.3. Two limits apply. This reference is a population-scale pairing
+rather than the local $k$-nearest-neighbor scale that governs OPTICS
+reachability, so it cannot by itself explain clusterability, and it is
+measured at one seed. It is reported as indicative context, not as part of the
+five-seed evidence.
 
 \section{Discussion}
-The results establish a useful hierarchy of claims. At the \emph{algebraic}
-level, the fixed stack closes the targeted single-threshold equality mechanism.
-At the \emph{statistical} level, however, attack-induced displacement remains
-small relative to ordinary clean--clean variation. At the \emph{detector}
-level, OPTICS returns a more fragmented clustering and no matched-cost gain.
-Success at the first level is therefore insufficient evidence for the second
-or third.
+The main gain from the experimentation is a three-level evaluation framework.
+At the \emph{representation} level, the fixed stack closes the targeted
+single-threshold equality mechanism. At the \emph{statistical} level,
+attack-induced displacement can be compared with ordinary clean variation. At
+the \emph{detector} level, removal can be assessed at a fixed clean-data cost
+and against the absolute rate the arms actually achieve. This ordering shows
+where an intervention succeeds and prevents success at one level from being
+reported as success at the next.
 
-The provenance audit also changes how the negative result should be assigned.
-Approximately 97.5\% of repeated-member collision mass originates in either
-the raw data or single-threshold mask, upstream of persistent homology. The
-small diagram-stage component creates no new clean/poison mixed classes in the
-audited frames, and the five filtration images and finite vector summaries add
-no exact mergers. These observations do not show that TDA is injective or that
-topology never loses attack information. They show that exact clean/poison
-confusion in this fixed experiment is not primarily created by the
-topological feature map.
+The provenance audit localizes 97.48\% of repeated-member collision mass to the
+raw data or single-threshold mask. The small diagram-stage component creates no
+new clean/poison mixed classes, and later summaries add no exact mergers. This
+does not establish that TDA is injective; it shows that exact confusion in
+Frame~A is primarily created upstream of the topological feature map.
 
-Why does a representation with fewer exact matches perform no better? The
-stack adds distinctions, but equal weighting does not guarantee that the new
-coordinates emphasize attack-specific variation. On paired diagnostics,
-attack displacement grows in absolute terms while its ratio to typical
-clean--clean displacement falls. With the unchanged density radius, the
-540-dimensional population becomes less clusterable, moving both groups to
-label $-1$. Q4 produces the same qualitative lesson by a different route:
-reducing duplicated population mass changes density support and increases
-noise. Collision prevalence alone is therefore a poor proxy for usable poison
-separation.
+The stack adds distinctions, but equal weighting does not make them
+attack-specific. In the exploratory diagnostic, median attack displacement in
+fact falls under the stack while the clean-pair reference rises, and with the
+density radius held fixed
+the 540-dimensional population becomes less clusterable: nearly all poisoned
+rows and more than half of clean rows are assigned to noise. Collision
+prevalence is therefore a poor proxy for usable poison separation.
 
-For security evaluation, this distinction prevents two tempting but invalid
-inferences. First, a large raw-collision share does not mean that deduplication
-will restore poison capture: most removed mass can be clean--clean density
-support. Second, a large reduction in exact poison/clean matches does not mean
-that a detector has become useful: the new positions may still lie in regions
-that OPTICS treats as sparse. A defense claim should therefore report at least
-one representation-level endpoint, one relative-separation endpoint, and one
-operational endpoint with a clean-data cost. The stage-wise audit supplies the
-first two diagnoses; (3) supplies the final comparison.
+The most consequential reading is negative but specific. Because control
+removal is already 0.00--0.20\% at operational budgets, this experiment cannot
+show that repairing collisions helps a functioning detector, and it does not
+claim to. What it does show is that coordinate equality was not the operative
+obstacle: removing 92.0--95.9\% of exact matches leaves removal at the floor
+in every family, while the noise fractions move sharply. The binding constraint under
+this configuration is whether OPTICS forms poison-dominant clusters at all.
 
-Several limitations bound the claims. First, Payload-Byte is a packet-level
-derivative with padded payloads and inherited labels; conclusions need not
-transfer to the original flow-level UNSW-NB15 tables or live traffic. Second,
-the reconstruction fixes one recoverable interpretation of raster geometry and
-feature assembly. Differences between the source paper's reported feature
-count and the installed library's realized 60-feature output preclude an exact
-reproduction claim. Third, five seeds quantify Monte Carlo stability but not
-cross-dataset generalization. Fourth, the attacks are four structured,
-guaranteed-nontrivial permutation families, not all possible transformations.
-Finally, cluster purity is oracle information used only to compare removal
-curves; a deployed system still needs a label-free rule for deciding which
-clusters to reject.
+Accordingly, a defense claim should report a representation endpoint, a
+separation endpoint, and an operational endpoint stated in absolute terms with
+its clean-data cost. A large reduction in collisions alone establishes neither
+density support nor deployable poison capture.
 
-These limits also define future work. A new preregistered study could test a
-label-free anomaly score, a metric calibrated to clean traffic, or a second
-dataset. Learned threshold weights, feature selection, alternative
-filtrations, and OPTICS retuning may be reasonable designs, but using the
-present outcomes to select them would convert a controlled test into post hoc
-optimization. They are intentionally not evaluated here.
+The claims are limited to a padded packet-level derivative, one recoverable
+pipeline reconstruction, five seeds, four structured permutation families, and
+a single fixed clustering configuration; a different clusterer or radius could
+change the detector-level conclusion. They do not establish cross-dataset
+generalization, and retrospective cluster purity is not deployable. Later work
+should fix its endpoints in advance and test label-free scores, metrics
+calibrated to local clean geometry, and a second dataset rather than tune the
+present experiment post hoc.
 
 \section{Conclusion}
-In this controlled reconstruction, a stage-wise audit locates nearly all exact
-feature degeneracy before the topological summaries: in the legacy-transposition
-provenance frame, 50.80\% of final
-repeated-member collision mass is already raw-identical and 46.68\% first
-merges at one binary cutoff. A fixed nine-threshold stack removes most exact
-clean/poison feature matches, but it does not improve poison removal at matched
-clean cost; instead, almost all poisoned rows become OPTICS noise. Removing
-duplicate clean payloads likewise reduces degeneracy without restoring capture.
-The contribution is thus not a stronger detector but a more defensible way to
-evaluate one: localize information loss, separate representation repair from
-population separation, and require downstream gains to survive a fixed-cost
-comparison before claiming improved poisoning defense.
+Three conclusions follow from the controlled experiments.
 
-\clearpage
+(1) The stage-wise audit localizes 97.48\% of repeated-member collision mass in
+Frame~A to raw payload identity or the single-threshold mask, before persistent
+homology; the five filtration images, the persistence summaries, and the final
+concatenation create no exact mergers in any seed.
+
+(2) The fixed nine-threshold stack achieves its targeted representation
+objective, reducing exact clean/poison feature matches by 92.0--95.9\% across
+four attack families and five seeds. The single-cutoff equality mechanism is
+therefore real and closable.
+
+(3) Closing it does not improve poison removal at matched clean-data cost, and
+neither arm removes an appreciable share of poison: 0.00--0.20\% for the
+control and 0.00--0.64\% for the stack at purity budgets of 0.80 and above,
+with poisoned rows assigned to OPTICS noise rising from 85--87\% to about
+99\%. Coordinate equality was not the operative obstacle; density-based
+cluster formation is.
+
+Together these results give a reproducible standard for evaluating poisoning
+defenses: localize exact collisions, verify the intended repair, measure
+separation against clean variation, and require operational gains to be
+reported in absolute terms at a fixed clean-data cost.
+
+\section*{Acknowledgment}
+The author thanks Dr.\ Joseph Dorta of the Department of Mathematical Sciences
+for advising this work. The views expressed are those of the author and do not
+reflect the official policy or position of the United States Military Academy,
+the Department of the Army, or the Department of Defense.
+
 \balance
 \begin{thebibliography}{10}
 
