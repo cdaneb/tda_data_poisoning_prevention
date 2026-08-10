@@ -1,7 +1,9 @@
 # What Can a Persistence Diagram See? Invariance Structure and the Detectability of Data Poisoning
 
 Christian Dane Beels, advised by Dr. Joseph Dorta — Dept. of Mathematical Sciences, USMA West Point.
-Target venue: MAA MathFest 2026, Boston (Aug 5–8).
+Current manuscript: `base_paper.tex`, prepared for the 2026 IEEE MIT Undergraduate
+Research Technology Conference (URTC). The MathFest 2026 poster remains a
+separate historical deliverable.
 
 ## What this is
 
@@ -71,34 +73,42 @@ observed under any committed configuration is 6.48%, not zero.
 ### Phase Q: controlled repair study
 
 Phase Q keeps the legacy raster, filtrations, persistence summaries, and OPTICS
-fixed while replacing the single 0.4 cutoff with a preregistered nine-threshold
+fixed while replacing the single 0.4 cutoff with a prespecified nine-threshold
 stack. It also replaces padding-dominated attack offsets with a conservative-
 support, guaranteed-nontrivial attack substrate; the historical Test B results
 remain unchanged.
 
-The diagnostic result is mixed: the stack reduces exact binary and 540-vector
-identity to 0/200 for all four repaired families, closing the tested
-single-cutoff identity mechanism, but attack displacement remains entirely below
-the clean-clean 95th percentile and becomes smaller relative to ordinary clean
-variation.
+The five-seed R1 comparison is Frame B: four support-restricted attack families,
+5,000 unmodified rows plus 500 guaranteed-raw-changing poisoned rows, and the
+same attack realization in both arms. Exact poison vectors matching any clean
+vector fall from 2.60–4.32% under the control to 0.16–0.28% under the stack, a
+92.0–95.9% reduction. This establishes the intended representation repair.
 
-The complete R1 capture grid (four families x five seeds, WIRE, full UNSW CSV)
-settles the question, and the answer is negative. The algebraic repair is
-confirmed — exact-duplicate-with-clean fraction drops ~13-20x across all
-families and seeds — but downstream detection is falsified: matched-clean-cost
-poison removal is zero for three families and a negligible +0.6% (3/5 seeds) for
-block reversal at operationally clean budgets, and negative for all four at the
-loosest purity. The stack achieves this by pushing nearly everything to the
-unclustered bin (poison unclustered ~0.85 -> ~0.99, clean unclustered ~0.37 ->
-~0.55), which is fragmentation, not separation. **The simple equally-weighted
-threshold-stack repair is falsified as a detector**, even though it closes the
-exact single-cutoff identity mechanism. See
-`docs/PHASE_Q_MULTITHRESHOLD_REPORT.md`.
+The repair does not produce meaningful poison removal under the fixed OPTICS
+configuration. At retrospective purity thresholds through >80%, mean absolute
+poison removal is 0.00–0.20% for the control and 0.00–0.64% for the stack; clean
+false-removal is zero in both arms at those strict thresholds. At the >50%
+threshold, all four matched-clean-cost deltas favor the control. Meanwhile,
+poison unclustered fractions rise from 85.2–87.5% to 98.7–99.3%, clean
+unclustered fractions rise from about 37.1% to 54.5–54.6%, and the mean cluster
+count falls. Under this configuration, density-based cluster formation—not
+exact coordinate collision—is the binding limitation.
+
+The D1–D4 displacement table is an exploratory seed-42 diagnostic using 200
+pairs per family. Its clean reference is cyclic next-pair matching at population
+scale, not the local nearest-neighbor scale governing OPTICS reachability; it is
+therefore indicative, not a bound on clusterability. See
+`docs/PHASE_Q_MULTITHRESHOLD_REPORT.md` and
+`results/phase_q_r1_multithreshold_capture.json`.
 
 ### Phase Q3: collision provenance
 
 Phase Q2 noticed that the 5500x60 feature matrix is heavily degenerate and left
-it as its most promising unexplored lead. Phase Q3 traces those collisions back
+it as its most promising unexplored lead. Phase Q3 is Frame A: the legacy
+60-transposition provenance frame, which is distinct from the guaranteed-
+raw-changing Frame B used for the repair comparison. Frame A can contain
+poison/source raw identities, so its collision-mass attribution must not be
+transferred directly to Frame B. Phase Q3 traces its collisions back
 through every pipeline stage — raw payload, support record, threshold-0.4 mask,
 five filtration images, unscaled and scaled diagrams, 12-feature blocks, final
 60-vector — using exact hashes and equivalence classes, with an additive
@@ -115,11 +125,13 @@ collision mass is already identical in the **raw 1500-byte payload**,
 **46.68 +/- 0.46%** is first created by **threshold-0.4 binarization**, and
 **2.52 +/- 0.31%** in cubical persistence. The support record, the five
 filtration images, the Scaler, the persistence summaries, and the final
-concatenation merge **exactly zero rows on every seed**. So ~97.5% of the
-degeneracy is upstream of any topology, and the diagram step introduces no new
-clean/poison confusion at all — **the topological feature map is effectively
-exonerated** as a source of it. The empty-payload explanation is refuted
-outright: zero all-zero payload rows on every seed.
+concatenation merge **exactly zero rows on every seed**. Thus ~97.5% of exact
+repeated-member collision mass in Frame A originates before persistent
+homology, and the diagram stage creates no new clean/poison mixed classes in
+that frame. This does not show that TDA is injective or that topology never
+loses attack information; it localizes exact collision formation in this fixed
+experiment. The empty-payload explanation is refuted outright: every seed has
+zero all-zero payload rows.
 
 Decomposing strict-100%-purity failure over all 500 poisoned rows: 1.80 +/- 0.51%
 captured, **56.24 +/- 1.65% assigned label `-1`**, **39.48 +/- 1.73% sharing an
@@ -179,6 +191,7 @@ make_figure_v3.py              # poster figure V3: four-family comparison (poste
 make_figure_m8_purity_sweep.py # M8 diagnostic curve; not poster evidence
 base_poster.tex                # standalone MathFest tikzposter source
 poster_blocks.tex              # historical MathFest poster \block{} fragment; not standalone
+base_paper.tex                 # five-page IEEEtran URTC manuscript source
 
 models/                        # trained surrogate classifiers (surrogate_mlp*.joblib, surrogate_rf*.joblib)
 results/                       # experiment output JSON; phase_m_*.json is intentionally tracked
@@ -299,17 +312,35 @@ That protection would not survive normalized floats or any non-saturating encodi
 
 ## Version-control hazards
 
-Two `.gitignore` rules require attention when adding artifacts:
+Three `.gitignore` rule groups require attention when adding artifacts:
 
-- **`results/*` is active, with a deliberate exception for `results/phase_m_*.json`.** New result
-  files outside that pattern are ignored. Check each planned artifact with
-  `git check-ignore <path>` before relying on it being committed.
+- **`results/*` is active, with deliberate exceptions for the tracked Phase M,
+  Q, Q2, Q3, and Q4 JSON artifacts.** New result files outside those patterns
+  are ignored. Check each planned artifact with `git check-ignore <path>`
+  before relying on it being committed.
 - **`*.pdf`** was intended to exclude the copyrighted source papers but also caught generated
-  figures. A `!figures/*.pdf` negation now re-includes them. A built poster PDF outside `figures/`
-  would still be swallowed.
+  figures. `!figures/*.pdf` and `!base_poster.pdf` re-include the generated
+  figures and poster. The built `base_paper.pdf` remains ignored; the tracked
+  paper source is `base_paper.tex`.
 - **`docs/*` + `!docs/*.md`** replaced a bare `docs/` rule, which had made three phase completion
   reports invisible. The negation covers direct children only; a new file in a `docs/` subdirectory
   would still be ignored.
+
+After changing `.gitignore`, verify the index with:
+
+```bash
+git ls-files -ci --exclude-standard
+```
+
+No output means no currently tracked file is also ignored.
+
+## Paper
+
+`base_paper.tex` is the five-page IEEEtran manuscript. It distinguishes the
+legacy provenance audit (Frame A) from the controlled multithreshold comparison
+(Frame B), reports absolute detector performance alongside representation-level
+gains, and treats the seed-42 displacement analysis as exploratory. The built
+`base_paper.pdf` is intentionally ignored by Git.
 
 ## Poster
 
