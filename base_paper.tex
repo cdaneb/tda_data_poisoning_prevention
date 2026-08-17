@@ -170,7 +170,9 @@ supported prefix. All act entirely inside conservative support. In Frame~B all
 rows.
 
 The legacy control reshapes each payload into a $30\times50$ image and applies
-a fitted binary threshold $t=0.4$. The fitted maximum is 255, so the effective
+a fitted binary threshold $t=0.4$. Fig.~\ref{fig:pipeline} shows this arm
+beside the intervention defined in Section~\ref{sec:stack}; the two differ
+only in binarization. The fitted maximum is 255, so the effective
 byte cut is 102. Five scalar filtrations follow: height directions $(0,1)$ and
 $(1,0)$, and radial centers $(0,50)$, $(0,25)$, and $(30,0)$. Each branch uses
 cubical persistence, diagram scaling, persistence entropy, and five amplitude
@@ -180,6 +182,19 @@ filtration and a 60-dimensional concatenation. OPTICS is fixed at
 \texttt{min\_samples}$=5$ and \texttt{max\_eps}$=2.0$ with its standard
 $\xi$-based extraction. No thresholds, block weights, filtrations, summaries,
 or clustering settings were selected after results were observed.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/figure_v9_tda_pipeline.pdf}
+  \caption{The controlled comparison. One input packet feeds both arms. The
+  control binarizes at the single cutoff $t=0.4$; the intervention binarizes at
+  the fixed bank $t=0.1,\ldots,0.9$ and concatenates the nine resulting blocks
+  after division by $\sqrt{9}$. The raster, the five filtrations, cubical
+  persistence in $H_0$ and $H_1$, the vector summaries, and the OPTICS
+  parameters are identical in both arms, so binarization is the only variable
+  that changes. Schematic; not an empirical result.}
+  \label{fig:pipeline}
+\end{figure}
 
 \subsection{Stage-wise collision provenance (Frame~A)}
 Before the repair comparison, the provenance audit is applied to Frame~A, the
@@ -219,6 +234,7 @@ topological summaries are permutation-invariant. That question is measured by
 the downstream signatures rather than assumed.
 
 \subsection{Fixed multithreshold intervention}
+\label{sec:stack}
 The only intervention replaces $t=0.4$ with the fixed stack
 $T=\{0.1,0.2,\ldots,0.9\}$. For every threshold, the unchanged pipeline emits a
 60-vector $\vect{f}_t(\vect{x})$; the repair representation is
@@ -327,11 +343,13 @@ floor}
 Table~\ref{tab:matched} reports absolute poison removal for both arms
 alongside the matched-cost difference. At every purity budget of 0.80 and
 above, the single-threshold control removes 0.00--0.20\% of poison and the
-stack removes 0.00--0.64\%. The only positive strict-budget mean is block
-reversal's $+0.64$ points, produced by a single poison-only cluster of about
-five packets in three of five seeds. At the loosest budget, $>0.50$, the
-control reaches 1.24--1.88\% while the stack stays at 0.00--0.64\%, so every
-family is then worse than control.
+stack removes 0.00--0.64\%. Both nonzero strict-budget differences rest on a
+minority of seeds: block reversal's $\meanstd{+0.64}{0.53}$ points comes from
+a single poison-only cluster of about five packets in three of five seeds, and
+cyclic shift's $\meanstd{-0.20}{0.40}$ points from one seed. Transpositions and
+block swap are identically zero in every seed. At the loosest budget, $>0.50$,
+the control reaches 1.24--1.88\% while the stack stays at 0.00--0.64\%, so
+every family is then worse than control.
 
 Clean false-removal is 0.0000 for the stack at every budget and for the
 control at every budget of 0.80 and above. The matched-cost constraint
@@ -385,18 +403,6 @@ Family & Arm & $1.0$ & $>.95$ & $>.90$ & $>.80$ & $>.50$ \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/figure_v8_detector_outcome.pdf}
-  \caption{Primary matched-clean-cost result at the strict control budget
-  (Frame~B). Points are five-seed mean stack-minus-control poison-removal
-  deltas; error bars are population SD. Absolute removal is near zero in both
-  arms at this budget (Table~\ref{tab:matched}), so these differences separate
-  two floors rather than two working detectors. The small block-reversal
-  effect corresponds to one poison-only cluster in three of five seeds.}
-  \label{fig:detector}
-\end{figure}
 
 An exploratory single-seed diagnostic is consistent with this reading. On 200
 clean/source pairs per family at seed 42, the median attack displacement is
