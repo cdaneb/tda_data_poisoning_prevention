@@ -8,17 +8,17 @@ import json
 
 import numpy as np
 
-from adversarial_attack import (
+from programs.adversarial_attack import (
     block_reversal_attack,
     block_swap_attack,
     cyclic_shift_attack,
     malicious_random_attack,
 )
-from data_loader import load_unsw_with_metadata
-from phase_m_env import env_block
-from phase_q_attacks import SUPPORTED_FAMILIES, conservative_support_lengths
-from paths import RESULTS_DIR
-from results_io import convert_for_json
+from programs.data_loader import load_unsw_with_metadata
+from programs.phase_m_env import env_block
+from programs.phase_q_attacks import SUPPORTED_FAMILIES, conservative_support_lengths
+from programs.paths import RESULTS_DIR
+from programs.results_io import convert_for_json
 
 
 N_DIAG = 200

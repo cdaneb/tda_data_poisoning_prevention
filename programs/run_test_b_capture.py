@@ -20,16 +20,16 @@ import time
 import json
 import numpy as np
 
-from data_loader import load_unsw
-from tda_pipeline import extract_tda_features
-from clustering import run_all_clustering, classify_clusters
-from results_io import convert_for_json
-from adversarial_attack import (
+from programs.data_loader import load_unsw
+from programs.tda_pipeline import extract_tda_features
+from programs.clustering import run_all_clustering, classify_clusters
+from programs.results_io import convert_for_json
+from programs.adversarial_attack import (
     malicious_random_attack, block_reversal_attack, block_swap_attack, cyclic_shift_attack,
     gaussian_noise_attack,
 )
-from paths import RESULTS_DIR
-from phase_m_env import env_block
+from programs.paths import RESULTS_DIR
+from programs.phase_m_env import env_block
 
 SEEDS = [42, 123, 456, 789, 1024]
 MAX_SAMPLES = 5000
@@ -169,8 +169,8 @@ def parity_check():
     version (a `families.py` owning the registry for the two drivers only) is
     proposed at M10 and built after MathFest.
     """
-    from test_b_diagnostics import FAMILIES as DIAG_FAMILIES
-    from make_figure_v3 import FAMILIES as V3_FAMILIES
+    from programs.test_b_diagnostics import FAMILIES as DIAG_FAMILIES
+    from programs.make_figure_v3 import FAMILIES as V3_FAMILIES
 
     report = {}
     keys_here, keys_diag = set(FAMILIES), set(DIAG_FAMILIES)

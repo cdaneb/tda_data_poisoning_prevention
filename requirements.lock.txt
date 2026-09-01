@@ -1,0 +1,63 @@
+# requirements.lock.txt — exact pinned resolution for this project's venv312.
+#
+# Generated: 2026-07-23T18:57:09Z
+# Python: 3.12.3
+# Hostname: e2fe114bedaa (WIRE JupyterHub/Docker environment)
+# Known-good reproduction: this exact resolution produced the Phase R/W2
+# reproduction-gate value of 2.2000% (R60/malicious_random_attack, seed=42,
+# UNSW-NB15, OPTICS, threshold=0.4) — a floating-point-exact match to the
+# value recorded in results/lens4_baseline_seed42_ladder.json.
+#
+# requirements.txt documents intent (loose >= bounds); this file documents
+# fact (what pip actually resolved from those bounds on 2026-07-23). Install
+# from THIS file, not requirements.txt, to reproduce the exact environment
+# this project's results were most recently verified against:
+#
+#   python3 -m venv venv312
+#   source venv312/bin/activate   # or venv312\Scripts\Activate.ps1 on Windows
+#   pip install -r requirements.lock.txt
+
+asttokens==3.0.2
+comm==0.2.3
+contourpy==1.3.3
+cycler==0.12.1
+decorator==5.3.1
+executing==2.2.1
+fonttools==4.63.0
+giotto-ph==0.2.4
+giotto-tda==0.6.2
+igraph==1.0.0
+ipython==9.15.0
+ipython_pygments_lexers==1.1.1
+ipywidgets==8.1.8
+jedi==0.20.0
+joblib==1.5.3
+jupyterlab_widgets==3.0.16
+kiwisolver==1.5.0
+matplotlib==3.11.1
+matplotlib-inline==0.2.2
+narwhals==2.24.0
+numpy==1.26.4
+packaging==26.2
+pandas==3.0.5
+parso==0.8.7
+pexpect==4.9.0
+pillow==12.3.0
+plotly==6.9.0
+prompt_toolkit==3.0.52
+psutil==7.2.2
+ptyprocess==0.7.0
+pure_eval==0.2.3
+pyflagser==0.4.7
+Pygments==2.20.0
+pyparsing==3.3.2
+python-dateutil==2.9.0.post0
+scikit-learn==1.3.2
+scipy==1.17.1
+six==1.17.0
+stack-data==0.6.3
+texttable==1.7.0
+threadpoolctl==3.6.0
+traitlets==5.15.1
+wcwidth==0.8.2
+widgetsnbextension==4.0.15

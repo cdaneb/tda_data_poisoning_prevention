@@ -41,6 +41,8 @@ results/*
 !results/phase_q3_*.json
 # Phase Q4 clean-frame deduplication mechanism test.
 !results/phase_q4_*.json
+# Monkam material audit and controlled fit-protocol artifacts.
+!results/monkam_*.json
 
 # Log files
 *.log
@@ -68,11 +70,16 @@ docs/*
 CLAUDE.md
 PHASE_V_INSTRUCTIONS.md
 URTC_2026_PAPER_SPECIFICATION.tex
-requirements.lock.txt
 poster_blocks.tex
 base_poster.aux
 archive/
-.env.example
+
+# Author-supplied Monkam materials needed for reproduction are tracked, with
+# the XLSX workbooks stored through Git LFS. The full UNSW CSV is a redundant
+# copy of the dataset already mounted on WIRE, and the email ZIP is provenance
+# correspondence rather than an executable research input.
+monkam_files/Copy of Payload_data_UNSW.csv
+monkam_files/*.zip
 
 # Phase Q2 machine-local feature cache (regenerable; hashes are published in
 # the tracked JSON so the cache is never required to audit a result).

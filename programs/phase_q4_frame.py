@@ -12,12 +12,10 @@ import sys
 
 import numpy as np
 
-PROGRAMS_DIR = Path(__file__).resolve().parent
-REPO_ROOT = PROGRAMS_DIR.parent
-sys.path.insert(0, str(PROGRAMS_DIR))
-sys.path.insert(0, str(REPO_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent / "tools"))
 
-from adversarial_attack import malicious_random_attack
+from programs.adversarial_attack import malicious_random_attack
 from tools.phase_q2_common import (
     MAX_SAMPLES,
     N_SWAPS,

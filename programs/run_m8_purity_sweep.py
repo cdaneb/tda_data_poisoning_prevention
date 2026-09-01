@@ -15,7 +15,7 @@ from pathlib import Path
 
 import numpy as np
 
-from paths import RESULTS_DIR
+from programs.paths import RESULTS_DIR
 
 
 INPUT_NAME = "phase_m_m7_capture.json"

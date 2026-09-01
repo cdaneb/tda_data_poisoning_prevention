@@ -3,7 +3,7 @@
 The figure reports the preregistered matched-clean-cost removal delta.
 
 Usage:
-    python programs/make_figure_v8_detector_outcome.py --render
+    python make_figure_v8_detector_outcome.py --render
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from paths import FIGURES_DIR, RESULTS_DIR
+from programs.paths import FIGURES_DIR, RESULTS_DIR
 
 
 INK = "#0b0b0b"

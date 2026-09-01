@@ -24,17 +24,16 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "programs"))
 sys.path.insert(0, str(ROOT))
 
-from paths import RESULTS_DIR
-from tda_pipeline import build_tda_pipeline, reshape_for_tda
-from phase_q2_source_pipeline import (
+from programs.paths import RESULTS_DIR
+from programs.tda_pipeline import build_tda_pipeline, reshape_for_tda
+from programs.phase_q2_source_pipeline import (
     GEOMETRIES, build_geometry_pipeline, extract_geometry_features,
     geometry_spec, reshape_for_geometry,
 )
 from tools.phase_q2_common import accounting_views, array_hash, color_cluster_table
-import run_phase_q2_optics_sensitivity as sens
+import programs.run_phase_q2_optics_sensitivity as sens
 
 RESULTS = Path(RESULTS_DIR)
 ACCOUNTING_JSON = RESULTS / "phase_q2_accounting_audit.json"
@@ -135,7 +134,7 @@ class AccountingInvariantTests(unittest.TestCase):
             views["views"]["all_sample_denominator"]["color_shares_pct"]["Red"])
 
     def test_color_table_matches_project_purity_literals(self):
-        from clustering import classify_clusters
+        from programs.clustering import classify_clusters
         labels, poisoned = self._fixture()
         ours = color_cluster_table(labels, poisoned)
         theirs, _ = classify_clusters(labels, poisoned)

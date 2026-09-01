@@ -28,13 +28,11 @@ from pathlib import Path
 import numpy as np
 from sklearn.cluster import OPTICS
 
-ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "programs"))
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from paths import RESULTS_DIR
-from tda_pipeline import extract_tda_features
-from phase_q_metrics import removal_curve
+from programs.paths import RESULTS_DIR
+from programs.tda_pipeline import extract_tda_features
+from programs.phase_q_metrics import removal_curve
 from tools.phase_q2_common import (
     DISCOVERY_SEED, accounting_views, build_realization, cached_features,
     cluster_structure, environment_block, feature_diagnostics,

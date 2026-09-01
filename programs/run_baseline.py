@@ -16,10 +16,10 @@ For CICIDS2017, use max_samples to subsample.
 """
 import numpy as np
 import time
-from data_loader import load_unsw, load_cicids
-from poison import poison_dataset
-from tda_pipeline import extract_tda_features
-from clustering import run_all_clustering, classify_clusters, print_cluster_report
+from programs.data_loader import load_unsw, load_cicids
+from programs.poison import poison_dataset
+from programs.tda_pipeline import extract_tda_features
+from programs.clustering import run_all_clustering, classify_clusters, print_cluster_report
 
 
 def run_experiment(dataset_name, X, y, max_samples_for_tda=5000):

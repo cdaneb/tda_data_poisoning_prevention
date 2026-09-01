@@ -5,7 +5,7 @@ where final repeated-member collision mass first arose; it is not a Phase Q
 repair-arm result.
 
 Usage:
-    python programs/make_figure_v7_collision_origin.py --render
+    python make_figure_v7_collision_origin.py --render
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from paths import FIGURES_DIR, RESULTS_DIR
+from programs.paths import FIGURES_DIR, RESULTS_DIR
 
 
 INK = "#0b0b0b"

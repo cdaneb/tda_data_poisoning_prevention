@@ -26,24 +26,24 @@ implementations (A4). Output goes to a Phase M artifact, leaving Phase P's
 committed results/test_b_diagnostics.json alone.
 
 Usage:
-    python programs/test_b_diagnostics.py   # run A14 + P4 + M6 + P5, report,
+    python test_b_diagnostics.py            # run A14 + P4 + M6 + P5, report,
                                               # exit nonzero if a gate fails
 """
 import sys
 import json
 import numpy as np
 
-from data_loader import load_unsw
-from adversarial_attack import (
+from programs.data_loader import load_unsw
+from programs.adversarial_attack import (
     malicious_random_attack, block_reversal_attack, block_swap_attack,
     cyclic_shift_attack, gaussian_noise_attack, label_to_binary,
 )
-from invariance_check import (
+from programs.invariance_check import (
     binarize, foreground_count, max_value_check, positions_changed, crossed_threshold,
 )
-from tda_pipeline import extract_tda_features
-from paths import RESULTS_DIR
-from phase_m_env import env_block
+from programs.tda_pipeline import extract_tda_features
+from programs.paths import RESULTS_DIR
+from programs.phase_m_env import env_block
 
 N_DIAG_SAMPLES = 200
 RANDOM_STATE = 42
@@ -258,7 +258,7 @@ def run_p5(X, y):
             # the pipeline. Verified: with a shared fit, the two identical-
             # fractions match exactly.
             from gtda.images import Binarizer
-            from tda_pipeline import reshape_for_tda
+            from programs.tda_pipeline import reshape_for_tda
             n = len(X_clean)
             X_both = np.vstack([X_clean, X_perm])
             images_both = reshape_for_tda(X_both)

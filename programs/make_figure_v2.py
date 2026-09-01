@@ -24,8 +24,8 @@ re-derives the same quantities under the stricter single-fit discipline so the
 two can be compared; agreement is reported as a gate, not assumed.
 
 Usage:
-    python programs/make_figure_v2.py --check     # population gates + sample selection
-    python programs/make_figure_v2.py --render    # gates, then write the PDF
+    python make_figure_v2.py --check     # population gates + sample selection
+    python make_figure_v2.py --render    # gates, then write the PDF
 """
 import argparse
 import sys
@@ -33,11 +33,11 @@ from pathlib import Path
 
 import numpy as np
 
-from paths import FIGURES_DIR
-from data_loader import load_unsw
-from invariance_check import binarize, max_value_check
-from tda_pipeline import reshape_for_tda
-from test_b_diagnostics import (
+from programs.paths import FIGURES_DIR
+from programs.data_loader import load_unsw
+from programs.invariance_check import binarize, max_value_check
+from programs.tda_pipeline import reshape_for_tda
+from programs.test_b_diagnostics import (
     FAMILIES, N_DIAG_SAMPLES, RANDOM_STATE,
     get_clean_and_perturbed, noise_only,
 )

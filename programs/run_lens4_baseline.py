@@ -16,14 +16,14 @@ import json
 import joblib
 import numpy as np
 
-from data_loader import load_unsw
-from tda_pipeline import extract_tda_features
-from clustering import run_all_clustering, classify_clusters
-from results_io import convert_for_json
-from adversarial_attack import (
+from programs.data_loader import load_unsw
+from programs.tda_pipeline import extract_tda_features
+from programs.clustering import run_all_clustering, classify_clusters
+from programs.results_io import convert_for_json
+from programs.adversarial_attack import (
     random_swap_attack, malicious_random_attack, chale_ga_attack, train_surrogates,
 )
-from paths import RESULTS_DIR, MODELS_DIR
+from programs.paths import RESULTS_DIR, MODELS_DIR
 
 SEEDS = [42, 123, 456, 789, 1024]
 MAX_SAMPLES = 5000

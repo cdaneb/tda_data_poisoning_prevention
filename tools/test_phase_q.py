@@ -1,20 +1,16 @@
 """Fast regression checks for Phase Q support-restricted attacks."""
-import sys
 import unittest
-from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "programs"))
-
-from phase_q_attacks import (
+from programs.phase_q_attacks import (
     SUPPORTED_FAMILIES,
     common_attackable_mask,
     conservative_support_lengths,
 )
-from phase_q_metrics import matched_clean_cost, removal_curve
-from phase_q_pipeline import THRESHOLD_STACK, extract_multithreshold_features
-from tda_pipeline import extract_tda_features
+from programs.phase_q_metrics import matched_clean_cost, removal_curve
+from programs.phase_q_pipeline import THRESHOLD_STACK, extract_multithreshold_features
+from programs.tda_pipeline import extract_tda_features
 
 
 class PhaseQAttackTests(unittest.TestCase):

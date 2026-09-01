@@ -22,7 +22,7 @@ Two protocols, strictly separated:
 The selection rule below is fixed in source before any cell is run.
 
 Usage:
-    python programs/run_phase_q2_optics_sensitivity.py
+    python run_phase_q2_optics_sensitivity.py
 """
 from __future__ import annotations
 
@@ -36,9 +36,9 @@ from sklearn.cluster import OPTICS
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from paths import RESULTS_DIR
-from tda_pipeline import extract_tda_features
-from phase_q_metrics import removal_curve
+from programs.paths import RESULTS_DIR
+from programs.tda_pipeline import extract_tda_features
+from programs.phase_q_metrics import removal_curve
 from tools.phase_q2_common import (
     CONFIRMATION_SEEDS, DISCOVERY_SEED, accounting_views, build_realization,
     cached_features, cluster_structure, environment_block, environment_block as _env,

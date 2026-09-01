@@ -26,27 +26,9 @@ are available at
 \maketitle
 
 \begin{abstract}
-Reliable poisoning defenses require evidence that attack information survives
-each stage between a network payload and a detector decision. This study
-introduces a stage-wise audit of a controlled topological data analysis (TDA)
-pipeline on the packet-level UNSW-NB15 Payload-Byte dataset. Across five
-seeds, 50.80\% of repeated final-vector members first coincide as raw
-payloads, 46.68\% first coincide at the single binary threshold, and only
-2.52\% first coincide during persistent homology; no later stage creates an
-exact merger. An analysis-locked comparison then changes only the
-representation, replacing one threshold with a fixed nine-threshold stack for
-four support-restricted byte permutations. The stack reduces poisoned rows
-that exactly match a clean feature vector from 2.60--4.32\% to 0.16--0.28\%, a
-92.0--95.9\% reduction, confirming that the single-cutoff equality mechanism
-is real and closable. That gain does not improve poison removal at matched
-clean-data cost. Absolute removal is near the floor in both arms---0.00--0.20\%
-for the single threshold and 0.00--0.64\% for the stack at cluster-purity
-budgets of 0.80 and above---while poisoned rows assigned to OPTICS noise rise
-from 85--87\% to approximately 99\%. Eliminating exact coordinate collisions
-therefore exposes density-based cluster formation, rather than coordinate
-equality, as the binding downstream limitation, and yields a reproducible
-evaluation standard that reports representation, separation, and fixed-cost
-detector endpoints separately.
+Reliable defenses against data poisoning require evidence that attack information survives each stage between a network payload and a detector decision. This study introduces an audit of a controlled topological data analysis (TDA) pipeline on the UNSW-NB15 Payload-Byte dataset. Across five seeds, 50.80 \% of repeated final-vector members first coincide as raw payloads, 46.68 \% first coincide at the single binary threshold, and only 2.52 \% first coincide during persistent homology; no later stage
+creates an exact merger. An analysis-locked comparison then changes only the representation, replacing one threshold with a fixed nine-threshold stack for four methods of byte permutations.
+The stack reduces poisoned rows that exactly match a clean feature vector from 2.60–4.32 \% to 0.16–0.28 \%, a 92.0–95.9 \% reduction, confirming that the single-cutoff equality mechanism is real and closable. That gain does not improve poison removal at matched clean-data cost. Absolute removal is low in both arms—0.00–0.20\% for the single threshold and 0.00–0.64\% for the stack at cluster-purity budgets of 0.80 and above. Eliminating exact coordinate collisions therefore exposes density-based cluster formation, rather than coordinate equality, as the binding downstream limitation, and yields a reproducible evaluation standard.
 \end{abstract}
 
 \begin{IEEEkeywords}

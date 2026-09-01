@@ -19,14 +19,12 @@ import sys
 import time
 import numpy as np
 
-ROOT = __import__("pathlib").Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "programs"))
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent))
 
-from data_loader import load_unsw
-from adversarial_attack import malicious_random_attack
-from tda_pipeline import extract_tda_features
-from clustering import run_all_clustering, classify_clusters
+from programs.data_loader import load_unsw
+from programs.adversarial_attack import malicious_random_attack
+from programs.tda_pipeline import extract_tda_features
+from programs.clustering import run_all_clustering, classify_clusters
 
 MAX_SAMPLES = 5000
 POISON_RATE = 0.10

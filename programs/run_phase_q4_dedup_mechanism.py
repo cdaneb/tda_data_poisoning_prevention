@@ -5,8 +5,8 @@ The control is the completed Q3 artifact.  Q4 rebuilds the same seeded
 then runs the unchanged R60 attack, threshold-0.4 TDA pipeline, and OPTICS.
 
 Usage:
-    python programs/run_phase_q4_dedup_mechanism.py
-    python programs/run_phase_q4_dedup_mechanism.py --seeds 42
+    python run_phase_q4_dedup_mechanism.py
+    python run_phase_q4_dedup_mechanism.py --seeds 42
 """
 from __future__ import annotations
 
@@ -19,15 +19,14 @@ from pathlib import Path
 
 import numpy as np
 
-PROGRAMS_DIR = Path(__file__).resolve().parent
-ROOT = PROGRAMS_DIR.parent
-sys.path.insert(0, str(PROGRAMS_DIR))
+ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "tools"))
 
-from phase_q3_collisions import class_stats, earliest_merger_attribution, exact_hash
-from phase_q3_stage_pipeline import CHAIN_STAGES, extract_all_stages
-from phase_q4_frame import build_q4_frames, q4_realization_provenance
-from run_phase_q3_collision_audit import OPTICS_PARAMS, q3c, q3d, run_optics
+from programs.phase_q3_collisions import class_stats, earliest_merger_attribution, exact_hash
+from programs.phase_q3_stage_pipeline import CHAIN_STAGES, extract_all_stages
+from programs.phase_q4_frame import build_q4_frames, q4_realization_provenance
+from programs.run_phase_q3_collision_audit import OPTICS_PARAMS, q3c, q3d, run_optics
 from tools.phase_q2_common import CONFIRMATION_SEEDS, environment_block, write_json
 
 Q3_PATH = ROOT / "results" / "phase_q3_collision_audit.json"

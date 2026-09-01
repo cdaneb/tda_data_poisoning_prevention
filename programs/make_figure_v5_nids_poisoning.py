@@ -6,8 +6,8 @@ packets placed in the benign training set move the learned decision boundary,
 so subsequently observed attacks can fall on the benign side.
 
 Usage:
-    python programs/make_figure_v5_nids_poisoning.py --render
-    python programs/make_figure_v5_nids_poisoning.py --render --out figures/figure_v5_nids_poisoning.png
+    python make_figure_v5_nids_poisoning.py --render
+    python make_figure_v5_nids_poisoning.py --render --out figures/figure_v5_nids_poisoning.png
 """
 
 import argparse
@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
 
-from paths import FIGURES_DIR
+from programs.paths import FIGURES_DIR
 
 
 INK = "#0b0b0b"

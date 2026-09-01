@@ -1,0 +1,2 @@
+monkam_files/tda_280_x_y.xlsx filter=lfs diff=lfs merge=lfs -text
+monkam_files/tda_begnin_X_126.xlsx filter=lfs diff=lfs merge=lfs -text

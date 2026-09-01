@@ -12,7 +12,7 @@ Column structure (1505 columns total):
 import numpy as np
 import pandas as pd
 
-from paths import DATA_DIR
+from programs.paths import DATA_DIR
 
 PAYLOAD_COLUMNS = [f"payload_byte_{i}" for i in range(1, 1501)]
 LABEL_COLUMN = "label"

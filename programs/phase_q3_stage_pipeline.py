@@ -24,7 +24,7 @@ import gc
 
 import numpy as np
 
-from phase_q3_collisions import (
+from programs.phase_q3_collisions import (
     combine_hashes,
     diagram_point_counts,
     diagram_row_hashes,
@@ -32,8 +32,8 @@ from phase_q3_collisions import (
     pack_binary_mask,
     row_hashes,
 )
-from phase_q_pipeline import filtration_specs
-from tda_pipeline import extract_tda_features, reshape_for_tda
+from programs.phase_q_pipeline import filtration_specs
+from programs.tda_pipeline import extract_tda_features, reshape_for_tda
 
 # Legacy filtration order, verbatim from ``build_tda_pipeline``.
 FILTRATION_NAMES = tuple(name for name, _ in filtration_specs())

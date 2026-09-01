@@ -21,7 +21,7 @@ poison.py is not modified; it remains the reference Gate A compares against.
 """
 import time
 import numpy as np
-from poison import poison_dataset
+from programs.poison import poison_dataset
 
 
 # ---------------------------------------------------------------------------

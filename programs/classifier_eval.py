@@ -15,9 +15,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score, classification_report
 from sklearn.preprocessing import LabelEncoder
 
-from data_loader import load_unsw
-from poison import poison_dataset
-from iterative_filter import iterative_filter
+from programs.data_loader import load_unsw
+from programs.poison import poison_dataset
+from programs.iterative_filter import iterative_filter
 
 
 def evaluate_classifier(X_train, y_train, X_test, y_test, label=""):

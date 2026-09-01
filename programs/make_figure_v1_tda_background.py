@@ -6,8 +6,8 @@ components (H_0), loops (H_1), and persistence across a scale parameter without
 claiming that this is the packet-data computation.
 
 Usage:
-    python programs/make_figure_v1_tda_background.py --render
-    python programs/make_figure_v1_tda_background.py --render --out figures/figure_v1_tda_background.png
+    python make_figure_v1_tda_background.py --render
+    python make_figure_v1_tda_background.py --render --out figures/figure_v1_tda_background.png
 """
 
 import argparse
@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Polygon
 import numpy as np
 
-from paths import FIGURES_DIR
+from programs.paths import FIGURES_DIR
 
 
 INK = "#0b0b0b"

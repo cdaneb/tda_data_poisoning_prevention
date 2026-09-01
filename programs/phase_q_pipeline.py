@@ -11,7 +11,7 @@ from gtda.homology import CubicalPersistence
 from gtda.images import Binarizer, HeightFiltration, RadialFiltration
 from sklearn.pipeline import make_pipeline
 
-from tda_pipeline import build_tda_pipeline, reshape_for_tda
+from programs.tda_pipeline import build_tda_pipeline, reshape_for_tda
 
 
 THRESHOLD_STACK = tuple(round(i / 10, 1) for i in range(1, 10))

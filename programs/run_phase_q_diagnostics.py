@@ -13,19 +13,19 @@ import numpy as np
 from gtda.diagrams import PairwiseDistance
 from gtda.images import Binarizer
 
-from data_loader import load_unsw
-from phase_m_env import env_block
-from phase_q_attacks import SUPPORTED_FAMILIES
-from phase_q_pipeline import (
+from programs.data_loader import load_unsw
+from programs.phase_m_env import env_block
+from programs.phase_q_attacks import SUPPORTED_FAMILIES
+from programs.phase_q_pipeline import (
     CONTROL_THRESHOLD,
     THRESHOLD_STACK,
     extract_multithreshold_features,
     extract_unscaled_diagrams,
 )
-from paths import RESULTS_DIR
-from results_io import convert_for_json
-from run_test_b_capture import subsample_for_seed
-from tda_pipeline import extract_tda_features, reshape_for_tda
+from programs.paths import RESULTS_DIR
+from programs.results_io import convert_for_json
+from programs.run_test_b_capture import subsample_for_seed
+from programs.tda_pipeline import extract_tda_features, reshape_for_tda
 
 
 OUTPUT_NAME = "phase_q_d1_d4_diagnostics.json"

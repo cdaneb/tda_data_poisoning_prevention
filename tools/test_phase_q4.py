@@ -9,10 +9,9 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "programs"))
 sys.path.insert(0, str(ROOT))
 
-from phase_q4_frame import stable_exact_payload_deduplicate
+from programs.phase_q4_frame import stable_exact_payload_deduplicate
 
 ARTIFACT = ROOT / "results" / "phase_q4_dedup_mechanism.json"
 SEEDS = [42, 123, 456, 789, 1024]

@@ -14,14 +14,14 @@ import time
 import numpy as np
 from sklearn.cluster import OPTICS
 
-from data_loader import load_unsw
-from phase_m_env import env_block
-from phase_q_attacks import SUPPORTED_FAMILIES
-from phase_q_metrics import matched_clean_cost, removal_curve
-from phase_q_pipeline import CONTROL_THRESHOLD, THRESHOLD_STACK, extract_multithreshold_features
-from paths import RESULTS_DIR
-from results_io import convert_for_json
-from run_test_b_capture import SEEDS, subsample_for_seed
+from programs.data_loader import load_unsw
+from programs.phase_m_env import env_block
+from programs.phase_q_attacks import SUPPORTED_FAMILIES
+from programs.phase_q_metrics import matched_clean_cost, removal_curve
+from programs.phase_q_pipeline import CONTROL_THRESHOLD, THRESHOLD_STACK, extract_multithreshold_features
+from programs.paths import RESULTS_DIR
+from programs.results_io import convert_for_json
+from programs.run_test_b_capture import SEEDS, subsample_for_seed
 
 
 OUTPUT_NAME = "phase_q_r1_multithreshold_capture.json"

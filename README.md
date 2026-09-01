@@ -237,6 +237,15 @@ On WIRE the repo lives at `~/projects/tda_data_poisoning_prevention`. Do **not**
 which is the read-only view of the same NFS share. `local_scratch` is exfat (no symlinks, no POSIX
 modes, may not survive rescheduling) — disposable intermediates only.
 
+The author-supplied Monkam XLSX workbooks are stored with Git LFS. After the
+initial clone, or after pulling a commit that adds or updates those workbooks,
+materialize them before running the Monkam audit or pilot:
+
+```bash
+git lfs install
+git lfs pull
+```
+
 All data/results/models/figures paths are resolved by `programs/paths.py`, repo-relative by default and
 overridable via `TDA_DATA_DIR` / `TDA_RESULTS_DIR` / `TDA_MODELS_DIR` / `TDA_FIGURES_DIR` -- copy
 `.env.example` to `.env.wire` and fill in machine-specific paths (e.g. WIRE's NFS mounts), then

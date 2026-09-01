@@ -6,8 +6,8 @@ raises strict-purity capture above random swaps, but an unguided cyclic shift
 reaches essentially the same capture level.
 
 Usage:
-    python programs/make_figure_v4_guidance_shift.py --check
-    python programs/make_figure_v4_guidance_shift.py --render
+    python make_figure_v4_guidance_shift.py --check
+    python make_figure_v4_guidance_shift.py --render
 """
 import argparse
 import json
@@ -16,7 +16,7 @@ from pathlib import Path
 
 import numpy as np
 
-from paths import FIGURES_DIR, RESULTS_DIR
+from programs.paths import FIGURES_DIR, RESULTS_DIR
 
 SEEDS = ["42", "123", "456", "789", "1024"]
 ALGO = "OPTICS"

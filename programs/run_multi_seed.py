@@ -10,12 +10,12 @@ Runs on BOTH datasets: UNSW-NB15 and CICIDS2017.
 import numpy as np
 import json
 import time
-from data_loader import load_unsw, load_cicids
-from poison import poison_dataset
-from iterative_filter import iterative_filter
-from clustering import run_all_clustering, classify_clusters
-from results_io import convert_for_json
-from paths import RESULTS_DIR
+from programs.data_loader import load_unsw, load_cicids
+from programs.poison import poison_dataset
+from programs.iterative_filter import iterative_filter
+from programs.clustering import run_all_clustering, classify_clusters
+from programs.results_io import convert_for_json
+from programs.paths import RESULTS_DIR
 
 
 # ============================================================
@@ -64,7 +64,7 @@ def run_single_seed_experiment(X_full, y_full, seed, dataset_name, algorithms):
     }
 
     # ---- BASELINE (single-pass TDA + clustering) ----
-    from tda_pipeline import extract_tda_features
+    from programs.tda_pipeline import extract_tda_features
 
     print(f"    Extracting TDA features for baseline...")
     X_tda, pipeline = extract_tda_features(X_poisoned)

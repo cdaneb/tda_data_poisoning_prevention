@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from adversarial_attack import label_to_binary
+from programs.adversarial_attack import label_to_binary
 
 
 MIN_COMMON_SUPPORT = 120

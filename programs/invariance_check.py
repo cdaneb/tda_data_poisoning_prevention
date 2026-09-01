@@ -17,7 +17,7 @@ approximation of it.
 import numpy as np
 from gtda.images import Binarizer
 
-from tda_pipeline import reshape_for_tda
+from programs.tda_pipeline import reshape_for_tda
 
 
 def _as_images(X):

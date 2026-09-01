@@ -14,10 +14,9 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "programs"))
 sys.path.insert(0, str(ROOT))
 
-from phase_q3_collisions import (  # noqa: E402
+from programs.phase_q3_collisions import (  # noqa: E402
     canonical_diagram_points,
     class_size_array,
     class_stats,
@@ -33,7 +32,7 @@ from phase_q3_collisions import (  # noqa: E402
     transition_report,
     unpack_binary_mask,
 )
-from phase_q3_stage_pipeline import (  # noqa: E402
+from programs.phase_q3_stage_pipeline import (  # noqa: E402
     CHAIN_STAGES,
     FILTRATION_NAMES,
     extract_all_stages,

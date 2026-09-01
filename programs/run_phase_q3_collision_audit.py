@@ -12,8 +12,8 @@ used only retrospectively, for composition and attribution; every stage
 signature is built label-free by ``phase_q3_stage_pipeline``.
 
 Usage:
-    python programs/run_phase_q3_collision_audit.py                # full audit
-    python programs/run_phase_q3_collision_audit.py --seeds 42     # seed 42 only
+    python run_phase_q3_collision_audit.py                # full audit
+    python run_phase_q3_collision_audit.py --seeds 42     # seed 42 only
 """
 from __future__ import annotations
 
@@ -26,13 +26,11 @@ from pathlib import Path
 import numpy as np
 from sklearn.cluster import OPTICS
 
-PROGRAMS_DIR = Path(__file__).resolve().parent
-REPO_ROOT = PROGRAMS_DIR.parent
-sys.path.insert(0, str(PROGRAMS_DIR))
-sys.path.insert(0, str(REPO_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent / "tools"))
 
-from clustering import classify_clusters
-from phase_q3_collisions import (
+from programs.clustering import classify_clusters
+from programs.phase_q3_collisions import (
     class_size_array,
     class_stats,
     earliest_merger_attribution,
@@ -41,7 +39,7 @@ from phase_q3_collisions import (
     label_free_signature_violations,
     transition_report,
 )
-from phase_q3_stage_pipeline import CHAIN_STAGES, extract_all_stages
+from programs.phase_q3_stage_pipeline import CHAIN_STAGES, extract_all_stages
 from tools.phase_q2_common import (
     CONFIRMATION_SEEDS,
     build_realization,
@@ -52,7 +50,7 @@ from tools.phase_q2_common import (
 )
 
 OPTICS_PARAMS = {"min_samples": 5, "max_eps": 2.0}
-OUT_PATH = REPO_ROOT / "results" / "phase_q3_collision_audit.json"
+OUT_PATH = Path(__file__).resolve().parent / "results" / "phase_q3_collision_audit.json"
 
 # Q2 recorded these for the legacy 30x50 / threshold-0.4 arm at seed 42.
 Q2_REFERENCE = {
@@ -468,7 +466,7 @@ def audit_seed(seed, full=True):
     # Map each appended poison row to the clean row it was derived from.
     real["attack_target_index"] = None  # filled below from a fresh attack log
 
-    from adversarial_attack import malicious_random_attack
+    from programs.adversarial_attack import malicious_random_attack
     from tools.phase_q2_common import MAX_SAMPLES, N_SWAPS, POISON_RATE, load_unsw_once
     X_all, y_all = load_unsw_once()
     rng = np.random.RandomState(seed)

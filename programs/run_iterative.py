@@ -8,11 +8,11 @@ comprehensive results for analysis and visualization.
 import numpy as np
 import json
 import time
-from data_loader import load_unsw
-from poison import poison_dataset
-from iterative_filter import iterative_filter
-from results_io import convert_for_json
-from paths import RESULTS_DIR
+from programs.data_loader import load_unsw
+from programs.poison import poison_dataset
+from programs.iterative_filter import iterative_filter
+from programs.results_io import convert_for_json
+from programs.paths import RESULTS_DIR
 
 
 def run_iterative_experiment(dataset_name, X, y, max_samples=5000,
