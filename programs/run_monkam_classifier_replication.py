@@ -1,6 +1,6 @@
 """Duplicate-safe replication of the supplied UNSW Random Forest results."""
 from __future__ import annotations
-import argparse, csv, hashlib, json, math, platform, resource, sys, time
+import argparse, csv, hashlib, json, math, platform, sys, time
 from collections import Counter
 from pathlib import Path
 import numpy as np
@@ -13,6 +13,7 @@ if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
 from programs.data_loader import load_unsw
 from programs.monkam_representation import equivalence_profile,stable_hash
 from programs.monkam_workbook import load_numeric_workbook
+from programs.resource_usage import peak_rss_kib
 
 RESULTS=ROOT/'results'; PRE=RESULTS/'monkam_classifier_replication_preregistration.json'
 OUT=RESULTS/'monkam_classifier_replication.json'; CSVOUT=RESULTS/'monkam_classifier_replication_summary.csv'
@@ -96,7 +97,7 @@ def main():
   "population":{"raw":equivalence_profile(Xraw,y),"tda280":equivalence_profile(Xtda,y),"excluded":[]},
   "notebook_saved":{"multiclass_tda_accuracy":.7922012893534456,"multiclass_raw_accuracy":.8420,
     "binary_tda_accuracy":.9580673425960696,"binary_raw_accuracy":.9920,"rf_random_state":"unset"},
-  "runtime_seconds":time.time()-started,"resource":{"workers":WORKERS,"peak_rss_kib":resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+  "runtime_seconds":time.time()-started,"resource":{"workers":WORKERS,"peak_rss_kib":peak_rss_kib(),
     "python":sys.version,"platform":platform.platform()}}
  OUT.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n'); print(OUT)
 if __name__=='__main__': main()

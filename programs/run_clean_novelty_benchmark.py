@@ -1,6 +1,6 @@
 """Resumable clean-calibrated novelty benchmark on Phase Q Frame B."""
 from __future__ import annotations
-import argparse,csv,hashlib,json,os,platform,resource,sys,time
+import argparse,csv,hashlib,json,os,platform,sys,time
 from pathlib import Path
 import numpy as np
 import sklearn, scipy, gtda
@@ -14,6 +14,7 @@ from programs.monkam_representation import stable_hash
 from programs.novelty_detectors import detector_factories,fit_calibrate_evaluate
 from programs.phase_q_attacks import SUPPORTED_FAMILIES
 from programs.phase_q_pipeline import CONTROL_THRESHOLD,THRESHOLD_STACK,extract_multithreshold_features
+from programs.resource_usage import peak_rss_kib
 from programs.run_test_b_capture import SEEDS,subsample_for_seed
 
 RESULTS=ROOT/'results'; CELLS=RESULTS/'clean_novelty_cells'; CACHE=ROOT/'.step3_cache'
@@ -77,7 +78,7 @@ def cache_cell(Xfull,yfull,family,seed):
   "parent_indices":[x['target_index'] for x in log],"parent_relationship_hash":stable_hash([x['target_index'] for x in log]),
   "control_hash":stable_hash(control),"stack_hash":stable_hash(stack),"fitted_state":fitted_state(pipelines),
   "library_versions":{"numpy":np.__version__},"feature_runtime_seconds":time.time()-t,
-  "resource":{"workers":WORKERS,"peak_rss_kib":resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}}
+  "resource":{"workers":WORKERS,"peak_rss_kib":peak_rss_kib()}}
  meta.write_text(json.dumps(m,indent=2,sort_keys=True)+'\n'); return Xc,poisoned,log,control,stack,m
 def run_cell(Xfull,yfull,family,seed,rep,features):
  cell=CELLS/f'{family}_{rep}_seed{seed}.json'
@@ -129,7 +130,7 @@ def merge(design):
     "scikit_learn":sklearn.__version__,"giotto_tda":gtda.__version__},
   "runtime":{"feature_seconds":sum(json.load(open(p))['feature_runtime_seconds'] for p in CACHE.glob('*.json')),
     "detector_seconds":sum(d['runtime_seconds'] for r in records for d in r['detectors'].values()),
-    "workers":WORKERS,"platform":platform.platform(),"peak_rss_kib":resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}}
+    "workers":WORKERS,"platform":platform.platform(),"peak_rss_kib":peak_rss_kib()}}
  OUT.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n'); return result
 def main():
  ap=argparse.ArgumentParser(); ap.add_argument('--prepare-only',action='store_true'); ap.add_argument('--family',default='all',choices=list(SUPPORTED_FAMILIES)+['all']); ap.add_argument('--seed',default='all',choices=[str(s) for s in SEEDS]+['all']); a=ap.parse_args()

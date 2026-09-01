@@ -1,6 +1,6 @@
 """Evidence-locked, resumable Monkam representation audit."""
 from __future__ import annotations
-import argparse, hashlib, json, platform, resource, sys, time
+import argparse, hashlib, json, platform, sys, time
 from pathlib import Path
 import numpy as np
 from gtda.homology import CubicalPersistence
@@ -9,6 +9,7 @@ if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
 from programs.monkam_representation import (SPECS, SUPPLIED_280_DEFINITION,
     equivalence_profile, feature_blocks, fit_shared, learned_state, reshape_payloads,
     stable_hash)
+from programs.resource_usage import peak_rss_kib
 from programs.run_monkam_126_fit_protocol_pilot import load_selected_payloads
 
 RESULTS=ROOT/'results'
@@ -83,7 +84,7 @@ def main():
         "feature-reduction configuration","unseeded 10000-row membership underlying supplied 126 workbook"],
       "historical_separate_fit_reference":"results/monkam_126_fit_protocol_pilot_seed60.json",
       "runtime_seconds":time.time()-started,"resource":{"workers":1,
-        "peak_rss_kib":resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+        "peak_rss_kib":peak_rss_kib(),
         "python":sys.version,"platform":platform.platform()}}
     OUT.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n'); print(OUT)
 if __name__=='__main__': main()
