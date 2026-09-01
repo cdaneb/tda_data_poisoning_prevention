@@ -1,0 +1,52 @@
+{
+  "metrics": {
+    "accuracy": 0.9502487562189055,
+    "balanced_accuracy": 0.9289987300721904,
+    "confusion_matrix": [
+      [
+        3269,
+        2
+      ],
+      [
+        248,
+        1506
+      ]
+    ],
+    "macro_f1": 0.9432651012155111,
+    "per_class": {
+      "malicious": {
+        "precision": 0.9294853568382144,
+        "recall": 0.9993885661877102,
+        "support": 3271
+      },
+      "normal": {
+        "precision": 0.9986737400530504,
+        "recall": 0.8586088939566705,
+        "support": 1754
+      }
+    },
+    "weighted_f1": 0.9492742927300597
+  },
+  "n_test": 5025,
+  "n_train": 74856,
+  "novel_accuracy": 0.9502487562189055,
+  "novel_test_count": 5025,
+  "protocol": "group_tda_vector",
+  "raw_overlap_classes": 0,
+  "repeated_accuracy": null,
+  "repeated_test_count": 0,
+  "representation": "raw",
+  "runtime_seconds": 5.688260555267334,
+  "seed": 789,
+  "split_hash": "aa2eda04f0acd37777f2ae7a4a6972b6a437fd6203377ed43360e26d79f899d8",
+  "task": "binary",
+  "tda_overlap_classes": 0,
+  "test_class_counts": {
+    "malicious": 3271,
+    "normal": 1754
+  },
+  "train_class_counts": {
+    "malicious": 55610,
+    "normal": 19246
+  }
+}

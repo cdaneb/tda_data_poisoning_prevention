@@ -1,0 +1,220 @@
+{
+  "metrics": {
+    "accuracy": 0.7934530888151718,
+    "balanced_accuracy": 0.6535825793215543,
+    "confusion_matrix": [
+      [
+        63,
+        2,
+        5,
+        155,
+        3,
+        0,
+        0,
+        4,
+        0,
+        0
+      ],
+      [
+        61,
+        14,
+        10,
+        125,
+        10,
+        7,
+        10,
+        10,
+        0,
+        0
+      ],
+      [
+        86,
+        1,
+        85,
+        410,
+        26,
+        10,
+        69,
+        21,
+        2,
+        0
+      ],
+      [
+        75,
+        6,
+        55,
+        2251,
+        93,
+        33,
+        278,
+        59,
+        2,
+        0
+      ],
+      [
+        77,
+        4,
+        17,
+        275,
+        1689,
+        15,
+        495,
+        12,
+        0,
+        0
+      ],
+      [
+        79,
+        2,
+        17,
+        164,
+        15,
+        2965,
+        130,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        18,
+        6,
+        0,
+        4228,
+        0,
+        0,
+        0
+      ],
+      [
+        75,
+        3,
+        18,
+        230,
+        7,
+        5,
+        5,
+        1162,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        202,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        18
+      ]
+    ],
+    "macro_f1": 0.6556656881791894,
+    "per_class": {
+      "analysis": {
+        "precision": 0.12209302325581395,
+        "recall": 0.27155172413793105,
+        "support": 232
+      },
+      "backdoor": {
+        "precision": 0.4375,
+        "recall": 0.05668016194331984,
+        "support": 247
+      },
+      "dos": {
+        "precision": 0.4106280193236715,
+        "recall": 0.11971830985915492,
+        "support": 710
+      },
+      "exploits": {
+        "precision": 0.6204520396912899,
+        "recall": 0.7892706872370266,
+        "support": 2852
+      },
+      "fuzzers": {
+        "precision": 0.9134667387777177,
+        "recall": 0.6536377708978328,
+        "support": 2584
+      },
+      "generic": {
+        "precision": 0.9769357495881383,
+        "recall": 0.8785185185185185,
+        "support": 3375
+      },
+      "normal": {
+        "precision": 0.810738255033557,
+        "recall": 0.9943555973659455,
+        "support": 4252
+      },
+      "reconnaissance": {
+        "precision": 0.9142407553107789,
+        "recall": 0.772093023255814,
+        "support": 1505
+      },
+      "shellcode": {
+        "precision": 0.9805825242718447,
+        "recall": 1.0,
+        "support": 202
+      },
+      "worms": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "support": 18
+      }
+    },
+    "weighted_f1": 0.7851366532175211
+  },
+  "n_test": 15977,
+  "n_train": 63904,
+  "novel_accuracy": 0.8084229800869764,
+  "novel_test_count": 4369,
+  "protocol": "random_row",
+  "raw_overlap_classes": 4221,
+  "repeated_accuracy": 0.7878187456926258,
+  "repeated_test_count": 11608,
+  "representation": "tda280",
+  "runtime_seconds": 3.4774363040924072,
+  "seed": 123,
+  "split_hash": "57d3cd0d566f50f3605964a614e22e71f8604c0942b5e58098308403f4d8bfcb",
+  "task": "multiclass",
+  "tda_overlap_classes": 2376,
+  "test_class_counts": {
+    "analysis": 232,
+    "backdoor": 247,
+    "dos": 710,
+    "exploits": 2852,
+    "fuzzers": 2584,
+    "generic": 3375,
+    "normal": 4252,
+    "reconnaissance": 1505,
+    "shellcode": 202,
+    "worms": 18
+  },
+  "train_class_counts": {
+    "analysis": 976,
+    "backdoor": 992,
+    "dos": 2687,
+    "exploits": 11140,
+    "fuzzers": 10138,
+    "generic": 14205,
+    "normal": 16748,
+    "reconnaissance": 6057,
+    "shellcode": 886,
+    "worms": 75
+  }
+}

@@ -1,0 +1,590 @@
+{
+  "confirmation_gates": {
+    "finite": true,
+    "hash_repeatability": true,
+    "shape": true,
+    "workbook_alignment_must_be_preverified": true
+  },
+  "dataset_and_input_hashes": {
+    "data/Payload_data_UNSW.csv": "39616dd8e397673500ed6c51a09fe5638c29d27454467d8aef925ca79a295f01",
+    "monkam_files/tda_280_x_y.xlsx": "884640b20ab03ba85c21cb8e5791e565148dd76aab7b90b45a8813dea9212655",
+    "monkam_files/tda_begnin_X_126.xlsx": "1d84870c1c68f09c15c847b95bf39f2f47ac7126b46ce3967af6f13c5236f59b"
+  },
+  "effective_workers": 1,
+  "experiment": "monkam_representation_audit",
+  "lock_hash": "c463e73203cfeef31c36f9dcb04cb2d6b104caf24f47fda9a9004660487446ab",
+  "parent_poison_relationships": "18 delivered examples from 11 filename-identified parents; diagnostic only",
+  "permitted_sensitivity": [
+    "completed separate-fit 18-poison pilot, read-only"
+  ],
+  "preprocessing_and_models": {
+    "algorithm1_1x1500_t04": {
+      "expected_features": 126,
+      "filtrations": [
+        [
+          "height_0_1",
+          "height",
+          [
+            0,
+            1
+          ]
+        ],
+        [
+          "height_1_0",
+          "height",
+          [
+            1,
+            0
+          ]
+        ],
+        [
+          "radial_0_1500",
+          "radial",
+          [
+            0,
+            1500
+          ]
+        ],
+        [
+          "radial_0_600",
+          "radial",
+          [
+            0,
+            600
+          ]
+        ],
+        [
+          "radial_0_750",
+          "radial",
+          [
+            0,
+            750
+          ]
+        ],
+        [
+          "radial_1500_0",
+          "radial",
+          [
+            1500,
+            0
+          ]
+        ],
+        [
+          "radial_600_0",
+          "radial",
+          [
+            600,
+            0
+          ]
+        ]
+      ],
+      "homology_dimensions": [
+        0,
+        1
+      ],
+      "image_shape": [
+        1,
+        1500
+      ],
+      "metrics": [
+        [
+          "bottleneck",
+          {}
+        ],
+        [
+          "wasserstein",
+          {
+            "p": 1
+          }
+        ],
+        [
+          "landscape",
+          {
+            "n_bins": 81,
+            "n_layers": 1,
+            "p": 1
+          }
+        ],
+        [
+          "landscape",
+          {
+            "n_bins": 81,
+            "n_layers": 2,
+            "p": 1
+          }
+        ],
+        [
+          "betti",
+          {
+            "n_bins": 81,
+            "p": 1
+          }
+        ],
+        [
+          "betti",
+          {
+            "n_bins": 81,
+            "p": 2
+          }
+        ],
+        [
+          "heat",
+          {
+            "n_bins": 81,
+            "p": 1,
+            "sigma": 1.6
+          }
+        ],
+        [
+          "heat",
+          {
+            "n_bins": 81,
+            "p": 1,
+            "sigma": 3.2
+          }
+        ]
+      ],
+      "name": "algorithm1_1x1500_t04",
+      "threshold": 0.4
+    },
+    "notebook_1x1500_t03": {
+      "expected_features": 126,
+      "filtrations": [
+        [
+          "height_0_1",
+          "height",
+          [
+            0,
+            1
+          ]
+        ],
+        [
+          "height_1_0",
+          "height",
+          [
+            1,
+            0
+          ]
+        ],
+        [
+          "radial_0_1500",
+          "radial",
+          [
+            0,
+            1500
+          ]
+        ],
+        [
+          "radial_0_600",
+          "radial",
+          [
+            0,
+            600
+          ]
+        ],
+        [
+          "radial_0_750",
+          "radial",
+          [
+            0,
+            750
+          ]
+        ],
+        [
+          "radial_1500_0",
+          "radial",
+          [
+            1500,
+            0
+          ]
+        ],
+        [
+          "radial_600_0",
+          "radial",
+          [
+            600,
+            0
+          ]
+        ]
+      ],
+      "homology_dimensions": [
+        0,
+        1
+      ],
+      "image_shape": [
+        1,
+        1500
+      ],
+      "metrics": [
+        [
+          "bottleneck",
+          {}
+        ],
+        [
+          "wasserstein",
+          {
+            "p": 1
+          }
+        ],
+        [
+          "landscape",
+          {
+            "n_bins": 81,
+            "n_layers": 1,
+            "p": 1
+          }
+        ],
+        [
+          "landscape",
+          {
+            "n_bins": 81,
+            "n_layers": 2,
+            "p": 1
+          }
+        ],
+        [
+          "betti",
+          {
+            "n_bins": 81,
+            "p": 1
+          }
+        ],
+        [
+          "betti",
+          {
+            "n_bins": 81,
+            "p": 2
+          }
+        ],
+        [
+          "heat",
+          {
+            "n_bins": 81,
+            "p": 1,
+            "sigma": 1.6
+          }
+        ],
+        [
+          "heat",
+          {
+            "n_bins": 81,
+            "p": 1,
+            "sigma": 3.2
+          }
+        ]
+      ],
+      "name": "notebook_1x1500_t03",
+      "threshold": 0.3
+    },
+    "project_30x50_t04": {
+      "expected_features": 60,
+      "filtrations": [
+        [
+          "height_0_1",
+          "height",
+          [
+            0,
+            1
+          ]
+        ],
+        [
+          "height_1_0",
+          "height",
+          [
+            1,
+            0
+          ]
+        ],
+        [
+          "radial_0_50",
+          "radial",
+          [
+            0,
+            50
+          ]
+        ],
+        [
+          "radial_0_25",
+          "radial",
+          [
+            0,
+            25
+          ]
+        ],
+        [
+          "radial_30_0",
+          "radial",
+          [
+            30,
+            0
+          ]
+        ]
+      ],
+      "homology_dimensions": [
+        0,
+        1
+      ],
+      "image_shape": [
+        30,
+        50
+      ],
+      "metrics": [
+        [
+          "bottleneck",
+          {}
+        ],
+        [
+          "wasserstein",
+          {
+            "p": 1
+          }
+        ],
+        [
+          "landscape",
+          {
+            "n_bins": 64,
+            "n_layers": 1,
+            "p": 1
+          }
+        ],
+        [
+          "betti",
+          {
+            "n_bins": 64,
+            "p": 1
+          }
+        ],
+        [
+          "heat",
+          {
+            "n_bins": 64,
+            "p": 1,
+            "sigma": 1.6
+          }
+        ]
+      ],
+      "name": "project_30x50_t04",
+      "threshold": 0.4
+    },
+    "supplied_126": {
+      "expected_features": 126,
+      "filtrations": [
+        [
+          "height_0_1",
+          "height",
+          [
+            0,
+            1
+          ]
+        ],
+        [
+          "height_1_0",
+          "height",
+          [
+            1,
+            0
+          ]
+        ],
+        [
+          "radial_0_1500",
+          "radial",
+          [
+            0,
+            1500
+          ]
+        ],
+        [
+          "radial_0_600",
+          "radial",
+          [
+            0,
+            600
+          ]
+        ],
+        [
+          "radial_0_750",
+          "radial",
+          [
+            0,
+            750
+          ]
+        ],
+        [
+          "radial_1500_0",
+          "radial",
+          [
+            1500,
+            0
+          ]
+        ],
+        [
+          "radial_600_0",
+          "radial",
+          [
+            600,
+            0
+          ]
+        ]
+      ],
+      "homology_dimensions": [
+        0,
+        1
+      ],
+      "image_shape": [
+        1,
+        1500
+      ],
+      "metrics": [
+        [
+          "bottleneck",
+          {}
+        ],
+        [
+          "wasserstein",
+          {
+            "p": 1
+          }
+        ],
+        [
+          "landscape",
+          {
+            "n_bins": 81,
+            "n_layers": 1,
+            "p": 1
+          }
+        ],
+        [
+          "landscape",
+          {
+            "n_bins": 81,
+            "n_layers": 2,
+            "p": 1
+          }
+        ],
+        [
+          "betti",
+          {
+            "n_bins": 81,
+            "p": 1
+          }
+        ],
+        [
+          "betti",
+          {
+            "n_bins": 81,
+            "p": 2
+          }
+        ],
+        [
+          "heat",
+          {
+            "n_bins": 81,
+            "p": 1,
+            "sigma": 1.6
+          }
+        ],
+        [
+          "heat",
+          {
+            "n_bins": 81,
+            "p": 1,
+            "sigma": 3.2
+          }
+        ]
+      ],
+      "name": "supplied_126",
+      "threshold": 0.3
+    },
+    "supplied_280": {
+      "expected_features": 280,
+      "extractors_per_dimension": 20,
+      "filtrations": [
+        [
+          "height",
+          [
+            1,
+            0
+          ]
+        ],
+        [
+          "height",
+          [
+            -1,
+            0
+          ]
+        ],
+        [
+          "height",
+          [
+            -1,
+            1
+          ]
+        ],
+        [
+          "radial",
+          [
+            600,
+            0
+          ]
+        ],
+        [
+          "radial",
+          [
+            1500,
+            0
+          ]
+        ],
+        [
+          "radial",
+          [
+            20,
+            13
+          ]
+        ],
+        [
+          "radial",
+          [
+            6,
+            20
+          ]
+        ]
+      ],
+      "homology_dimensions": [
+        0,
+        1
+      ],
+      "image_shape": [
+        1,
+        1500
+      ],
+      "scaler": false,
+      "threshold": 0.3
+    }
+  },
+  "primary_endpoints": [
+    "feature count and layout",
+    "1x1500 H1 degeneracy",
+    "shared-fit learned states",
+    "raw/mask/diagram/vector equivalence"
+  ],
+  "row_indices": [
+    0,
+    1,
+    2,
+    50138,
+    50139,
+    50140,
+    79879,
+    79880
+  ],
+  "row_indices_hash": "eeca096709d5a89b0d730ebd1d0e34d11dd3c78b908a0fa4913da58739cc22dd",
+  "secondary_endpoints": [
+    "constant and zero-variance dimensions",
+    "label conflicts",
+    "runtime and peak RSS"
+  ],
+  "seeds": [
+    42
+  ],
+  "version": 1
+}

@@ -1,0 +1,107 @@
+{
+  "clean_split": {
+    "calibration": 0.2,
+    "detector_train": 0.6,
+    "group": "exact raw payload hash",
+    "heldout_evaluation": 0.2
+  },
+  "confirmation_gates": {
+    "all_detectors_required": true,
+    "cache_hash_valid": true,
+    "finite_scores": true,
+    "raw_noops": 0,
+    "seed42_mechanism": true
+  },
+  "dataset_hash": "39616dd8e397673500ed6c51a09fe5638c29d27454467d8aef925ca79a295f01",
+  "detectors": {
+    "empirical_knn": {
+      "calibration": "empirical clean quantile",
+      "k": 10
+    },
+    "isolation_forest": {
+      "n_estimators": 200
+    },
+    "knn_distance": {
+      "k": 10
+    },
+    "lof_novelty": {
+      "n_neighbors": 20
+    },
+    "one_class_svm": {
+      "gamma": "scale",
+      "kernel": "rbf",
+      "nu": 0.01
+    }
+  },
+  "experiment": "phase_q_clean_calibrated_novelty_benchmark",
+  "families": [
+    "transpositions",
+    "block_reversal",
+    "block_swap",
+    "cyclic_shift"
+  ],
+  "frame": "B",
+  "lock_hash": "3d2d5782619f65a625af35293bb6ef11929995865757faaf414d409cf83cbf8b",
+  "parallelism": {
+    "effective_workers": 8,
+    "level": "detector internal only"
+  },
+  "parent_poison_relationships": "attack logs identify each appended poison source index",
+  "permitted_sensitivity": [],
+  "preprocessing": "StandardScaler fitted on detector-training clean only; constants recorded",
+  "primary_endpoint": "poison capture at each fixed clean-removal budget",
+  "representations": {
+    "control": {
+      "features": 60,
+      "thresholds": [
+        0.4
+      ]
+    },
+    "stack": {
+      "features": 540,
+      "scale": "1/sqrt(9)",
+      "thresholds": [
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9
+      ]
+    }
+  },
+  "sample": {
+    "poison": 500,
+    "unmodified": 5000
+  },
+  "secondary_endpoints": [
+    "heldout clean removal",
+    "precision",
+    "AUROC",
+    "AUPRC",
+    "score distributions",
+    "family/seed variation",
+    "exact clean-vector sharing",
+    "OPTICS clean/poison noise",
+    "paired OPTICS differences"
+  ],
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024
+  ],
+  "source_artifact_hash": "5ab392ee9589f451d9932483fb9e9f96ee33e596ce9cc8295dfc7891d020c652",
+  "threshold_budgets": [
+    0.001,
+    0.005,
+    0.01,
+    0.02,
+    0.05
+  ],
+  "threshold_source": "calibration-clean only"
+}

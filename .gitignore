@@ -43,6 +43,13 @@ results/*
 !results/phase_q4_*.json
 # Monkam material audit and controlled fit-protocol artifacts.
 !results/monkam_*.json
+!results/monkam_classifier_splits/
+!results/monkam_classifier_splits/*.json
+!results/monkam_classifier_replication_summary.csv
+!results/clean_novelty_*.json
+!results/clean_novelty_*.csv
+!results/clean_novelty_cells/
+!results/clean_novelty_cells/*.json
 
 # Log files
 *.log
@@ -84,3 +91,6 @@ monkam_files/*.zip
 # Phase Q2 machine-local feature cache (regenerable; hashes are published in
 # the tracked JSON so the cache is never required to audit a result).
 .q2_cache/
+# Step 3 clean-calibrated detector feature matrices (regenerable; final
+# summaries and fitted-state hashes remain explicitly tracked under results/).
+.step3_cache/
