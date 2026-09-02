@@ -50,6 +50,8 @@ results/*
 !results/clean_novelty_*.csv
 !results/clean_novelty_cells/
 !results/clean_novelty_cells/*.json
+!results/clean_novelty_confirmation_cells/
+!results/clean_novelty_confirmation_cells/*.json
 
 # Log files
 *.log
@@ -94,3 +96,5 @@ monkam_files/*.zip
 # Step 3 clean-calibrated detector feature matrices (regenerable; final
 # summaries and fitted-state hashes remain explicitly tracked under results/).
 .step3_cache/
+# Independent-confirmation raw/feature cache (regenerable; hashes are locked).
+.confirmation_cache/

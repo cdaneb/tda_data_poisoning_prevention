@@ -1,0 +1,69 @@
+{
+  "dataset": "unsw",
+  "detectors": {
+    "isolation_forest": {
+      "auprc": 0.5429023400087312,
+      "auroc": 0.7846726368159204,
+      "budgets": {
+        "0.01": {
+          "clean_removal_rate": 0.020895522388059702,
+          "clean_removed": 21,
+          "poison_capture": 0.046,
+          "poison_removed": 23,
+          "precision": 0.5227272727272727,
+          "threshold": 0.7162774711157782
+        },
+        "0.05": {
+          "clean_removal_rate": 0.06467661691542288,
+          "clean_removed": 65,
+          "poison_capture": 0.164,
+          "poison_removed": 82,
+          "precision": 0.5578231292517006,
+          "threshold": 0.6120670326688461
+        }
+      },
+      "runtime_seconds": 0.4234175682067871
+    },
+    "knn_distance": {
+      "auprc": 0.5953321342766009,
+      "auroc": 0.8293830845771144,
+      "budgets": {
+        "0.01": {
+          "clean_removal_rate": 0.015920398009950248,
+          "clean_removed": 16,
+          "poison_capture": 0.05,
+          "poison_removed": 25,
+          "precision": 0.6097560975609756,
+          "threshold": 35.028015560586276
+        },
+        "0.05": {
+          "clean_removal_rate": 0.08059701492537313,
+          "clean_removed": 81,
+          "poison_capture": 0.198,
+          "poison_removed": 99,
+          "precision": 0.55,
+          "threshold": 18.68018969737498
+        }
+      },
+      "runtime_seconds": 0.05265355110168457
+    }
+  },
+  "family": "block_swap",
+  "feature_cache_input_hash": "23724aa1aa26fb75107a358030fb527f5b7de6c6b2ab501f2498a1b21fc58c1b",
+  "feature_hash": "7fbe6b3472f2a28822673e3e58c132781c20c7f84400c97ce303f4a7ef36d45b",
+  "population": "unsw_matched",
+  "preprocessing": {
+    "fit_indices_hash": "b4ab41a78d7f23d9e5353402624ef05f8ea94f36c52a939176ea33e9eec5ce47",
+    "mean_hash": "970258faa2a9df8dcfb695b8e7634269ab427db16b3564fdb6c98c664015af80",
+    "scale_hash": "b2e5a4394c74c0e888f4171ea8eb0aa20ae02b89bf534f1947545e64a31b0c23"
+  },
+  "preregistration_hash": "c1a22e11c5f6dbcbee374e787afe597d8bcea0137c12c1a28a13f391dad2822c",
+  "representation": "stack",
+  "seed": 2030,
+  "split_hashes": {
+    "calibration_indices_hash": "35834bd25104357607f966a12c895e3aa1f73a056888986d1786363869c930e1",
+    "clean_training_indices_hash": "b4ab41a78d7f23d9e5353402624ef05f8ea94f36c52a939176ea33e9eec5ce47",
+    "heldout_clean_evaluation_indices_hash": "61ce02707f0c9fa70745293994addc8f7023e5f0c0d65f256668863911203580",
+    "raw_payload_group_hashes_hash": "dea6f1f5ad2687ae5f9dd67fb9f6a5bf0b4575a280365758199faa75fffb7cb8"
+  }
+}

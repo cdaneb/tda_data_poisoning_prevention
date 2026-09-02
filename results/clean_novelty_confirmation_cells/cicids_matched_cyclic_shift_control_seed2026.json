@@ -1,0 +1,69 @@
+{
+  "dataset": "cicids",
+  "detectors": {
+    "isolation_forest": {
+      "auprc": 0.45393347582971555,
+      "auroc": 0.6212482100238663,
+      "budgets": {
+        "0.01": {
+          "clean_removal_rate": 0.013126491646778043,
+          "clean_removed": 11,
+          "poison_capture": 0.022,
+          "poison_removed": 11,
+          "precision": 0.5,
+          "threshold": 0.6672101226651105
+        },
+        "0.05": {
+          "clean_removal_rate": 0.04892601431980907,
+          "clean_removed": 41,
+          "poison_capture": 0.05,
+          "poison_removed": 25,
+          "precision": 0.3787878787878788,
+          "threshold": 0.6302588601200293
+        }
+      },
+      "runtime_seconds": 0.4974696636199951
+    },
+    "knn_distance": {
+      "auprc": 0.5469611057733846,
+      "auroc": 0.7471909307875895,
+      "budgets": {
+        "0.01": {
+          "clean_removal_rate": 0.010739856801909307,
+          "clean_removed": 9,
+          "poison_capture": 0.012,
+          "poison_removed": 6,
+          "precision": 0.4,
+          "threshold": 5.449077763424564
+        },
+        "0.05": {
+          "clean_removal_rate": 0.0441527446300716,
+          "clean_removed": 37,
+          "poison_capture": 0.078,
+          "poison_removed": 39,
+          "precision": 0.5131578947368421,
+          "threshold": 3.075134727876946
+        }
+      },
+      "runtime_seconds": 0.035289764404296875
+    }
+  },
+  "family": "cyclic_shift",
+  "feature_cache_input_hash": "3d3592fe11beb2c3c71df7e7ea48cd7e1da9e0b7f0cb9197d7118d100cb32428",
+  "feature_hash": "a765ce5d0e527ee87b2e544bcaf6abf44e72128a012b215b0b360bb9fa471b44",
+  "population": "cicids_matched",
+  "preprocessing": {
+    "fit_indices_hash": "2dfdcfa9a9e42fd569c547976c01b3add2f7e10059d9f8c7ba373b15dcfc4f54",
+    "mean_hash": "690d7c6fbeb2de66a317e3cee872946798e6012a61b6dbb617753d936887b681",
+    "scale_hash": "345ddf4a49d0ef2d9953ff7837b0eba3ea55336421d5a7bb82f5aa88fca0c8ef"
+  },
+  "preregistration_hash": "c1a22e11c5f6dbcbee374e787afe597d8bcea0137c12c1a28a13f391dad2822c",
+  "representation": "control",
+  "seed": 2026,
+  "split_hashes": {
+    "calibration_indices_hash": "cba37a5a4a25fe25faf319552ce2ff5785fee4ea289cce6dab73f17766908b94",
+    "clean_training_indices_hash": "2dfdcfa9a9e42fd569c547976c01b3add2f7e10059d9f8c7ba373b15dcfc4f54",
+    "heldout_clean_evaluation_indices_hash": "2f448a8a1a7b3e9e8916c2633c73011bad067d50c09eda605f1fb5476dfdaa8c",
+    "raw_payload_group_hashes_hash": "60e2d33c10c326bf9442d0d52994962d0409791b0f482c75c7fef3a71a2b2f86"
+  }
+}
