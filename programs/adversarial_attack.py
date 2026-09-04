@@ -287,8 +287,26 @@ def gaussian_noise_attack(X, y, poison_rate=0.10, random_state=42, sigma=30):
 # ---------------------------------------------------------------------------
 
 def label_to_binary(y):
-    """UNSW-NB15 category strings -> benign(0)/malicious(1). 'normal' -> 0."""
-    return np.array([0 if str(label).lower() == "normal" else 1 for label in y], dtype=int)
+    """Historical UNSW-only mapping retained for result reproduction.
+
+    This helper was used by the frozen confirmation and recognizes only the
+    UNSW-NB15 benign label.  New cross-dataset work must use
+    :func:`payload_label_to_binary`; changing this function would make the
+    existing CICIDS attack hashes irreproducible.
+    """
+    return np.array(
+        [0 if str(label).lower() == "normal" else 1 for label in y],
+        dtype=int,
+    )
+
+
+def payload_label_to_binary(y):
+    """Correct cross-dataset mapping for new Payload-Byte experiments."""
+    benign = {"normal", "benign"}
+    return np.array(
+        [0 if str(label).strip().lower() in benign else 1 for label in y],
+        dtype=int,
+    )
 
 
 def train_surrogates(X, y, random_state=42, test_size=0.2, verbose=True):

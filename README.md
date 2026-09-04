@@ -1,9 +1,10 @@
 # What Can a Persistence Diagram See? Invariance Structure and the Detectability of Data Poisoning
 
 Christian Dane Beels, advised by Dr. Joseph Dorta — Dept. of Mathematical Sciences, USMA West Point.
-Current manuscript: `base_paper.tex`, prepared for the 2026 IEEE MIT Undergraduate
-Research Technology Conference (URTC). The MathFest 2026 poster remains a
-separate historical deliverable.
+Current manuscript: `base_paper.tex`, being developed for the IEEE BigData 2026
+Undergraduate and REU Consortium. IEEE SaTML 2027 is a contingency venue. URTC
+is no longer a submission target. The MathFest 2026 poster remains a separate
+historical deliverable.
 
 ## What this is
 
@@ -141,6 +142,29 @@ poison and binds under this fit, but `-1` assignment is the larger single
 mechanism, and `1 - obstruction` is **not** an algorithm-independent ceiling.
 See `docs/PHASE_Q3_COLLISION_REPORT.md`.
 
+### Preregistered downstream-classifier extension
+
+The next experiment tests whether the controlled dirty-label poisoning degrades
+a fixed raw-byte Random Forest and whether label-free Isolation Forest removal
+recovers more performance than a random clean-cost-matched control. The six
+conceptual arms are clean, poisoned, random removal, 60-feature removal,
+540-feature removal, and oracle removal. The primary endpoint and four-gate
+decision rule are frozen in `results/downstream_classifier_design.json` and
+explained in `docs/DOWNSTREAM_CLASSIFIER_PREREGISTRATION.md`.
+
+An audit found that the earlier label helper recognized UNSW `normal` but not
+CICIDS `BENIGN`. Its historical behavior is retained so the frozen confirmation
+remains reproducible; the new experiment uses an explicit cross-dataset mapper
+that recognizes both spellings. New CICIDS malicious-only attacks must therefore
+be generated prospectively; prior CICIDS attack outcomes are not reused for the
+downstream experiment. UNSW attack hashes must remain exactly reproducible.
+
+Preparation and outcome execution are deliberately separated. The WIRE
+`--prepare-only` step may freeze rows, attacks, and hashes but cannot extract TDA
+features or train models. Outcome commands require a matching immutable OSF
+registration receipt and registered Git commit. See
+`docs/DOWNSTREAM_CLASSIFIER_WIRE_RUNBOOK.md` for the exact two-phase procedure.
+
 ## Repo layout
 
 Python source files live under `programs/`; paths below are relative to that
@@ -168,7 +192,7 @@ iterative_filter.py           # iterative Green/Red cluster removal + Wasserstei
                                #   (descriptive VietorisRipsPersistence on the 60-dim residual -- see
                                #   CLAUDE.md §4 on the two distinct persistence computations)
 results_io.py                 # convert_for_json() -- shared numpy->JSON serialization helper
-classifier_eval.py            # downstream NIDS classifier evaluation
+classifier_eval.py            # legacy exploratory downstream NIDS evaluation (not the preregistered study)
 visualize.py / visualize_comparison.py   # figure generation from results/
 verify_env.py                 # environment sanity check
 explore_data.py                # ad-hoc data exploration
@@ -183,6 +207,7 @@ run_phase_q_experiment.py         # resumable R1 control-vs-stack OPTICS compari
 run_test_b_capture.py            # Test B: 4 permutation families x 5 seeds x 4 clustering algorithms
 test_b_diagnostics.py             # Step 0 count-invariance gate + bit-identity/effective-swap diagnostics
 run_m8_purity_sweep.py            # read-only M7 OPTICS rescore across purity thresholds
+run_downstream_classifier_preregistered.py # locked prepare/register/run/merge/audit driver
 tools/repro_check.py               # tracked regression test -- see "Reproduction gate" below
 
 make_figure_v2.py              # poster figure V2: binarized clean/permuted/noised triptych.
@@ -191,7 +216,7 @@ make_figure_v3.py              # poster figure V3: four-family comparison (poste
 make_figure_m8_purity_sweep.py # M8 diagnostic curve; not poster evidence
 base_poster.tex                # standalone MathFest tikzposter source
 poster_blocks.tex              # historical MathFest poster \block{} fragment; not standalone
-base_paper.tex                 # five-page IEEEtran URTC manuscript source
+base_paper.tex                 # IEEEtran manuscript source for BigData 2026 development
 
 models/                        # trained surrogate classifiers (surrogate_mlp*.joblib, surrogate_rf*.joblib)
 results/                       # experiment output JSON; phase_m_*.json is intentionally tracked

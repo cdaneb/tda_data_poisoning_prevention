@@ -50,10 +50,12 @@ def common_attackable_mask(X, lengths, k=60):
     return (lengths >= 2 * k) & nonconstant & reversal_witness & swap_witness
 
 
-def _select_common_targets(X, y, poison_rate, random_state, min_support):
+def _select_common_targets(
+    X, y, poison_rate, random_state, min_support, label_mapper=label_to_binary
+):
     rng = np.random.default_rng(random_state)
     lengths = conservative_support_lengths(X)
-    malicious = label_to_binary(y) == 1
+    malicious = label_mapper(y) == 1
     attackable = common_attackable_mask(X, lengths, k=MIN_COMMON_SUPPORT // 2)
     eligible = np.flatnonzero(malicious & (lengths >= min_support) & attackable)
     n_poison = int(len(X) * poison_rate)
@@ -104,12 +106,13 @@ def _require_changed(sample, draw, max_parameter_draws, fallback):
 def supported_transposition_attack(
     X, y, poison_rate=0.10, random_state=42, n_swaps=60,
     min_support=MIN_COMMON_SUPPORT, max_parameter_draws=MAX_PARAMETER_DRAWS,
+    label_mapper=label_to_binary,
 ):
     """Apply 60 disjoint transpositions inside conservative support."""
     if 2 * n_swaps > min_support:
         raise ValueError("min_support must be at least 2*n_swaps")
     rng, targets, lengths = _select_common_targets(
-        X, y, poison_rate, random_state, min_support
+        X, y, poison_rate, random_state, min_support, label_mapper
     )
     poison = np.empty((len(targets), X.shape[1]), dtype=np.uint8)
     log = []
@@ -142,12 +145,13 @@ def supported_transposition_attack(
 def supported_block_reversal_attack(
     X, y, poison_rate=0.10, random_state=42, k=120,
     min_support=MIN_COMMON_SUPPORT, max_parameter_draws=MAX_PARAMETER_DRAWS,
+    label_mapper=label_to_binary,
 ):
     """Reverse one fixed-width block wholly inside conservative support."""
     if k > min_support:
         raise ValueError("min_support must be at least k")
     rng, targets, lengths = _select_common_targets(
-        X, y, poison_rate, random_state, min_support
+        X, y, poison_rate, random_state, min_support, label_mapper
     )
     poison = np.empty((len(targets), X.shape[1]), dtype=np.uint8)
     log = []
@@ -174,12 +178,13 @@ def supported_block_reversal_attack(
 def supported_block_swap_attack(
     X, y, poison_rate=0.10, random_state=42, k=60,
     min_support=MIN_COMMON_SUPPORT, max_parameter_draws=MAX_PARAMETER_DRAWS,
+    label_mapper=label_to_binary,
 ):
     """Swap two disjoint fixed-width blocks inside conservative support."""
     if 2 * k > min_support:
         raise ValueError("min_support must be at least 2*k")
     rng, targets, lengths = _select_common_targets(
-        X, y, poison_rate, random_state, min_support
+        X, y, poison_rate, random_state, min_support, label_mapper
     )
     poison = np.empty((len(targets), X.shape[1]), dtype=np.uint8)
     log = []
@@ -213,10 +218,11 @@ def supported_block_swap_attack(
 def supported_cyclic_shift_attack(
     X, y, poison_rate=0.10, random_state=42,
     min_support=MIN_COMMON_SUPPORT, max_parameter_draws=MAX_PARAMETER_DRAWS,
+    label_mapper=label_to_binary,
 ):
     """Rotate only the conservative-support prefix, leaving padding fixed."""
     rng, targets, lengths = _select_common_targets(
-        X, y, poison_rate, random_state, min_support
+        X, y, poison_rate, random_state, min_support, label_mapper
     )
     poison = np.empty((len(targets), X.shape[1]), dtype=np.uint8)
     log = []

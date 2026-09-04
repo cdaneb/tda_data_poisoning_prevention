@@ -52,6 +52,10 @@ results/*
 !results/clean_novelty_cells/*.json
 !results/clean_novelty_confirmation_cells/
 !results/clean_novelty_confirmation_cells/*.json
+!results/downstream_classifier_*.json
+!results/downstream_classifier_*.csv
+!results/downstream_classifier_cells/
+!results/downstream_classifier_cells/*.json
 
 # Log files
 *.log
@@ -98,3 +102,6 @@ monkam_files/*.zip
 .step3_cache/
 # Independent-confirmation raw/feature cache (regenerable; hashes are locked).
 .confirmation_cache/
+# Preregistered downstream-classifier raw/feature cache (regenerable; the
+# tracked manifest locks all row indices, attacks, and hashes).
+.downstream_cache/

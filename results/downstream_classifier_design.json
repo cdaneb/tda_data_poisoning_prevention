@@ -1,0 +1,203 @@
+{
+  "arms": {
+    "clean": "all sampled clean rows, correctly labeled",
+    "if540": "Isolation Forest on the 540-feature stack representation",
+    "if60": "Isolation Forest on the 60-feature control representation",
+    "oracle": "all poison removed and all clean retained; identical to clean",
+    "poisoned": "all clean rows plus malicious poisons observed as benign",
+    "random_cost_matched": "fixed random suspect ordering; shortest prefix removing exactly the same number of unmodified suspect rows as its paired sanitizer"
+  },
+  "classifier": {
+    "class": "RandomForestClassifier",
+    "input": "raw 1500-byte payload vector",
+    "n_estimators": 100,
+    "n_jobs": 8,
+    "other_parameters": "scikit-learn defaults",
+    "preprocessing": "none",
+    "random_state": "cell seed",
+    "task": "benign=0 versus malicious=1"
+  },
+  "content_hash": "e304a733a7d16a6dbe133c162ed75912d78a19656ec2d9aa1161d1a1a17ab5b8",
+  "design_version": 1,
+  "endpoints": {
+    "guardrail": "benign false-positive rate on that test set",
+    "primary": "malicious recall on the identity-safe unmodified test set",
+    "secondary": [
+      "balanced accuracy",
+      "macro F1",
+      "accuracy",
+      "AUROC",
+      "AUPRC",
+      "attacked-malicious recall",
+      "attacked-malicious mean probability",
+      "training size",
+      "poison retained",
+      "per-class clean removal"
+    ]
+  },
+  "execution_policy": {
+    "deviations": "report all deviations; do not retune or selectively rerun cells",
+    "feature_reuse": "A prior UNSW TDA feature cache may be reused only after its input, raw, poison-mask, 60-feature, and 540-feature hashes reproduce. Prior CICIDS feature caches are forbidden.",
+    "outcomes_require": "matching external OSF registration receipt and registered code commit",
+    "parallelism": "TDA extraction is sequential because its internal pipelines use all cores; classifier and Isolation Forest internals use eight workers.",
+    "prepare_only_forbidden_operations": [
+      "TDA feature extraction",
+      "sanitizer fitting",
+      "classifier fitting",
+      "downstream metric computation"
+    ]
+  },
+  "experiment": "preregistered_downstream_classifier_extension",
+  "external_test": {
+    "attack_seed": "1000000 + cell seed",
+    "candidate_factor": 5,
+    "locked_secondary_stress_test": "same-family transformed copies of 10 percent of test rows, selected only from truly malicious common-attackable examples",
+    "selection": "fixed seeded row-random candidate order; take the first rows whose exact raw-payload SHA-256 is absent from every clean or poisoned training arm",
+    "selection_seed": "2000000 + cell seed + population offset",
+    "size": "equal to the clean training population"
+  },
+  "inference": {
+    "bootstrap": "hierarchical paired nonparametric bootstrap",
+    "estimand": "equal-weight mean over seeds and families",
+    "hierarchy": "resample five seeds, then attack families within each seed",
+    "interval": "percentile 95 percent",
+    "repetitions": 100000,
+    "seed": 20260904
+  },
+  "poisoning": {
+    "claim_boundary": "Byte permutations preserve the byte multiset; network or application functionality is not claimed.",
+    "families_and_parameters": {
+      "block_reversal": {
+        "k": 120,
+        "poison_rate": 0.1
+      },
+      "block_swap": {
+        "k": 60,
+        "poison_rate": 0.1
+      },
+      "cyclic_shift": {
+        "poison_rate": 0.1
+      },
+      "transpositions": {
+        "n_swaps": 60,
+        "poison_rate": 0.1
+      }
+    },
+    "observed_training_label": 0,
+    "rate": 0.1,
+    "target": "truly malicious common-attackable rows only",
+    "threat_model": "dirty-label malicious-to-benign injection",
+    "true_label": 1
+  },
+  "populations": {
+    "cicids_matched": {
+      "clean": 5000,
+      "dataset": "cicids",
+      "families": [
+        "transpositions",
+        "block_reversal",
+        "block_swap",
+        "cyclic_shift"
+      ],
+      "poison": 500
+    },
+    "cicids_scale": {
+      "clean": 50000,
+      "dataset": "cicids",
+      "families": [
+        "transpositions"
+      ],
+      "poison": 5000
+    },
+    "unsw_matched": {
+      "clean": 5000,
+      "dataset": "unsw",
+      "families": [
+        "transpositions",
+        "block_reversal",
+        "block_swap",
+        "cyclic_shift"
+      ],
+      "poison": 500
+    }
+  },
+  "primary_analysis": {
+    "budget": 0.05,
+    "decision": "all four gates are required for an operational-benefit claim",
+    "gates": [
+      "clean minus poisoned recall mean >= 0.02 and CI lower > 0",
+      "IF60 minus poisoned recall mean >= 0.01 and CI lower > 0",
+      "IF60 minus random-cost-matched recall mean > 0 and CI lower > 0",
+      "IF60 minus clean benign-FPR CI upper <= 0.01"
+    ],
+    "non_rescue": "IF540, the 1 percent budget, CICIDS populations, secondary endpoints, and the attacked-test stress test cannot rescue the primary claim.",
+    "population": "unsw_matched",
+    "recovery_fraction": "reported only when clean minus poisoned malicious recall is positive",
+    "representation": "control"
+  },
+  "prospective_status": {
+    "downstream_outcomes": "not examined before external registration",
+    "prior_information": "The completed clean-novelty confirmation results are known and motivated this extension; this is not an independent replication."
+  },
+  "protocol_correction": {
+    "cicids_difference_from_prior_required": true,
+    "issue": "The prior binary-label helper recognized UNSW 'normal' but not CICIDS 'BENIGN', so prior CICIDS poison targets were not guaranteed to be malicious.",
+    "locked_fix": "After strip/lower normalization, 'normal' and 'benign' map to 0; every other label maps to 1. New CICIDS attacks are generated prospectively and no prior CICIDS attack outcome is reused.",
+    "unsw_reproduction_required": true
+  },
+  "representations": {
+    "control": {
+      "features": 60,
+      "thresholds": [
+        0.4
+      ]
+    },
+    "stack": {
+      "features": 540,
+      "scale": "1/sqrt(9)",
+      "thresholds": [
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9
+      ]
+    }
+  },
+  "sanitizer": {
+    "budgets": [
+      0.05,
+      0.01
+    ],
+    "detector": {
+      "class": "IsolationForest",
+      "n_estimators": 200,
+      "n_jobs": 8,
+      "other_parameters": "scikit-learn defaults",
+      "random_state": "cell seed"
+    },
+    "preprocessing": "StandardScaler fit on detector-training trusted clean only",
+    "primary_budget": 0.05,
+    "removal_rule": "score >= threshold",
+    "secondary_budget": 0.01,
+    "threshold": "higher empirical quantile of calibration-clean anomaly scores"
+  },
+  "seeds": [
+    2026,
+    2027,
+    2028,
+    2029,
+    2030
+  ],
+  "training_partition": {
+    "filter_scope": "suspect batch only; trusted core is never filtered",
+    "reuse": "literal clean rows and exact raw-hash-disjoint 60/20/20 splits",
+    "source": "results/clean_novelty_confirmation_preregistration.json",
+    "suspect_batch": "held-out clean (20 percent) plus appended poison",
+    "trusted_core": "detector-training plus calibration clean (80 percent)"
+  }
+}
