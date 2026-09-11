@@ -1,0 +1,13 @@
+{
+  "content_hash": "5847a78d176bae6e7b72d78bfaaa1f8f8b32a174ee949540e0a29def1d76e784",
+  "design_hash": "e304a733a7d16a6dbe133c162ed75912d78a19656ec2d9aa1161d1a1a17ab5b8",
+  "execution_authorized": true,
+  "experiment": "preregistered_downstream_classifier_extension",
+  "external_registry": "OSF Registries",
+  "preregistration_content_hash": "3451b9eeb5375434ad6ebaeb8273b32eb6a308fc40cdf5ff05f299de97105ade",
+  "receipt_recorded_at_utc": "2026-09-11T03:59:39.043774Z",
+  "registered_at_utc": "2026-09-11T03:47:31Z",
+  "registered_code_commit": "f8172cc347026717bb27c676acca9d50af3f8640",
+  "registration_url": "https://osf.io/h863t/",
+  "visibility": "embargoed"
+}
