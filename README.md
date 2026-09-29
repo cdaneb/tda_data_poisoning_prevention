@@ -1,4 +1,4 @@
-# What Can a Persistence Diagram See? Invariance Structure and the Detectability of Data Poisoning
+# Auditing Topological Poison Filtering: Representation Repair, Transfer, and Downstream Utility
 
 Christian Dane Beels, advised by Dr. Joseph Dorta — Dept. of Mathematical Sciences, USMA West Point.
 Current manuscript: `base_paper.tex`, being developed for the IEEE BigData 2026
@@ -8,22 +8,47 @@ historical deliverable.
 
 ## What this is
 
-The project reconstructs the pipeline from Monkam, De Lucia & Bastian, *Computers & Security* 144
-(2024) 103929: map network-packet payload bytes to grayscale images, compute cubical persistence
-across several filtrations, and cluster the resulting features to separate poisoned packets from
-clean ones before training a NIDS classifier. The reconstruction reproduces the mechanics but
-captures only single-digit percentages against the paper's reported 40–70%.
+The project reconstructs and stress-tests the pipeline from Monkam, De Lucia & Bastian,
+*Computers & Security* 144 (2024) 103929: map network-packet payload bytes to grayscale images,
+compute cubical persistence across several filtrations, and use the resulting features to identify
+manipulated training observations before fitting a network-intrusion classifier. The study now
+separates five questions that are often conflated: reproducibility, representation fidelity,
+cluster separability, label-free removal, and downstream classifier utility.
 
 That gap was originally suspected to come from unrealistically weak synthetic poisoning. A
 surrogate-guided attack was built to test it, and the hypothesis was refuted: guidance raised capture
 on UNSW-NB15 but came nowhere near closing the gap, and the effect does not replicate on CICIDS2017
 (−0.60 ± 3.03, 2/5 seeds positive — sign flips per seed, mean crosses zero). The gap is structural.
 
-The project pivoted to the current question: **what is it about the interaction between an attack's
-invariance structure and a filtration's sensitivities that determines whether poisoning is
-topologically detectable?**
+The current overarching question is: **can topology identify and remove manipulated payloads in a
+way that produces a practically meaningful, identity-safe classifier benefit without discarding too
+much unmodified data, and does that result transfer across datasets?**
 
-The primary result is deductive. Binarization is pointwise, hence *equivariant* under byte-position
+## Current result
+
+The OSF-preregistered downstream experiment is complete: 45/45 cells and 495 arm-level metric rows
+passed the final integrity audit. The registered all-gates operational claim **failed**, but the
+result is not "no effect":
+
+- On matched UNSW, poisoning reduced malicious recall by **1.74 percentage points** (95% CI
+  1.42–2.04), below the locked 2-point materiality threshold.
+- Primary IF-60 filtering recovered **0.83 points** (0.67–0.97), below the locked 1-point threshold,
+  while beating exactly unmodified-cost-matched random removal by **0.67 points** (0.50–0.82).
+- IF-60 removed **13.99% of UNSW poisons** at **1.03% unmodified-row cost**, versus **5.16%** for
+  matched random removal, and did not inflate benign false positives.
+- On matched and scale-arm CICIDS, filtering removed fewer poisons than random removal and produced
+  no transferable filter-specific classifier benefit.
+
+The defensible conclusion is that TDA supplies an UNSW-specific enrichment signal, but its
+downstream gain is too small for the preregistered operational claim and does not generalize to
+CICIDS. Registration and frozen results are at [OSF h863t](https://osf.io/h863t/); the concise result
+report is [`docs/DOWNSTREAM_CLASSIFIER_RESULTS.md`](docs/DOWNSTREAM_CLASSIFIER_RESULTS.md).
+
+![Four preregistered primary downstream gates](figures/figure_v10_downstream_primary.png)
+
+![TDA-specific classifier effect and sanitizer selectivity across populations](figures/figure_v11_downstream_generalization.png)
+
+A foundational result is deductive. Binarization is pointwise, hence *equivariant* under byte-position
 permutation — permuting then binarizing equals binarizing then permuting. Summation is symmetric, so
 the foreground pixel count is *invariant*: unchanged under every permutation, on every input.
 (The two words name different things and the distinction is load-bearing; the binarized image moves,
@@ -89,7 +114,7 @@ The repair does not produce meaningful poison removal under the fixed OPTICS
 configuration. At retrospective purity thresholds through >80%, mean absolute
 poison removal is 0.00–0.20% for the control and 0.00–0.64% for the stack; clean
 false-removal is zero in both arms at those strict thresholds. At the >50%
-threshold, all four matched-clean-cost deltas favor the control. Meanwhile,
+threshold, all four matched-unmodified-cost deltas favor the control. Meanwhile,
 poison unclustered fractions rise from 85.2–87.5% to 98.7–99.3%, clean
 unclustered fractions rise from about 37.1% to 54.5–54.6%, and the mean cluster
 count falls. Under this configuration, density-based cluster formation—not
@@ -144,13 +169,12 @@ See `docs/PHASE_Q3_COLLISION_REPORT.md`.
 
 ### Preregistered downstream-classifier extension
 
-The next experiment tests whether the controlled dirty-label poisoning degrades
-a fixed raw-byte Random Forest and whether label-free Isolation Forest removal
-recovers more performance than a random clean-cost-matched control. The six
-conceptual arms are clean, poisoned, random removal, 60-feature removal,
-540-feature removal, and oracle removal. The primary endpoint and four-gate
-decision rule are frozen in `results/downstream_classifier_design.json` and
-explained in `docs/DOWNSTREAM_CLASSIFIER_PREREGISTRATION.md`.
+This experiment was registered on OSF before any downstream outcome was
+computed. It tests whether controlled malicious-to-benign dirty-label poisoning
+degrades a fixed raw-byte Random Forest and whether label-free Isolation Forest
+removal recovers more malicious recall than random removal at exactly the same
+unmodified-data cost. The six conceptual arms are clean, poisoned, random
+removal, 60-feature removal, 540-feature removal, and oracle removal.
 
 An audit found that the earlier label helper recognized UNSW `normal` but not
 CICIDS `BENIGN`. Its historical behavior is retained so the frozen confirmation
@@ -159,11 +183,29 @@ that recognizes both spellings. New CICIDS malicious-only attacks must therefore
 be generated prospectively; prior CICIDS attack outcomes are not reused for the
 downstream experiment. UNSW attack hashes must remain exactly reproducible.
 
-Preparation and outcome execution are deliberately separated. The WIRE
-`--prepare-only` step may freeze rows, attacks, and hashes but cannot extract TDA
-features or train models. Outcome commands require a matching immutable OSF
-registration receipt and registered Git commit. See
-`docs/DOWNSTREAM_CLASSIFIER_WIRE_RUNBOOK.md` for the exact two-phase procedure.
+The frozen protocol uses five untouched seeds, four attack families on matched
+UNSW and CICIDS, a CICIDS scale arm, 1% and 5% budgets, raw-identity-disjoint
+unmodified test sets, 100,000 hierarchical bootstrap draws, and four conjunctive
+primary gates. The complete run produced 45 hashed cell files and passed final
+audit with no missing, duplicate, nonfinite, identity-overlap, clean/oracle, or
+random-cost discrepancies.
+
+Results of record:
+
+- `results/downstream_classifier_results.json` — hashed merged result, primary gates, and all
+  registered secondary effects;
+- `results/downstream_classifier_summary.csv` — population/family/arm means;
+- `results/downstream_classifier_cell_metrics.csv` — all 495 outcome rows;
+- `results/downstream_classifier_cells/` — 45 immutable cell records;
+- `docs/DOWNSTREAM_CLASSIFIER_RESULTS.md` — concise primary report;
+- `docs/DOWNSTREAM_CLASSIFIER_PREREGISTRATION.md` and
+  `results/downstream_classifier_design.json` — human- and machine-readable frozen design;
+- `results/downstream_classifier_registration_receipt.json` — link from the frozen hash and code
+  commit to OSF registration [h863t](https://osf.io/h863t/).
+
+Preparation and execution remain deliberately separated. Do not rerun or overwrite the registered
+cells merely because the primary claim failed. See `docs/DOWNSTREAM_CLASSIFIER_WIRE_RUNBOOK.md` for
+the locked two-phase procedure and audit commands.
 
 ## Repo layout
 
@@ -183,7 +225,7 @@ adversarial_attack.py         # current attack substrate: malicious_random_attac
                                #   guided GA search), train_surrogates()
 phase_q_attacks.py             # conservative-support, guaranteed-nontrivial permutation controls
 phase_q_pipeline.py            # fixed 0.1...0.9 threshold stack; embeds exact 0.4 legacy control
-phase_q_metrics.py             # clean-cost, precision, unclustered, and matched-cost evaluation
+phase_q_metrics.py             # unmodified-cost, precision, unclustered, and matched-cost evaluation
 invariance_check.py           # binarize/foreground_count/positions_changed/crossed_threshold/
                                #   max_value_check -- empirical instrumentation backing the proof.
                                #   binarize() is the single thresholding rule; foreground_count()
@@ -214,15 +256,15 @@ make_figure_v2.py              # poster figure V2: binarized clean/permuted/nois
                                #   Single combined Binarizer fit -- see "Combined-fit rule" below
 make_figure_v3.py              # poster figure V3: four-family comparison (poster centerpiece)
 make_figure_m8_purity_sweep.py # M8 diagnostic curve; not poster evidence
+make_figure_downstream_classifier.py # hashed-results-only downstream paper figures V10/V11
 base_poster.tex                # standalone MathFest tikzposter source
 poster_blocks.tex              # historical MathFest poster \block{} fragment; not standalone
 base_paper.tex                 # IEEEtran manuscript source for BigData 2026 development
 
 models/                        # trained surrogate classifiers (surrogate_mlp*.joblib, surrogate_rf*.joblib)
-results/                       # experiment output JSON; phase_m_*.json is intentionally tracked
-                               #   as reproducibility evidence
-figures/                       # generated plots and poster figures (*.pdf re-included via .gitignore
-                               #   negation; see below)
+results/                       # frozen specifications, immutable cells, merged JSON, and CSV summaries
+figures/                       # generated plots and poster/paper figures (*.pdf re-included via
+                               #   .gitignore negation; downstream V10/V11 also have README PNGs)
 data/                          # Payload-Byte CSVs (gitignored -- see Datasets below)
 
 docs/                          # reference and historical documents:
@@ -370,10 +412,12 @@ No output means no currently tracked file is also ignored.
 
 ## Paper
 
-`base_paper.tex` is the five-page IEEEtran manuscript. It distinguishes the
-legacy provenance audit (Frame A) from the controlled multithreshold comparison
-(Frame B), reports absolute detector performance alongside representation-level
-gains, and treats the seed-42 displacement analysis as exploratory. The built
+`base_paper.tex` is the IEEEtran manuscript being developed for the IEEE BigData
+2026 Undergraduate and REU Consortium. It distinguishes the legacy provenance
+audit (Frame A) from the controlled multithreshold comparison (Frame B), then
+separates representation repair, label-free removal, and preregistered
+downstream classifier utility. The downstream figures are regenerated from the
+hashed merged result without rerunning any experiment. The built
 `base_paper.pdf` is intentionally ignored by Git.
 
 ## Poster
@@ -408,10 +452,13 @@ python programs/make_figure_v3.py
 python programs/run_m8_purity_sweep.py
 python programs/make_figure_m8_purity_sweep.py
 
-# Downstream classifier evaluation + figures
+# Legacy exploratory downstream evaluation (not the registered experiment)
 python programs/classifier_eval.py
 python programs/visualize.py
 python programs/visualize_comparison.py
+
+# Registered downstream figures only (reads committed results; computes no outcomes)
+python programs/make_figure_downstream_classifier.py
 ```
 
 ## References

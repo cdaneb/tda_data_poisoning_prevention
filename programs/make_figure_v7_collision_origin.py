@@ -5,7 +5,7 @@ where final repeated-member collision mass first arose; it is not a Phase Q
 repair-arm result.
 
 Usage:
-    python make_figure_v7_collision_origin.py --render
+    python -m programs.make_figure_v7_collision_origin --render
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ SEEDS = ("42", "123", "456", "789", "1024")
 DISPLAY_STAGES = (
     ("raw_payload", "Raw payload", GREY),
     ("binary_mask", "Binarization", NAVY),
-    ("unscaled_diagrams", "Diagrams", ORANGE),
+    ("unscaled_diagrams", "Persistence diagrams", ORANGE),
 )
 
 

@@ -1,59 +1,59 @@
 \documentclass[conference]{IEEEtran}
 
+\usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb}
 \usepackage{balance}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{microtype}
+\usepackage{placeins}
 \usepackage{url}
 
 \newcommand{\vect}[1]{\boldsymbol{#1}}
 \newcommand{\meanstd}[2]{#1\mathbin{\pm}#2}
 
-\title{Auditing a Topological Data Analysis Pipeline for Network Data Poisoning Detection}
+\title{Auditing a Topological Data Analysis Pipeline for Network Data Poisoning
+Detection}
 
 \author{\IEEEauthorblockN{Christian Dane Beels}
 \IEEEauthorblockA{Department of Mathematical Sciences\\
 United States Military Academy\\
-West Point, New York, USA}
-\thanks{Code, frozen specifications, and machine-readable result artifacts
-are available at
-\url{https://github.com/cdaneb/tda_data_poisoning_prevention}.}}
+West Point, New York, USA}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-This study audits a topological data analysis (TDA) poisoning detector using
-UNSW-NB15 and CICIDS2017 Payload-Byte data. Author-supplied artifacts recover a
-$1\times1500$, threshold-0.3 feature map, but omit most poison examples and
-three selected clustering configurations. Half of the supplied 280 features
-are constant and 74.069\% of rows belong to repeated feature classes. Separate
-batch fitting changes every available poison vector but not DBSCAN assignments.
-In a controlled $30\times50$ reconstruction, 97.48\% of repeated-vector
-collision mass originates in raw payloads or single-threshold binarization. A
-fixed nine-threshold stack removes 92.0--95.9\% of exact poison--unmodified
-matches, yet fixed OPTICS removal remains near zero. Clean-calibrated Isolation Forest
-and kNN discovery scores instead capture 14.02--18.95\% near a 5\%
-unmodified-removal budget. An analysis-locked 90-cell confirmation retains
-7.01--14.73\% capture, but finds no general 540-feature advantage across the
-unseen-seed UNSW and both matched and scale-arm CICIDS populations. Discovery
-capture is 0.29--3.42\% at nominal 0.1--1\% budgets, and confirmation capture
-is 1.46--4.05\% at 1\%. Representation repair, cluster separation, and
-operational generalization are distinct claims.
+Topological data analysis (TDA) has been proposed as a filter for detecting poisoned
+records in machine-learning network intrusion detection. We audit such a pipeline at
+five levels---reproduction, representation, cluster separability, label-free removal,
+and downstream classifier utility---using UNSW-NB15 and CICIDS2017 Payload-Byte data.
+We show that the poison--unmodified feature collisions that defeat the filter are
+largely a property of payload duplication and binarization rather than of persistent
+homology, and that a fixed nine-threshold representation removes 92.0--95.9\%
+of exact matches. That reduction does not produce consistent poison removal or
+classifier benefit. Fixed OPTICS removal stays low; a prespecified confirmation
+study spanning 90 experimental configurations
+finds no general advantage for the 540-feature representation; and a
+preregistered downstream study spanning 45 configurations and six training-condition
+types satisfies only two of four prespecified criteria on UNSW and shows no filter-specific benefit on
+either CICIDS population. Results suggest that TDA filtering yields a dataset-specific enrichment
+signal rather than demonstrated operational value, and success at one evaluation level does
+not establish the next.
 \end{abstract}
 
 \begin{IEEEkeywords}
-data poisoning, network intrusion detection, persistent homology, topological
-data analysis, reproducibility, representation collision, novelty detection
+data poisoning, network intrusion detection, persistent homology, topological data analysis
 \end{IEEEkeywords}
 
 \section{Introduction}
 Training-data integrity is a security requirement for machine-learning network
 intrusion detection systems. A poisoning adversary can corrupt historical
 traffic so that a learned detector acquires an attacker-chosen weakness
-~\cite{biggio2018}.
+~\cite{biggio2018}. Training-data integrity is a veracity problem at scale: the
+filter must decide which of millions of unlabeled historical records to discard,
+using no poison labels and at a bounded cost in discarded legitimate traffic.
 
 Monkam, De Lucia, and Bastian proposed mapping packet payloads to
 persistence-derived features and clustering them before model
@@ -62,15 +62,24 @@ components and loops across filtrations~\cite{carlsson2009,cohensteiner2007},
 but failed capture can arise from the input data, binarization, topological
 summary, or cluster geometry. A final score alone cannot identify the cause.
 
-This paper therefore asks what the supplied implementation reproduces, where
-byte-permutation information disappears, and whether surviving signal supports
-label-free removal at a stated clean-data cost. It contributes: (i) a forensic
-audit of supplied 126/280-feature artifacts; (ii) an earliest-merger audit and
-fixed nine-threshold repair; (iii) duplicate-group-safe classifier evaluation;
-and (iv) clean-calibrated novelty detection with independently locked UNSW and
-CICIDS confirmation. The supplied DoS examples and the controlled permutation
-experiments remain separate threat models, and neither is presented as an exact
-reproduction of Ref.~\cite{monkam2024}.
+This paper asks four linked questions: what the supplied implementation
+reproduces; at which stage exact poison--unmodified equivalences first arise;
+whether repairing those equivalences improves label-free removal at controlled
+unmodified-data cost; and whether removal measurably benefits a downstream
+classifier evaluated on test payloads absent from training. The supplied DoS examples and controlled permutation
+experiments remain separate threat models, and neither is an exact reproduction
+of Ref.~\cite{monkam2024}. This paper contributes: (i) a forensic audit of supplied
+126- and 280-feature artifacts; (ii) an audit of the first stage that creates
+exact feature matches and a fixed nine-threshold representation; (iii)
+classifier evaluation with exact-duplicate groups kept within one data split;
+(iv) novelty detection fitted and calibrated on trusted unmodified data, with
+independent prespecified confirmation on UNSW and CICIDS; and (v) a downstream
+evaluation preregistered on the Open Science Framework (OSF), with six training-condition types including
+equal-cost random removal and perfect poison-identification controls.
+We use \emph{poison} for deliberately
+manipulated training observations; the term does not assume that every such
+observation produces practically material classifier damage.
+
 
 \section{Background and Related Work}
 \subsection{Dataset and supplied artifacts}
@@ -78,67 +87,141 @@ UNSW-NB15 is a widely used intrusion-detection benchmark containing normal
 traffic and nine attack categories~\cite{moustafa2015}. This work uses only the
 packet-level Payload-Byte derivative produced by the extraction and labeling
 procedure of Farrukh \emph{et al.}~\cite{farrukh2022}: 79,881 padded
-1,500-byte packet records, not the original flow-feature table. Confirmation
-ingests a pre-existing 1,410,255-row CICIDS2017 CSV~\cite{sharafaldin2018} in
+1,500-byte packet records, not the original flow-feature table. The confirmation
+study uses a pre-existing 1,410,255-row CICIDS2017 CSV~\cite{sharafaldin2018} in
 the same 1,500-byte Payload-Byte schema~\cite{farrukh2022}. This study did not
 regenerate that derivative from packet captures; its exact extraction
 provenance beyond the schema and frozen file hash is therefore unverified.
 
-The supplied package contains six notebooks, nineteen CSV files, two feature
-workbooks, and an archive. Its poisoning path uses a $1\times1500$ raster,
-usually threshold 0.3, and 72/126 features; Algorithm~1 instead states 0.4.
-Only 18 of 1,000 saved poison examples and only the DBSCAN configuration are
-available. The generator and selected HDBSCAN, OPTICS, and Mean Shift settings
-are missing.
+The authors of Ref.~\cite{monkam2024} supplied the audited package, which contains six
+Jupyter notebooks, nineteen CSV files, two Excel
+feature tables, and an archive. Its poisoning path uses a $1\times1500$ raster,
+usually threshold 0.3, and 72/126 features; Algorithm~1 of Ref.~\cite{monkam2024}
+instead states 0.4.
+Only 18 of 1,000 saved poison examples and only the density-based spatial
+clustering of applications with noise (DBSCAN) configuration are available.
+The generator and selected settings for hierarchical DBSCAN (HDBSCAN), Ordering
+Points To Identify the Clustering Structure (OPTICS), and Mean Shift are missing.
 
 \subsection{Representation and evaluation}
 Persistence diagrams record feature births and deaths; finite summaries enable
 machine learning but are not injective~\cite{cohensteiner2007,tauzin2021}.
 Raster geometry and fitted preprocessing also matter. A $1\times1500$ cubical
-complex has no nontrivial $H_1$ loops. Moreover, \texttt{Binarizer} learns a
+complex has no nontrivial one-dimensional homology ($H_1$) loops. Moreover, \texttt{Binarizer} learns a
 batch maximum and \texttt{Scaler} a diagram scale, so separate batch fits can
 create incompatible coordinates.
 
-Exact raw payloads and TDA vectors also repeat. Random row splits can place one
-equivalence class in both train and test; group-safe splits prevent this.
+Exact raw payloads and TDA vectors also repeat. Random row splits can place
+identical observations in both training and test data; grouping by exact
+identity keeps every duplicate group entirely within one split.
 Finally, OPTICS may label both poison and unmodified rows as noise
 ~\cite{ankerst1999}. Cluster purity is therefore retrospective. Operational
 evaluation instead fits and calibrates novelty scores on disjoint trusted
 unmodified subsets and reports poison capture with realized held-out
 unmodified removal.
 
-\section{Methods}
-\subsection{Forensic and faithful-representation audits}
-Files, notebook execution, sample construction, fit boundaries, and clustering
-calls were inventoried. Workbooks were checked for constant coordinates, exact
-classes, label conflicts, and raw alignment. The recovered 126 map uses seven
-filtrations, $H_0/H_1$, and nine summaries on a $1\times1500$ raster; the
-280-feature cell uses 20 summaries without diagram scaling. Synthetic diagrams
-verified feature order. The 280 workbook aligns to raw rows, whereas the
-31,000-row 126 workbook does not because 10,000 rows were sampled without a
-seed.
+\subsection{Poisoning defenses and data sanitization}
+Training-data sanitization predates TDA-based filtering. Early work treated
+sanitization as an anomaly-sensor problem, iteratively identifying training
+points that distorted a learned model~\cite{cretu2008}, while Reject on
+Negative Impact (RONI)
+screening rejected candidates whose inclusion had a negative impact on a
+trusted validation objective~\cite{nelson2008}. Label sanitization similarly
+uses trusted structure to identify likely label-flipping attacks
+~\cite{paudice2018}. These methods differ in score construction and threat
+model, but all ask whether suspect observations can be removed before they
+corrupt training.
 
-A locked seed-60 diagnostic then changes only the 126-map fit protocol:
-separate poison/unmodified fits versus one combined fit. It uses all 18
-delivered poisons, 378 normal and 180 unmodified attack-category rows, a fixed
-50\% split, threshold 0.3, and DBSCAN (\texttt{eps}$=200$,
-\texttt{min\_samples}$=9$). This preserves the notebook's $21{:}10$
-unmodified composition and 3.125\% poison share. Learned cuts/scales, feature
-displacement, silhouette, ARI, composition, and removal are recorded.
-Multi-seed expansion requires both state divergence and a material cluster
-change.
+Representation-space defenses make this separability assumption explicit.
+Spectral signatures search learned features for directions associated with a
+backdoor~\cite{tran2018}; activation clustering partitions internal
+representations to expose poisoned subpopulations~\cite{chen2019}; and deep
+$k$-nearest-neighbor (kNN) filtering rejects clean-label poisons using neighborhood inconsistency
+~\cite{peri2020}. Each assumes that poison is separable in some learned
+representation. The present paper tests that assumption for a
+persistence-derived representation and then asks whether any separation
+survives label-free calibration and improves a downstream classifier.
+Certified defenses and robust objectives form a distinct branch: they seek
+worst-case guarantees under explicit contamination assumptions rather than a
+retrospective anomaly score~\cite{steinhardt2017}. Their guarantees depend on
+the stated threat set and need not predict empirical separability under the
+packet representation studied here. This audit adds a
+cost-matched, preregistered evaluation on test payloads whose exact identities
+are excluded from training, testing whether
+representation-level separation translates to classifier-level utility, a
+link that these defense studies generally do not isolate.
+
+\section{Methods}
+Figure~\ref{fig:methods-overview} summarizes the study design. The workflow first
+establishes what can be reconstructed from the supplied artifacts, then uses
+controlled experiments to isolate where exact feature matches arise and whether
+they can be reduced, and finally evaluates cluster separation, label-free
+removal, and downstream classifier utility as distinct questions.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/figure_v12_methods_overview.pdf}
+  \caption{Overview of the audit and evaluation workflow. Supplied artifacts
+  support a bounded reconstruction of the reported feature-extraction
+  configurations. Controlled experiments distinguish the permissive
+  first-match analysis in Frame~A from the raw-changing attacks in Frame~B and
+  compare the single-threshold and fixed nine-threshold representations. The
+  five evidence questions are evaluated separately.}
+  \label{fig:methods-overview}
+\end{figure*}
+
+\subsection{Forensic and faithful-representation audits}
+This audit determines which supplied artifacts can support faithful reconstruction.
+Files, Jupyter notebook execution, sample construction, fit boundaries, and clustering
+calls were inventoried. The supplied Excel feature tables were checked for
+constant coordinates, exact classes, label conflicts, and raw alignment. The
+reconstructed 126-feature extraction pipeline uses seven filtrations,
+zero- and one-dimensional homology ($H_0$ and $H_1$), and nine summaries on a
+$1\times1500$ raster; the 280-feature
+Jupyter notebook configuration uses 20 summaries without persistence-diagram
+scaling. Synthetic persistence diagrams verified feature order. The supplied 280-feature Excel table aligns
+with the raw-data rows, whereas the 31,000-row 126-feature Excel table does not
+because 10,000 rows were sampled without a recorded random seed.
+
+A prespecified comparison using random seed 60 then changes only how the
+126-feature pipeline is fitted: separate poison/unmodified fits versus one
+combined fit. The comparison uses all 18 delivered poisons, 378 normal and 180
+unmodified attack-category rows, a fixed 50\% split, threshold 0.3, and DBSCAN
+(\texttt{eps}$=200$,
+\texttt{min\_samples}$=9$). This preserves the Jupyter notebook's $21{:}10$
+unmodified composition and 3.125\% poison share. Learned binarization cutoffs,
+persistence-diagram scales, feature displacement, silhouette, adjusted Rand
+index (ARI), cluster composition, and removal are recorded.
+Expansion to multiple random seeds requires both different fitted preprocessing
+states and a material change in cluster assignments.
 
 \subsection{Controlled reconstruction and experimental frames}
+The two frames separate artifact diagnosis from attack-specific evaluation.
 Each seed in $\{42,123,456,789,1024\}$ uses 5,000 unmodified rows plus 500
 poisoned variants. Here \emph{unmodified} is not necessarily benign; poison
-sources carry attack labels. Frame~A audits the standing 60-transposition
-pipeline and permits raw no-ops. Frame~B redraws parameters until every poison
-changes its source, so results do not transfer between frames.
+sources carry attack labels. Frame~A, the permissive transposition audit,
+evaluates the existing single-threshold pipeline with 60 transpositions and
+permits attacks that leave the raw payload unchanged. Frame~A is therefore diagnostic of the
+representation under a permissive attack draw, not of any single adversary.
+Frame~B, the guaranteed raw-changing attack evaluation, redraws attack
+parameters until every poison differs from its source, so results do not
+transfer between frames.
 
-Frame~B defines conservative support as one position beyond the last nonzero
-byte; attacks act only inside it. They are 60 disjoint transpositions, one
+Frame~B defines the active payload region to end one position beyond the last
+nonzero byte; attacks act only inside that region. They are 60 disjoint transpositions, one
 120-byte reversal, two swapped 60-byte blocks, or a nonzero cyclic shift.
-Each of 20 family--seed cells contains 500 raw-changing poisons.
+Each of 20 attack-family-by-seed configurations contains 500 raw-changing poisons.
+
+These families are a worst-case probe of the representation, not a claim about
+typical adversary behavior. A defender cannot assume that an adversary is
+unaware of the feature-extraction pipeline: permutation-preserving edits are the cheapest edit
+class an adversary reading the equivariance relation of Section~III-C would select. Preserving
+the byte multiset also holds downstream label-relevant content approximately
+fixed, isolating the representation effect from the unrelated confound of a
+poison that is merely out of distribution. This design choice limits realism. The
+families do not span realistic protocol-valid mutations, and the negative
+results are strongest as statements about this adversary class; as noted in
+the Limitations, functional packet validity is not established.
 
 The controlled reconstruction reshapes payloads to $30\times50$, binarizes at
 $t=0.4$ (byte cut 102), and applies two height and three radial filtrations.
@@ -147,21 +230,26 @@ $H_0/H_1$ produce 60 features. OPTICS uses
 \texttt{min\_samples}$=5$, \texttt{max\_eps}$=2.0$, and standard
 $\xi$ extraction. All settings were fixed before evaluation.
 
-\subsection{Stage-wise collision provenance (Frame~A)}
-Exact signatures are computed at raw payload, support record, binary mask,
+\subsection{First-stage attribution of exact matches (Frame~A)}
+This audit locates the first pipeline stage at which final-vector collisions arise.
+Exact signatures are computed at the raw payload, recorded active-payload
+boundary, binary mask,
 filtrations, unscaled/scaled diagrams, summaries, and final vector. Diagram
 points are canonically ordered without float rounding. Each repeated final
-member is assigned to its first nonsingleton equivalence class. Categories are
-mutually exclusive, and class-refinement monotonicity holds in every seed.
+member is assigned to the earliest stage where it joins a group of at least two
+identical signatures. These stage categories are mutually exclusive, and the
+signature groups merge but never split in every seed.
 Shares use repeated final-vector members as denominator, not all 5,500 rows.
-The separate coordinate obstruction is the fraction of poison exactly matching
-any unmodified final vector.
+A separate outcome is the fraction of poisoned rows whose final feature vector
+exactly matches an unmodified row's vector.
 
 If $\phi_k$ is the signature at stage $k$, define
 \begin{equation}
- i\sim_k j \iff \phi_k(x_i)=\phi_k(x_j),\qquad
- e(i)=\min\{k:|[i]_{\sim_k}|>1\}.
- \label{eq:earliest}
+\begin{aligned}
+ i\sim_k j &\iff \phi_k(x_i)=\phi_k(x_j),\\
+ e(i) &=\min\{k:|[i]_{\sim_k}|>1\}.
+\end{aligned}
+\label{eq:earliest}
 \end{equation}
 For the set $M$ of repeated final-vector members, the stage-$k$ attribution is
 $|\{i\in M:e(i)=k\}|/|M|$. This construction makes the reported percentages a
@@ -180,27 +268,31 @@ remain within threshold classes, the whole mask is unchanged. Equation
 ~\eqref{eq:invariance} is equivariance, not invariance of later
 position-dependent filtrations.
 
-\subsection{Fixed multithreshold intervention}
+\subsection{Fixed nine-threshold representation}
 \label{sec:stack}
-The only intervention replaces $t=0.4$ with the fixed stack
+This intervention tests whether fixed multithresholding reduces exact feature-vector matches.
+The only intervention replaces $t=0.4$ with the fixed threshold set
 $T=\{0.1,0.2,\ldots,0.9\}$. For every threshold, the unchanged pipeline emits a
-60-vector $\vect{f}_t(\vect{x})$; the repair representation is
+60-feature vector $\vect{f}_t(\vect{x})$; the nine-threshold representation is
 \begin{equation}
  \vect{F}(\vect{x})=\frac{1}{\sqrt{9}}
  [\vect{f}_{0.1}(\vect{x}),\ldots,\vect{f}_{0.9}(\vect{x})]\in\mathbb{R}^{540}.
  \label{eq:stack}
 \end{equation}
 The fixed factor $1/\sqrt{9}$ preserves Euclidean distance scale if all nine
-blocks were identical. Blocks have equal, fixed weights; the control is the
-$t=0.4$ block from the same poison realization and must exactly match the
-production 60-vector.
+blocks were identical. Blocks have equal, fixed weights. The $t=0.4$ block from
+the same poisoned dataset must exactly match the 60-feature single-threshold
+baseline used in the experiment.
 
 \subsection{Evaluation protocols}
+The protocols separate retrospective cluster purity from label-free operational removal.
 Retrospective OPTICS removal selects non-noise clusters above poison-purity
 cutoffs $q\in\{1.0,>0.95,>0.90,>0.80,>0.50\}$. Let
 $R_p^a(q)$ and $R_c^a(q)$ be the fractions of poison and unmodified rows
-removed in arm $a$. At each control cutoff, the matched-unmodified-cost
-difference is
+removed using representation $a$. Superscripts $\mathrm{ctl}$ and
+$\mathrm{stk}$ denote the single-threshold baseline and nine-threshold
+representation, respectively. At each purity cutoff for the baseline, the
+cost-matched improvement in poison removal is
 \begin{equation}
  \Delta(q)=
  \max_{\substack{q':\,R_c^{\mathrm{stk}}(q')\\
@@ -208,25 +300,30 @@ difference is
  \left[R_p^{\mathrm{stk}}(q')-R_p^{\mathrm{ctl}}(q)\right].
  \label{eq:matched}
 \end{equation}
-Thus the stack receives no more unmodified-removal cost than the control;
-exact matching and noise rates are secondary endpoints.
+Thus the nine-threshold representation receives no more unmodified-row removal
+cost than the single-threshold baseline; exact feature matching and OPTICS
+noise rates are secondary outcomes.
 
 On all 79,881 aligned rows, five-seed 100-tree random forests compare raw bytes
-with TDA-280 for ten-class (20\% test) and binary (10\% test) tasks. Random-row
-splits are paired with raw- and TDA-identity group splits; conflicting labels
-remain. The model seed equals the split seed.
+with the supplied 280-feature TDA representation for ten-class (20\% test) and
+binary (10\% test) tasks. Random-row splits are compared with group splits that
+keep every exact raw-payload identity or exact TDA-vector identity entirely
+within training or test; conflicting labels remain. The model seed equals the split seed.
 
-For label-free detection, Frame~B unmodified rows are split by raw identity
+For label-free detection, Frame~B unmodified rows are split by exact raw-payload identity
 into 60\% training, 20\% calibration, and 20\% evaluation. Training-only
-standardization precedes 10-neighbor distance, 20-neighbor novelty LOF,
-200-tree Isolation Forest, and RBF one-class SVM ($\nu=0.01$). Calibration
-quantiles set nominal $0.1,0.5,1,2,5\%$ removal budgets. No poison label fits a
+standardization precedes 10-neighbor distance, 20-neighbor novelty local
+outlier factor (LOF), 200-tree Isolation Forest, and a radial-basis-function
+(RBF) one-class support vector machine (SVM)
+($\nu=0.01$). Calibration quantiles set nominal $0.1,0.5,1,2,5\%$
+unmodified-row removal targets. No poison label fits a
 detector or threshold; capture is reported with realized held-out unmodified
-removal, precision, AUROC, and AUPRC.
+removal, precision, and areas under the receiver-operating-characteristic and
+precision--recall curves (AUROC and AUPRC).
 
 Formally, let $\mathcal C$, $\mathcal U$, and $\mathcal P$ denote calibration
 unmodified, held-out unmodified, and poisoned sets, and let larger $s(x)$ mean
-more anomalous. For nominal budget $b$, the calibration-only threshold and
+more anomalous. For nominal removal target $b$, the calibration-only threshold and
 reported operating point are
 \begin{align}
  \tau_b &= Q_{1-b}\{s(x):x\in\mathcal C\}, \nonumber\\
@@ -235,42 +332,106 @@ reported operating point are
  \label{eq:novelty}
 \end{align}
 $C_p$ is poison capture and $C_u$ is realized unmodified removal. Reporting
-both prevents a calibration-budget target from being mistaken for its
+both prevents the calibration removal target from being mistaken for its
 held-out cost.
 
-After discovery was sealed, an independent confirmation fixed Isolation Forest
-as primary, kNN as secondary, seeds 2026--2030, and nominal 1\% and 5\%
-budgets. The unseen-seed UNSW and matched-CICIDS arms repeat all four families
-with 5,000 unmodified and 500 poisoned rows; the CICIDS scale arm uses 50,000
-unmodified and 5,000 transposition-poisoned rows. Its locked criteria are:
+After exploratory analysis was complete, an independent prespecified
+confirmation study fixed Isolation Forest as primary, kNN as secondary, seeds
+2026--2030, and nominal 1\% and 5\% unmodified-row removal targets. The
+unseen-seed UNSW and matched-size CICIDS experiments repeat all four attack
+families with 5,000 unmodified and 500 poisoned rows; the large-scale CICIDS
+experiment uses 50,000 unmodified and 5,000 transposition-poisoned rows. Its
+prespecified criteria are:
 \begin{enumerate}
-\item[(P1)] unseen-seed UNSW mean paired IF-540-minus-IF-60 capture is positive;
+\item[(P1)] unseen-seed UNSW mean paired capture difference between Isolation
+Forest on the nine-threshold 540-feature representation (IF-540) and on the
+single-threshold 60-feature baseline (IF-60) is positive;
 \item[(P2)] its paired 95\% bootstrap interval excludes zero;
 \item[(P3)] unseen-seed UNSW mean IF-540 capture is at least 12\%;
 \item[(P4)] unseen-seed UNSW mean IF-540 unmodified removal is 4--6\%;
-\item[(T1)] matched-CICIDS mean IF-540 unmodified removal is 4--6\%;
-\item[(T2)] matched-CICIDS mean paired IF-540-minus-IF-60 capture is positive;
-\item[(T3)] CICIDS-scale mean IF-540 unmodified removal is 4--6\%.
+\item[(T1)] matched-size CICIDS mean IF-540 unmodified removal is 4--6\%;
+\item[(T2)] matched-size CICIDS mean paired IF-540-minus-IF-60 capture is positive;
+\item[(T3)] large-scale CICIDS mean IF-540 unmodified removal is 4--6\%.
 \end{enumerate}
 kNN carries no separate pass/fail criterion and cannot rescue a failed primary
-claim; it is reported as locked secondary evidence.
+claim; it is reported as prespecified secondary evidence.
+
+\subsection{Preregistered downstream classifier evaluation}
+The final experiment asks whether filtering changes classifier behavior, rather
+than only whether it removes manipulated rows. Before observing these outcomes,
+the full design was registered at \url{https://osf.io/h863t/}.
+The downstream evaluation reuses the five prespecified confirmation seeds,
+2026--2030, and their unmodified-data partitions, applying the same sanitizer
+design before measuring the new outcome of downstream classifier behavior.
+Each seed uses the four Frame~B families on matched-size UNSW and CICIDS populations
+(5,000 unmodified plus 500 poison); the large-scale CICIDS experiment uses transpositions with
+50,000 plus 5,000, for 45 population--seed--attack-family configurations. Poison copies are
+generated from malicious-class parents but receive a benign training label.
+
+The six training-condition types are clean (unpoisoned) training, poisoned training without
+filtering, random removal matched exactly to the detector's unmodified-row
+cost, IF-60 removal, IF-540 removal, and oracle removal that identifies all
+poisoned rows. Instantiating the filter and random-removal types for two
+representations and two removal targets yields 11 arms per configuration:
+clean, poisoned, oracle, four filter arms, and four paired random-removal arms.
+Detector fitting and calibration use disjoint trusted
+unmodified subsets; filtering acts only on the suspect subset. The downstream
+poison-capture rate divides by all poisoned rows. Table~\ref{tab:confirmation}
+reports realized unmodified removal relative to the held-out unmodified rows in
+that suspect subset; Section~IV-H and Fig.~\ref{fig:downstream-generalization}
+additionally express the same removed-row count relative to all unmodified
+training rows. The downstream
+model is a 100-tree random forest on raw bytes, with the random seed assigned to
+that experimental configuration as
+\texttt{random\_state}, no preprocessing, and otherwise default
+scikit-learn settings. Each test set is unmodified, equal in size to its
+training population, and excludes every exact raw-payload identity appearing in
+any paired training condition. The primary endpoint is malicious recall; benign
+false-positive rate (FPR) is the safety constraint.
+
+The sole primary analysis is matched-size UNSW, IF-60, and the 5\% calibration
+removal target. An operational-benefit claim requires all four criteria: the
+mean recall difference between clean and poisoned training is at least 0.02 and
+the lower bound of its confidence interval (CI) exceeds zero; the mean recall
+difference between IF-60 filtering and poisoned training is at least 0.01 and
+its CI lower bound exceeds zero; IF-60 recall exceeds recall after equal-cost
+random removal with a CI lower bound above zero; and the CI upper bound for the
+benign-FPR difference between IF-60 filtering and clean training is at most
+0.01. Paired 95\% intervals use
+100,000 hierarchical bootstrap draws (seed 20260904), resampling seeds and then
+families. IF-540, the 1\% removal target, CICIDS, attacked-test copies, and all other
+metrics are prespecified but cannot rescue a failed primary claim.
 
 \subsection{Reproducibility}
+The reproducibility controls bind every reported result to a frozen design and artifact.
 Each study has an immutable specification and machine-readable artifacts.
-Gates verify sample counts, zero Frame~B raw no-ops, finite 60/540 features,
-production-block equality, provenance monotonicity, and zero group overlap.
+Acceptance checks verify sample counts, zero Frame~B attacks that leave the raw
+payload unchanged, finite 60/540 features, equality between the 60-feature
+baseline and its corresponding block in the 540-feature vector, monotonic
+stage-wise collision classes, and zero train--test group overlap.
 Settings and endpoints were fixed before each full run. The confirmation adds
-literal row/index hashes, clean-only fit/calibration checks, attack-parent
-reproduction, finite score checks, and atomic cell completeness; all 90 cells
-pass. A cell is one population--family--seed--representation combination:
-$4\times5\times2=40$ for unseen-seed UNSW, 40 for matched CICIDS, and
-$1\times5\times2=10$ for CICIDS scale. Both detectors and budgets are evaluated
-within each cell.
+literal row/index hashes, checks that fitting and calibration use only trusted
+unmodified data, attack-parent
+reproduction, finite score checks, and completeness of every experimental
+configuration; all 90 configurations pass. One configuration is a
+population--attack-family--seed--representation combination:
+$4\times5\times2=40$ for unseen-seed UNSW, 40 for matched-size CICIDS, and
+$1\times5\times2=10$ for large-scale CICIDS. Both detectors and removal targets are evaluated
+within each configuration. The downstream manifest was frozen before model outcomes,
+bound to registration hash
+\texttt{3451b9ee\ldots 105ade}, and executed only after the OSF receipt was
+recorded. All 45 experimental configurations and 495 training-condition metric
+rows pass checks of content hashes, registration timing, raw-payload identity
+exclusion from test data, unpoisoned and oracle conditions, finite metrics, and exact
+random-removal cost matching. Code, frozen specifications, and machine-readable result
+artifacts are available at
+\url{https://github.com/cdaneb/tda_data_poisoning_prevention}.
 
 \section{Results}
 \subsection{Supplied-material findings}
-The recovered notebook path uses $1\times1500$, threshold 0.3, and 126
-features. Its so-called benign set is 21,000 normal plus 10,000 unmodified
+The supplied materials support partial forensic reconstruction but not exact reproduction.
+The reconstructed Jupyter notebook pipeline uses $1\times1500$, threshold 0.3,
+and 126 features. Its dataset labeled ``benign'' actually contains 21,000 normal plus 10,000 unmodified
 attack-category rows sampled without a seed; 1,000 poison rows would be 3.125\%
 of the combined set. Only 18 poisons from 11 DoS parents were delivered; all
 change their parents, but none preserves the byte multiset like the controlled
@@ -278,74 +439,60 @@ attacks. No composition accompanies the saved DBSCAN silhouette (0.887854),
 and missing poison data, generation code, and three cluster settings prevent
 exact reproduction.
 
-The aligned TDA-280 workbook has 140 constant coordinates, 24,925 unique
+The aligned 280-feature TDA representation (TDA-280) Excel table has 140 constant coordinates, 24,925 unique
 vectors, and 59,167 repeated members (74.069\%). Raw duplicates account for
 80.587\% of those members; conflicting-label membership rises from 14.376\%
 raw to 28.332\% after TDA. Intermediate states are unavailable, so the 19.413\%
 post-raw share cannot be assigned to binarization versus persistence. The 126
-workbook has 63 constant coordinates and 85.387\% repeated members.
-Alternating $H_1$ coordinates are constant in both $1\times1500$ maps.
+Excel feature table has 63 constant coordinates and 85.387\% repeated members.
+Alternating $H_1$ coordinates are constant in both $1\times1500$
+feature-extraction configurations.
 
 Separate fitting learns byte cuts 76.5 and 36.6 and changes all 18 poison
 vectors (mean $L_2=531.500$), but DBSCAN labels are identical (ARI 1.0).
-Both arms place all nine training poisons in the same 249-row mixed cluster.
+Both fitting procedures place all nine training poisons in the same 249-row mixed cluster.
 Separate/shared silhouettes are 0.920/0.879; both remove zero poison. Thus the
 fit confound is real at representation level but unconfirmed at decision level,
-and the multi-seed gate remains closed.
+and the prespecified requirement for expansion to multiple seeds is not met.
 
 Duplicate-safe classifier evaluation also changes interpretation. For TDA-280,
 final-vector grouping lowers multiclass accuracy from 0.7958 to 0.7293 and
 binary accuracy from 0.9581 to 0.8688. Raw bytes outperform TDA-280 under every
 split protocol; their corresponding grouped accuracies are 0.8030 and 0.9080.
 Large conflicting-label equivalence classes also increase between-seed
-variation.
+variation; complete split-protocol means and dispersions are retained in the
+machine-readable supplement.
 
-\begin{table}[t]
-\caption{Five-seed random-forest accuracy, mean (population SD).}
-\label{tab:classifier}
-\centering
-\scriptsize
-\setlength{\tabcolsep}{3.1pt}
-\begin{tabular}{llcc}
-\toprule
-Task & Split & Raw & TDA-280 \\
-\midrule
-\multirow{3}{*}{10-class}
- & Random rows & .8452 (.0026) & .7958 (.0029) \\
- & Raw groups  & .8062 (.0162) & .7583 (.0157) \\
- & TDA groups  & .8030 (.0736) & .7293 (.1034) \\
-\midrule
-\multirow{3}{*}{Binary}
- & Random rows & .9924 (.0007) & .9581 (.0015) \\
- & Raw groups  & .9666 (.0124) & .9388 (.0178) \\
- & TDA groups  & .9080 (.0616) & .8688 (.0888) \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Frame~A: the audit localizes exact collisions upstream}
+\subsection{Frame~A: exact matches arise before persistence summaries}
+Frame~A shows that almost all repeated final-vector members first become
+identical before persistence summaries are computed.
 The final repeated-member fraction is $\meanstd{56.33}{0.68}$\%.
 Raw-identical payloads create $\meanstd{50.80}{0.50}$\% of that collision mass
 and binarization $\meanstd{46.68}{0.46}$\%; only
 $\meanstd{2.52}{0.31}$\% first merges in persistence
-(Fig.~\ref{fig:provenance}). Later stages add none.
+(Fig.~\ref{fig:provenance}). Later processing stages introduce no new exact
+matches. Because Frame~A permits attacks that leave the raw payload unchanged,
+the raw-payload share is an upper bound on
+the contribution of payload duplication under an attack that always modifies
+its source; Frame~B, which requires every attack to modify its source, is the appropriate frame for
+attack-specific claims.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{figures/figure_v7_collision_origin.pdf}
-  \caption{Earliest-merger attribution of final repeated-member collision
-  mass (five-seed mean; error bars are population SD). Percentages partition
-  repeated final-vector members, not all experimental rows.}
+  \caption{Pipeline stage where each repeated final feature vector first becomes
+  identical to another vector (five-seed mean; error bars are population SD).
+  Percentages partition repeated final-vector members, not all experimental rows.}
   \label{fig:provenance}
 \end{figure}
 
 \begin{figure*}[!t]
   \centering
   \includegraphics[width=0.88\textwidth]{figures/figure_v6_representation_repair.pdf}
-  \caption{Exact feature-vector matches between poison and any clean row under
-  the single-threshold control and the fixed nine-threshold stack. Bars show
+  \caption{Exact feature-vector matches between poison and any unmodified row under
+  the single-threshold baseline and fixed nine-threshold representation. Bars show
   five-seed means; dots show individual seeds. The same attack realization is
-  used in both arms.}
+  used in both representations.}
   \label{fig:repair}
 \end{figure*}
 
@@ -361,91 +508,70 @@ mixed cluster, and the residual is $\meanstd{0.00}{0.00}$\%. Together with the
 noise and captured terms above, these categories are exhaustive and sum to
 100\% of poisoned rows in every seed.
 
-\subsection{Frame~B: multithresholding repairs the representation}
+\subsection{Frame~B: nine thresholds reduce exact feature matches}
+The fixed nine-threshold representation removes most targeted
+poison--unmodified equivalences.
 On Frame~B, exact poison--unmodified matches fall from family means
 2.60--4.32\% to 0.16--0.28\% (Fig.~\ref{fig:repair}), a 92.0--95.9\%
-reduction across every family and seed. The stack therefore repairs the
+reduction in the four family means. The nine-threshold representation therefore repairs the
 targeted equality mechanism.
 
-\subsection{Frame~B: fixed OPTICS remains at the floor}
-At purity cutoffs 0.80 and above, control and stack remove only 0.00--0.20\%
+\subsection{Frame~B: fixed OPTICS removes almost no poison}
+Representation repair does not produce useful fixed-OPTICS separation.
+At purity cutoffs 0.80 and above, the single-threshold and nine-threshold
+representations remove only 0.00--0.20\%
 and 0.00--0.64\% of poison, respectively, with zero unmodified removal. Poison
 noise rises from 85.2--87.5\% to 98.7--99.3\%, unmodified noise from about
 37.1\% to 54.5--54.6\%, and cluster count falls from 139.6--142.4 to
-107.6--108.8. The stack separates coordinates but fragments OPTICS density
-support; collision repair does not create poison-dominant clusters. At the
+107.6--108.8. The nine-threshold representation distinguishes previously
+identical vectors but fragments the density structure used by OPTICS; reducing
+exact feature matches does not create poison-dominant clusters. At the
 looser $q>0.50$ cutoff, every matched-cost difference is negative
-(Table~\ref{tab:optics-removal}).
+($-1.88$, $-0.60$, $-1.52$, and $-1.56$ points across the four families).
 
-\begin{table}[t]
-\caption{Frame~B poison removal (percentage points of all poisoned rows),
-five-seed means. $\Delta$ is the matched-unmodified-cost difference in
-Eq.~\eqref{eq:matched}, not a row subtraction.}
-\label{tab:optics-removal}
-\centering
-\scriptsize
-\setlength{\tabcolsep}{1.8pt}
-\renewcommand{\arraystretch}{0.94}
-\begin{tabular}{llccccc}
-\toprule
-Family & Arm & $1.0$ & $>.95$ & $>.90$ & $>.80$ & $>.50$ \\
-\midrule
-\multirow{3}{*}{Transpositions}
- & Control & 0.00 & 0.00 & 0.00 & 0.00 & 1.88 \\
- & Stack   & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
- & $\Delta$ & 0.00 & 0.00 & 0.00 & 0.00 & $-1.88$ \\
-\midrule
-\multirow{3}{*}{Block reversal}
- & Control & 0.00 & 0.00 & 0.00 & 0.20 & 1.24 \\
- & Stack   & 0.64 & 0.64 & 0.64 & 0.64 & 0.64 \\
- & $\Delta$ & $+0.64$ & $+0.64$ & $+0.64$ & $+0.44$ & $-0.60$ \\
-\midrule
-\multirow{3}{*}{Block swap}
- & Control & 0.00 & 0.00 & 0.00 & 0.00 & 1.52 \\
- & Stack   & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
- & $\Delta$ & 0.00 & 0.00 & 0.00 & 0.00 & $-1.52$ \\
-\midrule
-\multirow{3}{*}{Cyclic shift}
- & Control & 0.20 & 0.20 & 0.20 & 0.20 & 1.56 \\
- & Stack   & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
- & $\Delta$ & $-0.20$ & $-0.20$ & $-0.20$ & $-0.20$ & $-1.56$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+Unmodified removal is zero for the nine-threshold representation at every
+cutoff and for the single-threshold baseline through $q>0.80$; baseline cost
+reaches 0.064--0.108\% at $q>0.50$, where the cost-matching constraint first
+becomes active. Density-based cluster formation, not coordinate equality, is
+the operative OPTICS obstacle.
 
-Unmodified removal is zero for the stack at every cutoff and for the control
-through $q>0.80$; control cost reaches 0.064--0.108\% at $q>0.50$, where the
-matched-cost constraint first binds. Density-based cluster formation, not
-coordinate equality, is the operative OPTICS obstacle.
-
-\subsection{Discovery scores recover signal that fixed OPTICS discards}
-All 40 discovery cells pass analysis-locked gates. At the nominal 5\% budget,
+\subsection{Novelty detectors identify poison that fixed OPTICS does not}
+Label-free novelty scores recover moderate signal when higher unmodified-row
+removal rates are allowed.
+All 40 exploratory experimental configurations pass prespecified validity
+checks. At the nominal 5\% unmodified-row removal target,
 kNN captures 14.02\% of poison at 4.83\% realized unmodified removal with 60
 features and 17.79\% at 5.23\% with 540. Isolation Forest reaches
-16.34\%/5.09\% and 18.95\%/5.35\%, respectively; stack kNN improves in every
+16.34\%/5.09\% and 18.95\%/5.35\%, respectively; kNN using the 540-feature
+representation improves in every
 family.
 
-This gain is budget-dependent: all detector/representation arms capture only
-0.29--3.42\% at nominal 0.1--1\% budgets. LOF is weak, and control one-class
-SVM removes 21.74\% of held-out unmodified rows at the nominal 5\% budget.
+This gain depends on the removal target: all detector--representation
+combinations capture only 0.29--3.42\% at nominal 0.1--1\% targets. LOF is
+weak, and the one-class SVM using the 60-feature baseline removes 21.74\% of
+held-out unmodified rows at the nominal 5\% target.
 Thus label-free scores recover signal discarded by fixed OPTICS, but do not
-solve strict-budget detection. Detectors were prespecified and are all
+solve detection at low removal rates. Detectors were prespecified and are all
 reported; this discovery result does not establish independent generalization.
 
-\subsection{Independent confirmation rejects a general stack advantage}
-Table~\ref{tab:confirmation} gives capture, realized cost, and paired effects at
-the frozen 5\% point. For the primary unseen-seed UNSW claim, P1, P3, and P4
-hold: the IF-540 effect is $+0.69$ points, capture is 14.68\%, and unmodified
+\subsection{Confirmation rejects a general nine-threshold advantage}
+Independent confirmation rejects a general removal advantage for the
+nine-threshold representation.
+Table~\ref{tab:confirmation} gives capture, realized cost, and paired
+differences at the prespecified 5\% removal target. For the primary unseen-seed
+UNSW claim, P1, P3, and P4 hold: the IF-540-minus-IF-60 capture difference is
+$+0.69$ points, IF-540 capture is 14.68\%, and unmodified
 removal is 4.72\%. P2 fails because the interval ($-0.66$ to $+1.98$) crosses
 zero; the primary claim therefore fails on P2 alone. Transfer fails
-independently: T1 holds at 5.04\%, but T2 fails because matched-CICIDS capture
-falls by 1.01 points; T3 also fails because CICIDS-scale removal is 6.98\%.
+independently: T1 holds at 5.04\%, but T2 fails because matched-size CICIDS capture
+falls by 1.01 points; T3 also fails because large-scale CICIDS removal is 6.98\%.
 
 \begin{table*}[t]
-\caption{Independent confirmation at the nominal 5\% calibration point.
+\caption{Independent confirmation at the nominal 5\% calibration removal target.
 $C$ is poison capture and $U$ realized held-out unmodified removal (percent);
-60 denotes the control and 540 the stack. $\Delta C=C_{540}-C_{60}$ and its
-95\% paired bootstrap interval are percentage points. IF is primary; kNN is
+60 denotes the single-threshold 60-feature baseline and 540 the
+nine-threshold 540-feature representation. $\Delta C=C_{540}-C_{60}$ and its
+95\% paired bootstrap interval are percentage points. Isolation Forest (IF) is primary; kNN is
 secondary.}
 \label{tab:confirmation}
 \centering
@@ -457,95 +583,184 @@ Population & Detector & $C_{60}$ & $C_{540}$ & $U_{60}$ & $U_{540}$ & $\Delta C$
 \midrule
 Unseen-seed UNSW & IF  & 13.99 & 14.68 & 5.19 & 4.72 & $+0.69$ & [$-0.66$, $+1.98$] \\
                  & kNN & 12.70 & 14.73 & 4.73 & 4.79 & $+2.03$ & [$+0.99$, $+3.07$] \\
-Matched CICIDS   & IF  &  8.02 &  7.01 & 5.98 & 5.04 & $-1.01$ & [$-1.68$, $-0.35$] \\
+Matched-size CICIDS   & IF  &  8.02 &  7.01 & 5.98 & 5.04 & $-1.01$ & [$-1.68$, $-0.35$] \\
                  & kNN &  8.85 &  7.32 & 5.52 & 5.62 & $-1.53$ & [$-2.46$, $-0.59$] \\
-CICIDS scale     & IF  &  9.36 &  9.86 & 6.86 & 6.98 & $+0.50$ & [$+0.07$, $+0.89$] \\
+Large-scale CICIDS     & IF  &  9.36 &  9.86 & 6.86 & 6.98 & $+0.50$ & [$+0.07$, $+0.89$] \\
                  & kNN & 12.13 &  9.92 & 6.60 & 6.87 & $-2.21$ & [$-3.62$, $-0.80$] \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
-kNN therefore also reverses sign across populations and cannot rescue the
-primary claim. At the nominal 1\% point, control/stack capture is 3.54/2.76\%
+kNN also reverses sign across populations and cannot rescue the
+primary claim. At the nominal 1\% point, baseline/nine-threshold capture is 3.54/2.76\%
 (IF) and 4.05/3.80\% (kNN) on unseen-seed UNSW; 1.83/1.63\% and 1.46/1.80\%
-on matched CICIDS; and 1.70/1.94\% and 1.61/1.90\% at CICIDS scale. Absolute
-signal survives, but the stack confers no general operational advantage.
+on matched-size CICIDS; and 1.70/1.94\% and 1.61/1.90\% in the large-scale
+CICIDS experiment. Absolute
+signal survives, but the nine-threshold representation confers no general operational advantage.
+
+\subsection{The preregistered downstream claim fails on magnitude}
+The primary downstream claim fails because two effects miss their prespecified practical thresholds.
+On matched-size UNSW, mean malicious recall is 0.99589 for clean (unpoisoned)
+training, 0.97851
+when poisoned, 0.98004 after equal-cost random removal, 0.98678 after IF-60
+filtering, and 0.98682 after IF-540 filtering. Poisoning harm is therefore
+1.74 percentage points (95\% hierarchical bootstrap CI 1.42--2.04), below the
+prespecified 2-point mean threshold despite excluding zero. IF-60 recovers 0.83
+points (0.67--0.97), also below its 1-point threshold. These two criteria fail.
+
+The two remaining criteria pass (Fig.~\ref{fig:downstream-primary}). IF-60
+exceeds recall after equal-cost random removal by 0.67 points (0.50--0.82),
+showing that its benefit is
+not explained by deletion alone. Its benign FPR is 1.11 points below the clean-training condition
+($-1.42$ to $-0.83$), comfortably satisfying the requirement that filtering
+not materially increase benign false positives. The
+filter recovers 47.61\% of the poisoning-induced recall loss, but the
+conjunctive four-criterion operational-benefit claim is not supported.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.91\textwidth]{figures/figure_v10_downstream_primary.pdf}
+  \caption{Primary matched-size UNSW downstream effects for Isolation Forest
+  using the 60-feature representation at the 5\% calibration removal target.
+  Circles show means and 95\% hierarchical bootstrap intervals; diamonds show
+  each prespecified practical threshold. Statistical
+  evidence above zero does not substitute for the prespecified effect-size
+  minima. Two individual criteria pass, but all four were required.}
+  \label{fig:downstream-primary}
+\end{figure*}
+
+\subsection{Secondary evidence localizes utility and transfer failure}
+The rows selected for removal explain the UNSW effect. At the primary setting, IF-60
+removes 13.99\% of poisons while discarding 1.03\% of unmodified rows; matched
+random removal eliminates only 5.16\% of poisons at exactly that unmodified
+cost. Here and in Fig.~\ref{fig:downstream-generalization}, poison removal uses
+all poisoned rows as the denominator, whereas unmodified cost uses the entire
+unmodified training population. The same IF-60 and IF-540 removed-row counts
+are 5.19\% and 4.72\%, respectively, of the held-out unmodified suspect rows
+reported in Table~\ref{tab:confirmation}. IF-540 removes 14.68\% of poisons at
+0.94\% cost, but changes unmodified-
+test malicious recall by only $+0.003$ points relative to IF-60 (CI
+$-0.228$ to $+0.231$). It improves recall on independently transformed
+malicious copies by 1.85 points (0.34--3.53) while increasing benign FPR by
+0.57 points (0.17--1.02) relative to IF-60. Thus the nine-threshold
+representation changes performance on transformed malicious test copies
+without improving the primary endpoint.
+
+The pattern does not transfer (Fig.~\ref{fig:downstream-generalization}). On
+matched-size CICIDS, poisoning harm is 4.54 points, but IF-60 recovery is only 0.22
+points (0.12--0.31) and its advantage over random is effectively zero
+($-0.15$ to $+0.15$). In the large-scale CICIDS experiment, harm is 3.17 points and IF-60 recovery
+is 0.07 points ($-0.05$ to $+0.21$). At their respective 5\% settings, IF-60
+removes only 1.38\% and 1.24\% of CICIDS poisons, fewer than the 5.49\% and
+6.68\% removed randomly at matched cost. IF-540 is significantly worse than
+random on both CICIDS populations. These registered secondary analyses explain,
+but cannot rescue, the failed primary claim.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/figure_v11_downstream_generalization.pdf}
+  \caption{Secondary downstream analyses at the 5\% calibration removal target.
+  (a) Malicious-recall gain over random removal with exactly the same
+  unmodified-row cost;
+  error bars are 95\% hierarchical bootstrap intervals. (b) Mean poison
+  removal by Isolation Forest using 60 features and its equal-cost random
+  comparator; the right-side annotation gives the shared unmodified-row removal
+  as a percentage of all unmodified training rows.
+  TDA removes a larger share of poison than equal-cost random removal on
+  matched-size UNSW, but not on matched-size or large-scale CICIDS.}
+  \label{fig:downstream-generalization}
+\end{figure*}
 
 \section{Discussion}
-The evidence forms a four-level evaluation framework: reproduction,
-representation, cluster separability, and label-free operation. The supplied
-pipeline is partly reproducible; the stack passes its representation objective;
-fixed OPTICS fails at separation; and clean-calibrated detectors recover
-moderate absolute signal without a general 540-feature advantage. Success at
-one level does not establish the next, and random-row scores do not establish
-identity-safe generalization.
+The evidence forms a five-level evaluation framework: reproduction,
+representation, cluster separability, label-free removal, and downstream
+classifier utility. The supplied pipeline is partly reproducible; the
+nine-threshold representation
+passes its representation objective; fixed OPTICS fails at separation;
+detectors fitted and calibrated on trusted unmodified data recover moderate
+absolute signal; and the registered
+classifier study finds a small, UNSW-specific benefit that does not meet the
+operational decision rule. Success at one level does not establish the next.
 
 The supplied $1\times1500$ implementation and controlled $30\times50$
 reconstruction are different experimental objects. The former exposes
-constant $H_1$ features, batch-fit confounding, and duplicate leakage. The
-latter localizes 97.48\% of collision mass upstream and closes most
-single-threshold matches, yet fixed OPTICS lacks poison-dominant density
-support. Fewer collisions prove the targeted blind spot was reduced, not that
-poison became separable. Clean-calibrated capture identifies fixed OPTICS as a
+constant $H_1$ features, batch-fit confounding, and exact duplicates appearing
+across training and test splits. In the latter, 97.48\% of repeated
+final-vector members first acquire an exact match before persistence summaries
+are computed, and the nine-threshold representation removes most
+single-threshold matches. Fixed OPTICS still lacks poison-dominant density
+structure. Fewer collisions prove the targeted information loss was reduced, not that
+poison became separable. Poison capture from detectors calibrated on trusted
+unmodified data identifies fixed OPTICS as a
 downstream bottleneck, while confirmation shows that reducing exact collisions
 does not reliably improve a different detector.
 
-The detector experiments refine rather than reverse the poster conclusion.
-Discovery showed that changing the decision rule can recover more poison than
-fixed OPTICS, but confirmation separates that detector gain from a stack gain:
-both detectors reverse from positive mean effects on unseen-seed UNSW to
-significantly negative effects on matched CICIDS. Moreover, discovery-to-
-confirmation Isolation Forest capture falls by 2.35 points for the control and
-4.27 for the stack under the same population construction, exposing seed-set
-sensitivity and showing why discovery means are not stable estimates. Thus a
-label-free rule can use the remaining signal, but multithreshold collision
-repair is not a general route to better removal. No downstream classifier
-benefit is claimed.
+The downstream outcome is neither a successful operational claim nor a null
+result. On UNSW, the positive filter-versus-random interval demonstrates a
+TDA-specific selection effect, and the filter recovers nearly half of the lost
+recall without increasing benign FPR. However, poisoning itself misses the
+prespecified 2-point materiality threshold and recovery misses 1 point. Preserving
+those thresholds prevents precise but small changes from being promoted to an
+operational claim after outcomes are known.
 
-An exploratory seed-42 diagnostic provides indicative mechanism context, not
-five-seed evidence. Across 200 source pairs per family, median attack
-displacement is 10.7--17.6\% of the median cyclic next-pair unmodified
-displacement under the control and 7.0--12.2\% under the stack; no attack
-displacement exceeds the corresponding unmodified-pair 95th percentile. This
-reference is population-scale, not the local-neighborhood scale governing
-OPTICS reachability, so it cannot by itself explain clusterability. The
-diagnostic therefore does not have the evidential status of the primary
-five-seed findings.
+The six-training-condition design also prevents two misleading interpretations. First,
+poisoning lowers benign FPR from 4.25\% to 2.61\% while lowering malicious
+recall, so aggregate accuracy alone can conceal the security-relevant tradeoff.
+
+Second, deletion alone does not explain the UNSW recovery because matched
+random removal is substantially weaker. Yet more poison removal is not
+sufficient either: IF-540 has slightly better removal selectivity and stronger
+transformed-attack recall than IF-60, but indistinguishable primary recall.
+
+Transfer is the clearest limitation. Both CICIDS populations suffer larger
+poisoning harm than UNSW, leaving a larger possible recall recovery, but the TDA sanitizer removes
+fewer poisons than its random comparator and yields no useful filter-specific
+recall gain. The failure is therefore not caused merely by a weak CICIDS attack.
+The learned topological anomaly ordering is useful for this UNSW construction,
+not a portable signature of poisoned packet payloads.
 
 Limitations include incomplete author poison data/settings, a single-seed
 18-poison fit diagnostic, and two packet-level derivatives rather than original
-flow tables. CICIDS scale testing covers only transpositions; the other families
-are matched-size. \emph{Unmodified} includes attack-category traffic, novelty
-calibration assumes trusted data, and downstream benefit after removal remains
-untested.
+flow tables. The large-scale CICIDS experiment covers only transpositions; the
+other experiments use matched-size populations. \emph{Unmodified} includes attack-category traffic, novelty
+calibration assumes trusted data, and the attacks preserve byte multisets but
+are not validated as functional network packets. Downstream evidence uses one
+binary raw-byte random forest, one poisoning objective in which manipulated
+malicious rows receive benign training labels, fixed training sizes, and two
+calibration removal targets; it does not establish operational network
+intrusion detection system (NIDS) impact.
+The evaluation compares the TDA sanitizer against exactly cost-matched random
+removal and an oracle, but not against representation-agnostic poison filters
+such as spectral signatures or activation clustering; those comparisons would
+situate the observed UNSW-specific enrichment against an established baseline
+and remain open.
 
 \section{Conclusion}
-The supplied materials support forensic reconstruction, not exact
-reproduction. They expose constant features, incompatible batch fits, and
-duplicate-sensitive classifier scores. In the controlled reconstruction, the
-nine-threshold stack removes 92.0--95.9\% of exact poison--unmodified matches,
-but fixed OPTICS removes at most 0.64\% at strict purity budgets; at
-$q>0.50$, matched-cost differences are negative for all four families.
+The supplied materials support forensic reconstruction of the published
+pipeline, not its exact reproduction; the negative findings reported here
+therefore constrain this reconstruction and the artifacts as delivered.
+A fixed nine-threshold representation repairs most targeted exact collisions,
+but neither fixed OPTICS nor independent confirmation supports a general
+540-feature removal advantage. The preregistered downstream study closes the
+remaining utility question: on UNSW, IF-60 removes poison more selectively than
+matched random deletion and recovers 0.83 recall points, but the poisoning and
+recovery magnitudes miss their prespecified practical thresholds. The
+all-criteria claim
+therefore fails. On CICIDS, filter-specific benefit disappears or reverses.
 
-Clean-calibrated discovery scores capture 14.02--18.95\% near 5\% realized
-unmodified removal. Independent confirmation retains 7.01--14.73\% absolute
-capture, but Isolation Forest stack effects are $+0.69$, $-1.01$, and $+0.50$
-points across unseen-seed UNSW, matched CICIDS, and CICIDS scale, with the first
-interval crossing zero and the scale clean-cost gate failing; kNN is also
-mixed. The remaining signal supports label-free triage, but the representation
-repair does not generalize as an operational improvement. Future claims should
-preserve provenance, use identity-safe splits, and report capture with realized
-unmodified-data cost.
+Topological filtering can provide a measurable dataset-specific signal without
+providing reliable operational value. Future claims should preserve provenance,
+use test sets that exclude exact training-payload identities and cost-matched
+controls, separate statistical from
+practical significance, and require cross-dataset evidence before treating TDA
+poison filtering as a deployable defense.
 
 \section*{Acknowledgment}
-The author thanks Dr.\ Joseph Dorta of the Department of Mathematical Sciences
-for advising this work and Dr.\ Galamo Monkam for providing the supplementary
-research artifacts audited here. The views expressed are those of the author and do not
-reflect the official policy or position of the United States Military Academy,
-the Department of the Army, or the Department of Defense.
+The author thanks Dr.\ Joseph Dorta of the Department of Mathematical Sciences for advising this research and Dr.\ Galamo Monkam for providing the supplementary research artifacts audited here. The views expressed are those of the author and do not reflect the official policy or position of the United States Military Academy, the Department of the Army, or the Department of War. Generative AI tools assisted with code development and debugging and with figure generation and editing. The author verified all AI-assisted outputs and remains fully responsible for the content and results.
 
 \balance
-\begin{thebibliography}{10}
+\FloatBarrier
+\begin{thebibliography}{20}
 
 \bibitem{biggio2018}
 B. Biggio and F. Roli, ``Wild patterns: Ten years after the rise of adversarial
@@ -574,12 +789,6 @@ intrusion detection systems (UNSW-NB15 network data set),'' in \emph{Proc.
 Military Communications and Information Systems Conf. (MilCIS)}, 2015,
 pp. 1--6, doi: 10.1109/MilCIS.2015.7348942.
 
-\bibitem{sharafaldin2018}
-I. Sharafaldin, A. H. Lashkari, and A. A. Ghorbani, ``Toward generating a new
-intrusion detection dataset and intrusion traffic characterization,'' in
-\emph{Proc. 4th Int. Conf. Information Systems Security and Privacy (ICISSP)},
-2018, pp. 108--116, doi: 10.5220/0006639801080116.
-
 \bibitem{farrukh2022}
 Y. A. Farrukh, I. Khan, S. Wali, D. Bierbrauer, J. A. Pavlik, and
 N. D. Bastian, ``Payload-Byte: A tool for extracting and labeling packet
@@ -587,6 +796,12 @@ capture files of modern network intrusion detection datasets,'' in
 \emph{Proc. IEEE/ACM Int. Conf. Big Data Computing, Applications and
 Technologies (BDCAT)}, 2022, pp. 58--67,
 doi: 10.1109/BDCAT56447.2022.00015.
+
+\bibitem{sharafaldin2018}
+I. Sharafaldin, A. H. Lashkari, and A. A. Ghorbani, ``Toward generating a new
+intrusion detection dataset and intrusion traffic characterization,'' in
+\emph{Proc. 4th Int. Conf. Information Systems Security and Privacy (ICISSP)},
+2018, pp. 108--116, doi: 10.5220/0006639801080116.
 
 \bibitem{tauzin2021}
 G. Tauzin, U. Lupo, L. Tunstall, J. Burella P\'erez, M. Caorsi,
@@ -599,6 +814,41 @@ M. Ankerst, M. M. Breunig, H.-P. Kriegel, and J. Sander, ``OPTICS: Ordering
 points to identify the clustering structure,'' in \emph{Proc. ACM SIGMOD Int.
 Conf. Management of Data}, 1999, pp. 49--60,
 doi: 10.1145/304182.304187.
+
+\bibitem{cretu2008}
+G. F. Cretu, A. Stavrou, M. E. Locasto, S. J. Stolfo, and A. D. Keromytis, ``Casting
+out demons: Sanitizing training data for anomaly sensors,'' in \emph{Proc. IEEE Symp.
+Security and Privacy}, 2008, pp. 81--95.
+
+\bibitem{nelson2008}
+B. Nelson, M. Barreno, F. J. Chi, A. D. Joseph, B. I. P. Rubinstein, U. Saini,
+C. Sutton, J. D. Tygar, and K. Xia, ``Exploiting machine learning to subvert your spam
+filter,'' in \emph{Proc. USENIX Workshop on Large-Scale Exploits and Emergent Threats
+(LEET)}, 2008.
+
+\bibitem{paudice2018}
+A. Paudice, L. Mu\~{n}oz-Gonz\'{a}lez, and E. C. Lupu, ``Label sanitization against
+label flipping poisoning attacks,'' in \emph{ECML PKDD 2018 Workshops}, 2018,
+pp. 5--15.
+
+\bibitem{tran2018}
+B. Tran, J. Li, and A. M\k{a}dry, ``Spectral signatures in backdoor attacks,'' in
+\emph{Advances in Neural Information Processing Systems}, vol. 31, 2018.
+
+\bibitem{chen2019}
+B. Chen, W. Carvalho, N. Baracaldo, H. Ludwig, B. Edwards, T. Lee, I. Molloy, and
+B. Srivastava, ``Detecting backdoor attacks on deep neural networks by activation
+clustering,'' in \emph{Proc. AAAI Workshop on Artificial Intelligence Safety (SafeAI)},
+2019.
+
+\bibitem{peri2020}
+N. Peri, N. Gupta, W. R. Huang, L. Fowl, C. Zhu, S. Feizi, T. Goldstein, and
+J. P. Dickerson, ``Deep k-NN defense against clean-label data poisoning attacks,'' in
+\emph{Computer Vision -- ECCV 2020 Workshops}, 2020, pp. 55--70.
+
+\bibitem{steinhardt2017}
+J. Steinhardt, P. W. Koh, and P. Liang, ``Certified defenses for data poisoning
+attacks,'' in \emph{Advances in Neural Information Processing Systems}, vol. 30, 2017.
 
 \end{thebibliography}
 

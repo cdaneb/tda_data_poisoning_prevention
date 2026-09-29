@@ -7,6 +7,19 @@ __pycache__/
 *.pyc
 *.pyo
 
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+
 # Claude Code / AI prompt files
 .claude/
 cc_instructions_*.md
@@ -57,6 +70,10 @@ results/*
 !results/downstream_classifier_cells/
 !results/downstream_classifier_cells/*.json
 
+# Temporary renders and local document-build exports
+tmp/
+output/
+
 # Log files
 *.log
 *.txt
@@ -84,7 +101,6 @@ CLAUDE.md
 PHASE_V_INSTRUCTIONS.md
 URTC_2026_PAPER_SPECIFICATION.tex
 poster_blocks.tex
-base_poster.aux
 archive/
 
 # Author-supplied Monkam materials needed for reproduction are tracked, with

@@ -4,8 +4,8 @@ The chart is intentionally sparse: explanatory prose belongs in the poster's
 LaTeX caption, while this file owns the exact artifact-to-mark mapping.
 
 Usage:
-    python make_figure_v6_representation_repair.py --render
-    python make_figure_v6_representation_repair.py --render --out figures/figure_v6_representation_repair.png
+    python -m programs.make_figure_v6_representation_repair --render
+    python -m programs.make_figure_v6_representation_repair --render --out figures/figure_v6_representation_repair.png
 """
 
 from __future__ import annotations
@@ -113,7 +113,7 @@ def render(out_path=None, artifact=None):
     ax.set_yticklabels([r["label"] for r in rows], fontsize=12.5, fontweight="bold")
     ax.set_xlim(0, 5.35)
     ax.set_xticks(np.arange(0, 6, 1))
-    ax.set_xlabel("Poison vectors exactly matching a clean vector (%)",
+    ax.set_xlabel("Poison vectors exactly matching an unmodified-data vector (%)",
                   fontsize=12.5, fontweight="bold", labelpad=8)
     ax.tick_params(axis="x", labelsize=10.5, colors=INK_MUTED, length=0)
     ax.tick_params(axis="y", length=0, pad=8)
