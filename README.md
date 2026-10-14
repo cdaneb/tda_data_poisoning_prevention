@@ -44,9 +44,9 @@ downstream gain is too small for the preregistered operational claim and does no
 CICIDS. Registration and frozen results are at [OSF h863t](https://osf.io/h863t/); the concise result
 report is [`docs/DOWNSTREAM_CLASSIFIER_RESULTS.md`](docs/DOWNSTREAM_CLASSIFIER_RESULTS.md).
 
-![Four preregistered primary downstream gates](figures/figure_v10_downstream_primary.png)
+![Four preregistered primary downstream gates](figures_archive/figure_v10_downstream_primary.png)
 
-![TDA-specific classifier effect and sanitizer selectivity across populations](figures/figure_v11_downstream_generalization.png)
+![TDA-specific classifier effect and sanitizer selectivity across populations](figures_archive/figure_v11_downstream_generalization.png)
 
 A foundational result is deductive. Binarization is pointwise, hence *equivariant* under byte-position
 permutation — permuting then binarizing equals binarizing then permuting. Summation is symmetric, so
@@ -263,8 +263,8 @@ base_paper.tex                 # IEEEtran manuscript source for BigData 2026 dev
 
 models/                        # trained surrogate classifiers (surrogate_mlp*.joblib, surrogate_rf*.joblib)
 results/                       # frozen specifications, immutable cells, merged JSON, and CSV summaries
-figures/                       # generated plots and poster/paper figures (*.pdf re-included via
-                               #   .gitignore negation; downstream V10/V11 also have README PNGs)
+figures/                       # five PDF figures included in the current paper
+figures_archive/               # historical plots, poster assets, and README PNG copies
 data/                          # Payload-Byte CSVs (gitignored -- see Datasets below)
 
 docs/                          # reference and historical documents:
@@ -363,7 +363,7 @@ Keep these files together in version control:
 programs/run_m8_purity_sweep.py
 results/phase_m_m8_purity_sweep.json
 programs/make_figure_m8_purity_sweep.py
-figures/figure_m8_purity_sweep.pdf
+figures_archive/figure_m8_purity_sweep.pdf
 docs/PHASE_M_A19_A23_REPORT.md
 ```
 
@@ -395,7 +395,7 @@ Three `.gitignore` rule groups require attention when adding artifacts:
   are ignored. Check each planned artifact with `git check-ignore <path>`
   before relying on it being committed.
 - **`*.pdf`** was intended to exclude the copyrighted source papers but also caught generated
-  figures. `!figures/*.pdf` and `!base_poster.pdf` re-include the generated
+  figures. `!figures/*.pdf`, `!figures_archive/*.pdf`, and `!base_poster.pdf` re-include the generated
   figures and poster. The built `base_paper.pdf` remains ignored; the tracked
   paper source is `base_paper.tex`.
 - **`docs/*` + `!docs/*.md`** replaced a bare `docs/` rule, which had made three phase completion
@@ -423,7 +423,7 @@ hashed merged result without rerunning any experiment. The built
 ## Poster
 
 `base_poster.tex` is the standalone MathFest tikzposter source and references
-the generated PDFs in `figures/`. `poster_blocks.tex` remains only as a
+the historical assets in `figures_archive/`. `poster_blocks.tex` remains only as a
 historical block fragment. Figures V2 and V3 are poster evidence; the M8 curve
 is a diagnostic artifact and is not poster evidence.
 

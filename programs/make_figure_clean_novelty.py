@@ -21,7 +21,7 @@ for ax,rep in zip(axes,['control','stack']):
  ax.plot([0,6],[0,6],'--',color='0.65',lw=1); ax.set_title('60-feature control' if rep=='control' else '540-feature stack')
  ax.set_xlabel('Realized held-out clean removal (%)'); ax.grid(alpha=.2)
 axes[0].set_ylabel('Poison capture (%)'); axes[1].legend(frameon=False,fontsize=8)
-fig.tight_layout(); fig.savefig(ROOT/'figures/clean_novelty_capture.png',dpi=300); plt.close(fig)
+fig.tight_layout(); fig.savefig(ROOT/'figures_archive/clean_novelty_capture.png',dpi=300); plt.close(fig)
 fig,axes=plt.subplots(1,4,figsize=(12,3),sharey=True)
 families=['transpositions','block_reversal','block_swap','cyclic_shift']
 for ax,fam in zip(axes,families):
@@ -30,5 +30,5 @@ for ax,fam in zip(axes,families):
   ax.scatter(np.full(len(vals),x),vals,color=color,s=20); ax.errorbar(x,np.mean(vals),yerr=np.std(vals),fmt='s',color='black',capsize=3)
  ax.set_xticks([0,1],['60','540']); ax.set_title(fam.replace('_','\n')); ax.grid(axis='y',alpha=.2)
 axes[0].set_ylabel('kNN poison capture at 5% budget (%)'); fig.tight_layout()
-fig.savefig(ROOT/'figures/clean_novelty_family_variation.png',dpi=300); plt.close(fig)
+fig.savefig(ROOT/'figures_archive/clean_novelty_family_variation.png',dpi=300); plt.close(fig)
 print('wrote clean_novelty_capture.png and clean_novelty_family_variation.png')

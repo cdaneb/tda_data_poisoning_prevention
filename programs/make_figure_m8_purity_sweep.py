@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "results" / "phase_m_m8_purity_sweep.json"
-OUT = ROOT / "figures" / "figure_m8_purity_sweep.pdf"
+OUT = ROOT / "figures_archive" / "figure_m8_purity_sweep.pdf"
 ORDER = ["block_reversal", "block_swap", "transpositions", "cyclic_shift", "noise"]
 LABELS = {
     "block_reversal": "Block reversal",

@@ -7,8 +7,8 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "results/clean_novelty_confirmation.json"
-OUT_CAPTURE = ROOT / "figures/clean_novelty_confirmation_capture.png"
-OUT_EFFECT = ROOT / "figures/clean_novelty_confirmation_paired_effects.png"
+OUT_CAPTURE = ROOT / "figures_archive/clean_novelty_confirmation_capture.png"
+OUT_EFFECT = ROOT / "figures_archive/clean_novelty_confirmation_paired_effects.png"
 
 
 def main():

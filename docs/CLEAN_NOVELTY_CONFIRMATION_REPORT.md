@@ -57,4 +57,4 @@ The primary representation-improvement claim **fails confirmation**. On unseen-s
 
 The secondary kNN result is mixed: 540 features improve UNSW mean capture, but degrade matched-size CICIDS and CICIDS-scale mean capture at the 5% operating point. Under the preregistration, the secondary detector cannot rescue the failed primary claim.
 
-Figures: `figures/clean_novelty_confirmation_capture.png` and `figures/clean_novelty_confirmation_paired_effects.png`. All values and confidence intervals come from `results/clean_novelty_confirmation.json`.
+Figures: `figures_archive/clean_novelty_confirmation_capture.png` and `figures_archive/clean_novelty_confirmation_paired_effects.png`. All values and confidence intervals come from `results/clean_novelty_confirmation.json`.
